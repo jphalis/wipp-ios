@@ -25,7 +25,6 @@
 
 //Validation Methods
 +(BOOL)validateEmail:(NSString *)email ;
-+(BOOL)validateUsername:(NSString *)un ;
 +(BOOL)isValidCharacter:(NSString*)string filterCharSet:(NSString*)set;
 -(NSString*)formatNumber:(NSString*)mobileNumber;
 -(int)getLength:(NSString*)mobileNumber;

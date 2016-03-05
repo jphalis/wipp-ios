@@ -19,21 +19,18 @@
 
 
 @interface LoginViewController ()<UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
-    __weak IBOutlet UILabel *pageTitle;
     __weak IBOutlet UIView *viewLogin;
-    __weak IBOutlet UIButton *btnSignupInner;
     __weak IBOutlet UIButton *btnSignInner;
-    __weak IBOutlet NSLayoutConstraint *consSignupX;
     __weak IBOutlet NSLayoutConstraint *consLoginX;
     
     //Signin TxtFields
+    __weak IBOutlet UITextField *txtLoginEmail;
     __weak IBOutlet UITextField *txtLoginPass;
-    __weak IBOutlet UITextField *txtLoginUsrName;
     __weak IBOutlet UIButton *showSigninPass;
 }
+- (IBAction)onBack:(id)sender;
 - (IBAction)onForgot:(id)sender;
 - (IBAction)doSignIn:(id)sender;
-- (IBAction)doShowSigninPass:(id)sender;
 
 @end
 
@@ -48,14 +45,13 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     
-    pageTitle.text = @"Sign in";
     UIButton *btnSel = (UIButton*)[self.view viewWithTag:1];
     UIButton *btnUel = (UIButton*)[self.view viewWithTag:2];
     [btnSel setSelected:YES];
     [btnUel setSelected:NO];
     
     btnSignInner.layer.borderWidth = 2;
-    btnSignInner.layer.borderColor = [[UIColor whiteColor] CGColor];
+    btnSignInner.layer.borderColor = [[UIColor colorWithRed:255.0/255 green:131.0/255 blue:0.0/255 alpha:1.0] CGColor];
     btnSignInner.layer.cornerRadius = 7;
     
     viewLogin.hidden = NO;
@@ -63,22 +59,18 @@
     
     //Custom Placeholder Color
     UIColor *color = [UIColor whiteColor];
-    txtLoginUsrName.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"username" attributes:@{NSForegroundColorAttributeName: color}];
+    txtLoginEmail.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email" attributes:@{NSForegroundColorAttributeName: color}];
     
-    txtLoginPass.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"password" attributes:@{NSForegroundColorAttributeName: color}];
-    
-    // Gradient
-    UIColor *topColor = [UIColor colorWithRed:(135/255.0) green:(8/255.0) blue:(12/255.0) alpha:1.0];
-    UIColor *bottomColor = [UIColor colorWithRed:(180/255.0) green:(77/255.0) blue:(62/255.0) alpha:1.0];
-    CAGradientLayer *theViewGradient = [CAGradientLayer layer];
-    theViewGradient.colors = [NSArray arrayWithObjects:(id)topColor.CGColor, (id)bottomColor.CGColor, nil];
-    theViewGradient.frame = self.view.frame;
-    [self.view.layer insertSublayer:theViewGradient atIndex:0];
+    txtLoginPass.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName: color}];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)onBack:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)onForgot:(id)sender {
@@ -91,9 +83,9 @@
     
     NSUInteger length = [textField.text length] - range.length + [string length];
    
-    if(textField == txtLoginUsrName){
-        BOOL isValidChar = [AppDelegate isValidCharacter:string filterCharSet:USERNAME];
-        return isValidChar && length <= 30;
+    if(textField == txtLoginEmail){
+        BOOL isValidChar = [AppDelegate isValidCharacter:string filterCharSet:EMAIL];
+        return isValidChar && length <= 80;
     }
     return YES;
 }
@@ -142,12 +134,6 @@
     
     textField.inputAccessoryView = keyboardToolBar;
     
-    if(textField == txtLoginPass){
-        showSigninPass.hidden = NO;
-    } else {
-        showSigninPass.hidden = YES;
-    }
-    
     [self animateTextField: textField up: YES];
 }
 
@@ -178,8 +164,8 @@
 
 
 - (void)nextTextField:(UIBarButtonItem *)sender {
-    if (txtLoginUsrName){
-        [txtLoginUsrName resignFirstResponder];
+    if (txtLoginEmail){
+        [txtLoginEmail resignFirstResponder];
         [txtLoginPass becomeFirstResponder];
     }
 }
@@ -187,12 +173,12 @@
 -(void)previousTextField:(UIBarButtonItem *)sender{
     if (txtLoginPass) {
         [txtLoginPass resignFirstResponder];
-        [txtLoginUsrName becomeFirstResponder];
+        [txtLoginEmail becomeFirstResponder];
     }
 }
 
 -(void)resignKeyboard {
-    [txtLoginUsrName resignFirstResponder];
+    [txtLoginEmail resignFirstResponder];
     [txtLoginPass resignFirstResponder];
 }
 
@@ -213,11 +199,11 @@
     
     SCLAlertView *alert = [[SCLAlertView alloc] init];
     
-    txtLoginUsrName.text = [txtLoginUsrName.text lowercaseString];
+    txtLoginEmail.text = [txtLoginEmail.text lowercaseString];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        NSString *params = [NSString stringWithFormat:@"username=%@&password=%@",[txtLoginUsrName.text Trim],[txtLoginPass.text Trim]];
+        NSString *params = [NSString stringWithFormat:@"email=%@&password=%@",[txtLoginEmail.text Trim],[txtLoginPass.text Trim]];
         
         NSMutableData *bodyData = [[NSMutableData alloc] initWithData:[params dataUsingEncoding:NSUTF8StringEncoding]];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[bodyData length]];
@@ -240,10 +226,9 @@
                      NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
                      
                      if([[JSONValue objectForKey:@"userid"]integerValue]>0){
-                         SetUserName([JSONValue objectForKey:@"user"]);
                          SetUserID([[JSONValue objectForKey:@"userid"]integerValue]);
                          SetUserToken([JSONValue objectForKey:@"token"]);
-                         SetUserActive([[JSONValue objectForKey:@"userid"]integerValue]);
+                         SetUserEmail([txtLoginEmail.text Trim]);
                          SetUserPassword([txtLoginPass.text Trim]);
                          [self performSelectorInBackground:@selector(getProfileDetails) withObject:nil];
                          [self pushingView:YES];
@@ -262,10 +247,10 @@
 }
 
 -(void)getProfileDetails{
-    NSString *urlString = [NSString stringWithFormat:@"%@%@/",PROFILEURL,GetUserName];
+    NSString *urlString = [NSString stringWithFormat:@"%@%ld/", PROFILEURL, (long)GetUserID];
     NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                                              timeoutInterval:60];
-    NSString *authStr = [NSString stringWithFormat:@"%@:%@", GetUserName, GetUserPassword];
+    NSString *authStr = [NSString stringWithFormat:@"%@:%@", GetUserEmail, GetUserPassword];
     NSData *plainData = [authStr dataUsingEncoding:NSUTF8StringEncoding];
     NSString *base64String = [plainData base64EncodedStringWithOptions:0];
     NSString *authValue = [NSString stringWithFormat:@"Basic %@", base64String];
@@ -285,26 +270,16 @@
                      [self setBusy:NO];
                      return;
                  }
-                 
-                 SetUserName([JSONValue objectForKey:@"username"]);
+            
+                 SetUserEmail([JSONValue objectForKey:@"email"]);
                  SetUserFullName([JSONValue objectForKey:@"full_name"]);
-                 NSString *profilePic;
-                 if([JSONValue objectForKey:@"profile_picture"] == [NSNull null]){
-                     profilePic = @"";
-                 } else {
-                     profilePic=[JSONValue objectForKey:@"profile_picture"];
-                 }
-                 SetProifilePic(profilePic);
 
                  [self setBusy:NO];
              } else {
-                 //[self setBusy:NO];
-                 //[self showMessage:SERVER_ERROR];
+                 [self setBusy:NO];
              }
          } else {
-            // [refreshControl endRefreshing];
-            // [self setBusy:NO];
-             //[self showMessage:SERVER_ERROR];
+             [self setBusy:NO];
          }
      }];
 }
@@ -348,21 +323,16 @@
 
 -(void)clearFields{
     txtLoginPass.text = @"";
-    txtLoginUsrName.text = @"";
+    txtLoginEmail.text = @"";
 }
 
 -(BOOL)validateFields{
     SCLAlertView *alert = [[SCLAlertView alloc] init];
     
-    if ([[txtLoginUsrName.text Trim] isEmpty]){
+    if ([[txtLoginEmail.text Trim] isEmpty]){
         alert.showAnimationType = SlideInFromLeft;
         alert.hideAnimationType = SlideOutToBottom;
-        [alert showNotice:self title:@"Notice" subTitle:EMPTY_USERNAME closeButtonTitle:@"OK" duration:0.0f];
-        return NO;
-    } else if ([[txtLoginUsrName.text Trim] length] < 3) {
-        alert.showAnimationType = SlideInFromLeft;
-        alert.hideAnimationType = SlideOutToBottom;
-        [alert showNotice:self title:@"Notice" subTitle:USERNAME_MIN_LEGTH closeButtonTitle:@"OK" duration:0.0f];
+        [alert showNotice:self title:@"Notice" subTitle:EMPTY_EMAIL closeButtonTitle:@"OK" duration:0.0f];
         return NO;
     } else if ([[txtLoginPass.text Trim] isEmpty]) {
         alert.showAnimationType = SlideInFromLeft;

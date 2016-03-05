@@ -9,6 +9,7 @@
 #import "defs.h"
 #import "ForgotViewController.h"
 #import "GlobalFunctions.h"
+#import "LoginViewController.h"
 #import "SCLAlertView.h"
 #import "StringUtil.h"
 #import "SVModalWebViewController.h"
@@ -19,26 +20,17 @@
 
 
 @interface RegisterViewController ()<UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
-    __weak IBOutlet UILabel *pageTitle;
     __weak IBOutlet UIView *viewSignUp;
     __weak IBOutlet UIButton *btnSignupInner;
-    __weak IBOutlet UIButton *btnSignInner;
     __weak IBOutlet NSLayoutConstraint *consSignupX;
-    __weak IBOutlet NSLayoutConstraint *consLoginX;
-    
-    //Signup Txtfields
     __weak IBOutlet UITextField *txtSignupVerifyPass;
     __weak IBOutlet UITextField *txtSignupPass;
-    __weak IBOutlet UITextField *txtSignupUsrName;
     __weak IBOutlet UITextField *txtSignupEmail;
-    __weak IBOutlet UIButton *showSignupPass;
-    __weak IBOutlet UIButton *showVerifyPass;
 
 }
+- (IBAction)existingAcct:(id)sender;
 - (IBAction)doSignUp:(id)sender;
 - (IBAction)onTermsClick:(id)sender;
-- (IBAction)doShowSignupPass:(id)sender;
-- (IBAction)doShowVerifyPass:(id)sender;
 
 @end
 
@@ -52,37 +44,16 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    
-    pageTitle.text = @"Register";
-    UIButton *btnSel = (UIButton*)[self.view viewWithTag:1];
-    UIButton *btnUel = (UIButton*)[self.view viewWithTag:2];
-    [btnSel setSelected:YES];
-    [btnUel setSelected:NO];
-    
-    btnSignupInner.layer.borderWidth = 2;
-    btnSignupInner.layer.borderColor = [[UIColor whiteColor] CGColor];
-    btnSignupInner.layer.cornerRadius = 7;
-    
-    viewSignUp.hidden = YES;
+        
     self.navigationController.navigationBarHidden = YES;
     
     //Custom Placeholder Color
     UIColor *color = [UIColor whiteColor];
-    txtSignupUsrName.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"username" attributes:@{NSForegroundColorAttributeName: color}];
+    txtSignupEmail.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email" attributes:@{NSForegroundColorAttributeName: color}];
     
-    txtSignupEmail.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"email" attributes:@{NSForegroundColorAttributeName: color}];
+    txtSignupPass.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName: color}];
     
-    txtSignupPass.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"create password" attributes:@{NSForegroundColorAttributeName: color}];
-    
-    txtSignupVerifyPass.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"verify password" attributes:@{NSForegroundColorAttributeName: color}];
-    
-    // Gradient
-    UIColor *topColor = [UIColor colorWithRed:(135/255.0) green:(8/255.0) blue:(12/255.0) alpha:1.0];
-    UIColor *bottomColor = [UIColor colorWithRed:(180/255.0) green:(77/255.0) blue:(62/255.0) alpha:1.0];
-    CAGradientLayer *theViewGradient = [CAGradientLayer layer];
-    theViewGradient.colors = [NSArray arrayWithObjects:(id)topColor.CGColor, (id)bottomColor.CGColor, nil];
-    theViewGradient.frame = self.view.frame;
-    [self.view.layer insertSublayer:theViewGradient atIndex:0];
+    txtSignupVerifyPass.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Verify password" attributes:@{NSForegroundColorAttributeName: color}];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,21 +61,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)onForgot:(id)sender {
-    [self.view endEditing:YES];
-    ForgotViewController *forgotViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ForgotViewController"];
-    [self.navigationController pushViewController:forgotViewController animated:YES];
-}
-
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
     NSUInteger length = [textField.text length] - range.length + [string length];
    
-    if(textField == txtSignupUsrName){
-        txtSignupUsrName.text = txtSignupUsrName.text.lowercaseString;
-        BOOL isValidChar = [AppDelegate isValidCharacter:string filterCharSet:USERNAME];
-        return isValidChar && length <= 30;
-    }
     if(textField == txtSignupEmail){
         BOOL isValidChar = [AppDelegate isValidCharacter:string filterCharSet:EMAIL];
         return isValidChar && length <= 80;
@@ -120,12 +80,10 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField.tag == 1){
-        [txtSignupEmail becomeFirstResponder];
-    } else if(textField.tag == 2) {
         [txtSignupPass becomeFirstResponder];
-    } else if(textField.tag == 3) {
+    } else if(textField.tag == 2) {
         [txtSignupVerifyPass becomeFirstResponder];
-    } else if(textField.tag == 4 ) {
+    } else if(textField.tag == 3 ) {
         [txtSignupVerifyPass resignFirstResponder];
     }
     return YES;
@@ -160,17 +118,6 @@
     
     textField.inputAccessoryView = keyboardToolBar;
     
-    if(textField == txtSignupPass){
-        showSignupPass.hidden = NO;
-    } else {
-        showSignupPass.hidden = YES;
-    }
-    if(textField == txtSignupVerifyPass){
-        showVerifyPass.hidden = NO;
-    } else {
-        showVerifyPass.hidden = YES;
-    }
-    
     [self animateTextField: textField up: YES];
 }
 
@@ -202,32 +149,25 @@
 
 - (void)nextTextField:(UIBarButtonItem *)sender {
     if(sender.tag == 1){
-        [txtSignupUsrName resignFirstResponder];
-        [txtSignupEmail becomeFirstResponder];
-    } else if(sender.tag == 2) {
         [txtSignupEmail resignFirstResponder];
         [txtSignupPass becomeFirstResponder];
-    } else if(sender.tag == 3) {
+    } else if(sender.tag == 2) {
         [txtSignupPass resignFirstResponder];
         [txtSignupVerifyPass becomeFirstResponder];
     }
 }
 
 -(void)previousTextField:(UIBarButtonItem *)sender{
-    if(sender.tag == 4){
+    if(sender.tag == 3){
         [txtSignupVerifyPass resignFirstResponder];
         [txtSignupPass becomeFirstResponder];
-    } else if(sender.tag == 3){
+    } else if(sender.tag == 2){
         [txtSignupPass resignFirstResponder];
         [txtSignupEmail becomeFirstResponder];
-    } else if(sender.tag == 2){
-        [txtSignupEmail resignFirstResponder];
-        [txtSignupUsrName becomeFirstResponder];
     }
 }
 
 -(void)resignKeyboard {
-    [txtSignupUsrName resignFirstResponder];
     [txtSignupVerifyPass resignFirstResponder];
     [txtSignupPass resignFirstResponder];
     [txtSignupEmail resignFirstResponder];
@@ -238,10 +178,10 @@
 }
 
 -(void)getProfileDetails{
-    NSString *urlString = [NSString stringWithFormat:@"%@%@/",PROFILEURL,GetUserName];
+    NSString *urlString = [NSString stringWithFormat:@"%@%ld/", PROFILEURL, (long)GetUserID];
     NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                                              timeoutInterval:60];
-    NSString *authStr = [NSString stringWithFormat:@"%@:%@", GetUserName, GetUserPassword];
+    NSString *authStr = [NSString stringWithFormat:@"%@:%@", GetUserEmail, GetUserPassword];
     NSData *plainData = [authStr dataUsingEncoding:NSUTF8StringEncoding];
     NSString *base64String = [plainData base64EncodedStringWithOptions:0];
     NSString *authValue = [NSString stringWithFormat:@"Basic %@", base64String];
@@ -262,25 +202,15 @@
                      return;
                  }
                  
-                 SetUserName([JSONValue objectForKey:@"username"]);
+                 SetUserEmail([JSONValue objectForKey:@"email"]);
                  SetUserFullName([JSONValue objectForKey:@"full_name"]);
-                 NSString *profilePic;
-                 if([JSONValue objectForKey:@"profile_picture"] == [NSNull null]){
-                     profilePic = @"";
-                 } else {
-                     profilePic=[JSONValue objectForKey:@"profile_picture"];
-                 }
-                 SetProifilePic(profilePic);
 
                  [self setBusy:NO];
              } else {
-                 //[self setBusy:NO];
-                 //[self showMessage:SERVER_ERROR];
+                 [self setBusy:NO];
              }
          } else {
-            // [refreshControl endRefreshing];
-            // [self setBusy:NO];
-             //[self showMessage:SERVER_ERROR];
+             [self setBusy:NO];
          }
      }];
 }
@@ -288,6 +218,11 @@
 -(void)pushingView:(BOOL)animation{
     MainViewController *revealViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"RevealViewController"];
     [self.navigationController pushViewController:revealViewController animated:animation];
+}
+
+- (IBAction)existingAcct:(id)sender {
+    LoginViewController *loginViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+    [self.navigationController pushViewController:loginViewController animated:YES];
 }
 
 - (IBAction)doSignUp:(id)sender{
@@ -318,19 +253,6 @@
     }
 }
 
-- (IBAction)doShowSignupPass:(id)sender {
-    if (txtSignupPass){
-        txtSignupPass.secureTextEntry = NO;
-    }
-}
-
-- (IBAction)doShowVerifyPass:(id)sender {
-    if (txtSignupVerifyPass){
-        txtSignupVerifyPass.secureTextEntry = NO;
-    }
-}
-
-
 -(void)doRegister{
     checkNetworkReachability();
     [self.view endEditing:YES];
@@ -338,10 +260,9 @@
     
     SCLAlertView *alert = [[SCLAlertView alloc] init];
     
-    NSString *usname = [[txtSignupUsrName.text Trim] lowercaseString];
-    NSString *params = [NSString stringWithFormat:@"{\"username\":\"%@\",\"email\":\"%@\",\"password\":\"%@\"}",usname,[txtSignupEmail.text Trim],[txtSignupPass.text Trim]];
+    NSString *params = [NSString stringWithFormat:@"{\"email\":\"%@\",\"password\":\"%@\"}",[txtSignupEmail.text Trim],[txtSignupPass.text Trim]];
     NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[params length]];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",SIGNUPURL]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", REGISTERURL]];
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
     [urlRequest setTimeoutInterval:60];
     [urlRequest setHTTPMethod:@"POST"];
@@ -359,30 +280,16 @@
                  
                  if([[JSONValue allKeys]count] > 1){
                      
-                     if([[JSONValue objectForKey:@"username"] isKindOfClass:[NSString class]]){
-                         SetUserName([JSONValue objectForKey:@"username"]);
-                         SetUserMail([JSONValue objectForKey:@"email"]);
+                     if([[JSONValue objectForKey:@"email"] isKindOfClass:[NSString class]]){
+                         SetUserEmail([JSONValue objectForKey:@"email"]);
                          SetUserID([[JSONValue objectForKey:@"id"]integerValue]);
                          SetUserPassword([txtSignupPass.text Trim]);
-                         [self getUserId];
                          [self performSelectorInBackground:@selector(getProfileDetails) withObject:nil];
                          [self pushingView:YES];
                      } else {
                          alert.showAnimationType = SlideInFromLeft;
                          alert.hideAnimationType = SlideOutToBottom;
-                         [alert showNotice:self title:@"Notice" subTitle:USER_EXISTS_ANOTHER_USER closeButtonTitle:@"OK" duration:0.0f];
-                     }
-                 } else {
-                     if([[[JSONValue allKeys]objectAtIndex:0]isEqualToString:@"username"]){
-                         alert.showAnimationType = SlideInFromLeft;
-                         alert.hideAnimationType = SlideOutToBottom;
-                         [alert showNotice:self title:@"Notice" subTitle:USER_EXISTS_ANOTHER_USER closeButtonTitle:@"OK" duration:0.0f];
-                     } else if([[[JSONValue allKeys]objectAtIndex:0]isEqualToString:@"email"]){
-                         alert.showAnimationType = SlideInFromLeft;
-                         alert.hideAnimationType = SlideOutToBottom;
                          [alert showNotice:self title:@"Notice" subTitle:EMAIL_EXISTS_ANOTHER_USER closeButtonTitle:@"OK" duration:0.0f];
-                     } else {
-                         showServerError();
                      }
                  }
              } else {
@@ -397,31 +304,16 @@
      }];
 }
 
--(void)getUserId{
-    
-}
-
 -(void)clearFields{
     txtSignupEmail.text = @"";
     txtSignupPass.text = @"";
-    txtSignupUsrName.text = @"";
     txtSignupVerifyPass.text = @"";
 }
 
 -(BOOL)validateFields{
     SCLAlertView *alert = [[SCLAlertView alloc] init];
     
-    if ([[txtSignupUsrName.text Trim] isEmpty]){
-        alert.showAnimationType = SlideInFromLeft;
-        alert.hideAnimationType = SlideOutToBottom;
-        [alert showNotice:self title:@"Notice" subTitle:EMPTY_USERNAME closeButtonTitle:@"OK" duration:0.0f];
-        return NO;
-    } else if ([[txtSignupUsrName.text Trim] length] < 3){
-        alert.showAnimationType = SlideInFromLeft;
-        alert.hideAnimationType = SlideOutToBottom;
-        [alert showNotice:self title:@"Notice" subTitle:USERNAME_MIN_LEGTH closeButtonTitle:@"OK" duration:0.0f];
-        return NO;
-    } else if ([[txtSignupEmail.text Trim] isEmpty]){
+    if ([[txtSignupEmail.text Trim] isEmpty]){
         alert.showAnimationType = SlideInFromLeft;
         alert.hideAnimationType = SlideOutToBottom;
         [alert showNotice:self title:@"Notice" subTitle:EMPTY_EMAIL closeButtonTitle:@"OK" duration:0.0f];

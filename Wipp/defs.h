@@ -34,119 +34,89 @@ extern AppDelegate *appDelegate;
 
 #define EMAIL         @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.@-"
 #define PASSWORD_CHAR @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._-*@!"
-#define USERNAME      @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
-#define GROUPNAME     @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-,!@#$%^&*(){}[]|\/?':;.<>"
 
 #define NUMBERS @"0123456789+"
-#define NUMBERS1 @"0123456789"
 #define ShowNetworkActivityIndicator()      [UIApplication sharedApplication].networkActivityIndicatorVisible = YES
 #define HideNetworkActivityIndicator()      [UIApplication sharedApplication].networkActivityIndicatorVisible = NO
 
 #ifdef DEBUG
-    // DEV URLS
+// DEV URLS
+    // general
     #define TERMSURL @"http://127.0.0.1:8000/terms/"
     #define PRIVACYURL @"http://127.0.0.1:8000/privacy/"
+    // accounts
     #define CHANGEPASSURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/password/change/"
     #define FORGOTPASSURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/password/reset/"
     #define LOGINURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/auth/token/"
-    #define SIGNUPURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/create/"
+    #define REGISTERURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/create/"
     #define PROFILEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/"
+    #define DRIVERURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/driver/"
+    // reservations
+    #define RESURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/"
     #define CREATEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/create/"
-    #define SEARCH_URL @"http://127.0.0.1:8000/hidden/secure/wipp/api/search/?q="
+    #define RESACCEPTURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/accept/"
+    #define RESCANCELURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/cancel/"
 #else
-    // PROD URLS
-    #define TERMSURL @"https://www.domain.com/terms/"
-    #define PRIVACYURL @"https://www.domain.com/privacy/"
-    #define CHANGEPASSURL @"https://www.domain.com/hidden/secure/wipp/api/password/change/"
-    #define FORGOTPASSURL @"https://www.domain.com/hidden/secure/wipp/api/password/reset/"
-    #define LOGINURL @"https://www.domain.com/hidden/secure/wipp/api/auth/token/"
-    #define SIGNUPURL @"https://www.domain.com/hidden/secure/wipp/api/accounts/create/"
-    #define PROFILEURL @"https://www.domain.com/hidden/secure/wipp/api/accounts/"
-    #define CREATEURL @"https://www.domain.com/hidden/secure/wipp/api/reservations/create/"
-    #define SEARCH_URL @"https://www.domain.com/hidden/secure/wipp/api/search/?q="
+// PROD URLS
+    // general
+    #define TERMSURL @"http://127.0.0.1:8000/terms/"
+    #define PRIVACYURL @"http://127.0.0.1:8000/privacy/"
+    // accounts
+    #define CHANGEPASSURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/password/change/"
+    #define FORGOTPASSURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/password/reset/"
+    #define LOGINURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/auth/token/"
+    #define REGISTERURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/create/"
+    #define PROFILEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/"
+    #define DRIVERURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/driver/"
+    // reservations
+    #define RESURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/"
+    #define CREATEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/create/"
+    #define RESACCEPTURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/accept/"
+    #define RESCANCELURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/cancel/"
 #endif
 
+#define    UserDefaults          [NSUserDefaults standardUserDefaults]
+
 #define    SetisUpdate(x)        [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"isUpdate"]
-#define    GetisUpdate            [[NSUserDefaults standardUserDefaults] boolForKey:@"isUpdate"]
+#define    GetisUpdate           [[NSUserDefaults standardUserDefaults] boolForKey:@"isUpdate"]
 
-#define    SetAppKill(x)          [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"AppKill"]
-#define    GetAppKill              [[NSUserDefaults standardUserDefaults] objectForKey:@"AppKill"]
+#define    SetAppKill(x)         [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"AppKill"]
+#define    GetAppKill            [[NSUserDefaults standardUserDefaults] objectForKey:@"AppKill"]
 
-#define    SetUserToken(x)          [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserToken"]
-#define    GetUserToken              [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]
+#define    SetUserToken(x)       [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserToken"]
+#define    GetUserToken          [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]
 
-#define    SetUserID(x)           [[NSUserDefaults standardUserDefaults] setInteger:(x) forKey:@"UserID"]
-#define    GetUserID               [[NSUserDefaults standardUserDefaults] integerForKey:@"UserID"]
+#define    SetUserID(x)          [[NSUserDefaults standardUserDefaults] setInteger:(x) forKey:@"UserID"]
+#define    GetUserID             [[NSUserDefaults standardUserDefaults] integerForKey:@"UserID"]
 
-#define    SetUserActive(x)           [[NSUserDefaults standardUserDefaults] setInteger:(x) forKey:@"UserActive"]
-#define    GetUserActive               [[NSUserDefaults standardUserDefaults] integerForKey:@"UserActive"]
+#define    SetUserActive(x)      [[NSUserDefaults standardUserDefaults] setInteger:(x) forKey:@"UserActive"]
+#define    GetUserActive         [[NSUserDefaults standardUserDefaults] integerForKey:@"UserActive"]
 
-#define    SetEmailID(x)          [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"EmailID"]
-#define    GetEmailID              [[NSUserDefaults standardUserDefaults] objectForKey:@"EmailID"]
+#define    SetUserEmail(x)       [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserEmail"]
+#define    GetUserEmail          [[NSUserDefaults standardUserDefaults] objectForKey:@"UserEmail"]
 
-#define    SetUserPassword(x)          [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserPassword"]
-#define    GetUserPassword              [[NSUserDefaults standardUserDefaults] objectForKey:@"UserPassword"]
+#define    SetUserPassword(x)    [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserPassword"]
+#define    GetUserPassword       [[NSUserDefaults standardUserDefaults] objectForKey:@"UserPassword"]
 
-#define    SetisMobile_Registered(x)        [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"isMobileRegistered"]
-#define    GetisMobile_Registered            [[NSUserDefaults standardUserDefaults] boolForKey:@"isMobileRegistered"]
-
-#define    SetUserName(x)           [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserName"]
-#define    GetUserName              [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"]
+#define    SetisMobile_Registered(x)    [NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"isMobileRegistered"]
+#define    GetisMobile_Registered       [[NSUserDefaults standardUserDefaults] boolForKey:@"isMobileRegistered"]
 
 #define    SetUserFullName(x)           [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserFullName"]
-#define    GetUserFullName             [[NSUserDefaults standardUserDefaults] objectForKey:@"UserFullName"]
+#define    GetUserFullName              [[NSUserDefaults standardUserDefaults] objectForKey:@"UserFullName"]
 
-#define    SetProifilePic(x)           [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"ProifilePic"]
-#define    GetProifilePic              [[NSUserDefaults standardUserDefaults] objectForKey:@"ProifilePic"]
+#define    SetMobileNum(x)       [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"MobileNum"]
+#define    GetMobileNum          [[NSUserDefaults standardUserDefaults] objectForKey:@"MobileNum"]
 
-#define    SetUserMail(x)           [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserMail"]
-#define    GetUserMail              [[NSUserDefaults standardUserDefaults] objectForKey:@"UserMail"]
+#define    SetisFullView(x)      [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"FullView"]
+#define    GetsFullView          [[NSUserDefaults standardUserDefaults] boolForKey:@"FullView"]
 
-#define    SetFBID(x)           [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"FBID"]
-#define    GetFBID              [[NSUserDefaults standardUserDefaults] objectForKey:@"FBID"]
+#define    SetLat(x)             [UserDefaults setObject:x forKey:@"C_Lat"]
+#define    GetLat()              [UserDefaults objectForKey:@"C_Lat"]
 
-#define    SetMobileNum(x)           [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"MobileNum"]
-#define    GetMobileNum              [[NSUserDefaults standardUserDefaults] objectForKey:@"MobileNum"]
+#define    SetLong(x)            [UserDefaults setObject:x forKey:@"C_Long"]
+#define    GetLong()             [UserDefaults objectForKey:@"C_Long"]
 
-#define    SetIsVersion1(x)        [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"Version1"]
-#define    GetsVersion1            [[NSUserDefaults standardUserDefaults] boolForKey:@"Version1"]
-
-#define    SetisFullView(x)        [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"FullView"]
-#define    GetsFullView            [[NSUserDefaults standardUserDefaults] boolForKey:@"FullView"]
-
-#define UserDefaults            [NSUserDefaults standardUserDefaults]
-
-#define SetLat(x)  [UserDefaults setObject:x forKey:@"C_Lat"]
-
-#define GetLat()     [UserDefaults objectForKey:@"C_Lat"]
-
-#define SetLong(x)  [UserDefaults setObject:x forKey:@"C_Long"]
-#define GetLong()     [UserDefaults objectForKey:@"C_Long"]
-
-#define SetFirst(x)  [UserDefaults setObject:x forKey:@"First"]
-#define GetFirst     [UserDefaults objectForKey:@"First"]
-
-#define    SetGender(x)        [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"Gender"]
-
-#define    GetGender            [[NSUserDefaults standardUserDefaults] objectForKey:@"Gender"]
-
-#define    SetCurrentLoaction(x)        [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"CurrentLocation"]
-
-#define    GetCurrentLoaction            [[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentLocation"]
-
-#define    SetIsFilter(x)        [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"Filter"]
-
-#define    GetIsFilter            [[NSUserDefaults standardUserDefaults] boolForKey:@"Filter"]
-
-#define    SetHelpOverlay(x)        [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"HelpOverlay"]
-
-#define    GetHelpOverlay            [[NSUserDefaults standardUserDefaults] objectForKey:@"HelpOverlay"]
-
-#define    SetInitialScreen(x)        [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"InitialScreen"]
-
-#define    GetInitialScreen            [[NSUserDefaults standardUserDefaults] objectForKey:@"InitialScreen"]
-
-#define    SetIsImageView(x)        [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"ImageView"]
-#define    GetsImageView            [[NSUserDefaults standardUserDefaults] boolForKey:@"ImageView"]
+#define    SetCurrentLoaction(x)    [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"CurrentLocation"]
+#define    GetCurrentLoaction       [[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentLocation"]
 
 #endif

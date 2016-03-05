@@ -3,11 +3,15 @@
 //  Wipp
 //
 
+#import "AppDelegate.h"
 #import "SidebarTableViewController.h"
 #import "SWRevealViewController.h"
 #import "PhotoViewController.h"
 
-@interface SidebarTableViewController ()
+
+@interface SidebarTableViewController (){
+    AppDelegate *appDelegate;
+}
 
 @end
 
@@ -16,9 +20,9 @@
 }
 
 - (void)viewDidLoad {
+    appDelegate = [AppDelegate getDelegate];
     [super viewDidLoad];
-    
-    menuItems = @[@"title", @"news", @"comments", @"map", @"calendar", @"wishlist", @"bookmark", @"tag"];
+    menuItems = @[@"title", @"news", @"comments", @"map", @"calendar", @"wishlist", @"bookmark", @"tag", @"logout"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,6 +50,20 @@
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([[menuItems objectAtIndex:indexPath.row] isEqualToString:@"logout"]){
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Alert" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+        alert.delegate = self;
+        alert.tag = 100;
+        [alert show];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (alertView.tag == 100 && buttonIndex == 1 ) {
+        [appDelegate userLogout];
+    }
+}
 
 #pragma mark - Navigation
 

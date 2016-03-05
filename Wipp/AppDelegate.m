@@ -4,7 +4,7 @@
 //
 
 #import "AppDelegate.h"
-#import "AuthViewController.h"
+#import "RegisterViewController.h"
 #import "defs.h"
 #import "MBProgressHUD.h"
 #import "UIViewControllerAdditions.h"
@@ -34,9 +34,9 @@ MBProgressHUD *hud;
     
     dictProfileInfo = [[NSMutableDictionary alloc]init];
     
-    if(GetUserName == nil){
-        AuthViewController *authViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AuthViewController"];
-        UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:authViewController];
+    if(GetUserEmail == nil){
+        RegisterViewController *registerViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"RegisterViewController"];
+        UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:registerViewController];
         self.window.rootViewController = navController;
     }
     
@@ -120,15 +120,6 @@ MBProgressHUD *hud;
     return myStringMatchesRegEx;
 }
 
-+(BOOL)validateUsername:(NSString *)un {
-    un = [un lowercaseString];
-    NSString *unRegEx =
-    @"^[a-z0-9_-]{5,20}";
-    NSPredicate *regExPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", unRegEx];
-    BOOL myStringMatchesRegEx = [regExPredicate evaluateWithObject:un];
-    return myStringMatchesRegEx;
-}
-
 +(BOOL)isValidCharacter:(NSString*)string filterCharSet:(NSString*)set {
     NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:set] invertedSet];
     NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
@@ -160,17 +151,12 @@ MBProgressHUD *hud;
 }
 
 -(void)userLogout{
-    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserName"];
-    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserID"];
-    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserToken"];
-    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserActive"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserEmail"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserPassword"];
-    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserMail"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserFullName"];
-    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"ProifilePic"];
     
-    AuthViewController *authViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AuthViewController"];
-    UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:authViewController];
+    RegisterViewController *registerViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"RegisterViewController"];
+    UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:registerViewController];
     self.window.rootViewController = navController;
 }
 

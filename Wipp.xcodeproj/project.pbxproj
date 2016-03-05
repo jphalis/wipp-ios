@@ -70,7 +70,6 @@
 		D0C4810C1C55C62900144176 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C481031C55C62900144176 /* AFURLConnectionOperation.m */; };
 		D0C4810D1C55C62900144176 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C481051C55C62900144176 /* AFXMLRequestOperation.m */; };
 		D0C481111C55C6FC00144176 /* IBActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C481101C55C6FC00144176 /* IBActionSheet.m */; };
-		D0C481151C55C7C400144176 /* UIViewControllerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C481141C55C7C400144176 /* UIViewControllerAdditions.m */; };
 		D0C481191C55C7E400144176 /* DejalActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C481181C55C7E400144176 /* DejalActivityView.m */; };
 		D0C4811D1C55C80C00144176 /* UIImageExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C4811C1C55C80C00144176 /* UIImageExtras.m */; };
 		D0C481231C55C82100144176 /* SDIAsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C481201C55C82100144176 /* SDIAsyncImageView.m */; };
@@ -785,7 +784,7 @@
 		F4090B861A0F67D000651F6F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					F4090B8D1A0F67D000651F6F = {
@@ -939,7 +938,6 @@
 				D0C480A11C55C36900144176 /* UIImageView+HighlightedWebCache.m in Sources */,
 				D0C480611C55C2DA00144176 /* SVWebViewController.m in Sources */,
 				D0C480241C55C20D00144176 /* SCLAlertViewStyleKit.m in Sources */,
-				D0C481151C55C7C400144176 /* UIViewControllerAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1018,6 +1016,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1112,6 +1111,7 @@
 				);
 				INFOPLIST_FILE = WippTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appcoda.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Wipp;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wipp.app/Wipp";
 			};
@@ -1127,6 +1127,7 @@
 				);
 				INFOPLIST_FILE = WippTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appcoda.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Wipp;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wipp.app/Wipp";
 			};
