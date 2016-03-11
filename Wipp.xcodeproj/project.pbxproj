@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D0065B7C1C8B4F0700400F81 /* MobileNumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0065B7B1C8B4F0700400F81 /* MobileNumViewController.m */; };
 		D0112A7B1C57EC430049E9E3 /* ProfileClass.m in Sources */ = {isa = PBXBuildFile; fileRef = D0112A7A1C57EC430049E9E3 /* ProfileClass.m */; };
 		D0623F671C89EE05003ED935 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0623F641C89EE05003ED935 /* LoginViewController.m */; };
 		D0623F681C89EE05003ED935 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0623F661C89EE05003ED935 /* RegisterViewController.m */; };
@@ -109,6 +110,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D0065B7A1C8B4F0600400F81 /* MobileNumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileNumViewController.h; sourceTree = "<group>"; };
+		D0065B7B1C8B4F0700400F81 /* MobileNumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileNumViewController.m; sourceTree = "<group>"; };
 		D0112A791C57EC430049E9E3 /* ProfileClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileClass.h; sourceTree = "<group>"; };
 		D0112A7A1C57EC430049E9E3 /* ProfileClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileClass.m; sourceTree = "<group>"; };
 		D0623F631C89EE05003ED935 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -381,6 +384,8 @@
 				D0623F641C89EE05003ED935 /* LoginViewController.m */,
 				D0623F651C89EE05003ED935 /* RegisterViewController.h */,
 				D0623F661C89EE05003ED935 /* RegisterViewController.m */,
+				D0065B7A1C8B4F0600400F81 /* MobileNumViewController.h */,
+				D0065B7B1C8B4F0700400F81 /* MobileNumViewController.m */,
 				F4090B981A0F67D000651F6F /* ViewController.h */,
 				F4090B991A0F67D000651F6F /* ViewController.m */,
 				F4090BBB1A0FD53800651F6F /* MapViewController.h */,
@@ -916,6 +921,7 @@
 				D0C4809F1C55C36900144176 /* UIImage+MultiFormat.m in Sources */,
 				D0C480271C55C20D00144176 /* SCLTimerDisplay.m in Sources */,
 				F4090BBD1A0FD53800651F6F /* MapViewController.m in Sources */,
+				D0065B7C1C8B4F0700400F81 /* MobileNumViewController.m in Sources */,
 				D0C4813C1C55C85200144176 /* SBJson4StreamParser.m in Sources */,
 				D0C4806D1C55C2F000144176 /* OLGhostAlertView.m in Sources */,
 				D0C480891C55C34200144176 /* SDWebImageCompat.m in Sources */,

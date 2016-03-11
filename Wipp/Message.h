@@ -17,11 +17,15 @@
 #define EMAIL_EXISTS_ANOTHER_USER @"This email is already taken. Please try a different one."
 
 // Sign up
-#define INVALID_EMAIL @"Please enter a valid email address."
+#define INVALID_EMAIL @"Please enter a valid university (.edu) email address."
 #define EMPTY_EMAIL @"Please enter your email in the designated field."
 #define EMPTY_PASSWORD @"Please enter your password in the designated field."
 #define EMPTY_CNF_PASSWORD @"Please verify your password."
 #define EMAIL_EXISTS @"This email is already associated with an account."
+#define INVALID_NAME @"Please enter a valid name."
+#define EMPTY_NAME @"Please enter your full name in the designated field."
+#define INVALID_MOBILE @"Please enter a valid phone number."
+#define EMPTY_MOBILE @"Please enter your phone number in the designated field."
 #define SIGNUP_SUCCESS @"Thank you for signing up on Wipp!"
 
 // Forgot Password

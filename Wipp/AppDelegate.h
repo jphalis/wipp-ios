@@ -24,8 +24,10 @@
 -(void)UpdateMessage:(NSString *)message;
 
 //Validation Methods
-+(BOOL)validateEmail:(NSString *)email ;
++(BOOL)validateFullName:(NSString *)fullName;
++(BOOL)validateEmail:(NSString *)email;
 +(BOOL)isValidCharacter:(NSString*)string filterCharSet:(NSString*)set;
++(BOOL)validateMobileNum:(NSString *)mobileNum;
 -(NSString*)formatNumber:(NSString*)mobileNumber;
 -(int)getLength:(NSString*)mobileNumber;
 

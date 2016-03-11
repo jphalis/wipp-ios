@@ -106,7 +106,7 @@ MBProgressHUD *hud;
 
 +(BOOL)validateEmail:(NSString *)email{
     email = [email lowercaseString];
-    NSString *emailRegEx =
+    NSString *emailRegex =
     @"(?:[a-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[a-z0-9!#$%\\&'*+/=?\\^_`{|}"
     @"~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\"
     @"x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-"
@@ -115,9 +115,9 @@ MBProgressHUD *hud;
     @"9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21"
     @"-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
     
-    NSPredicate *regExPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
-    BOOL myStringMatchesRegEx = [regExPredicate evaluateWithObject:email];
-    return myStringMatchesRegEx;
+    NSPredicate *regexPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    BOOL myStringMatchesRegex = [regexPredicate evaluateWithObject:email];
+    return myStringMatchesRegex;
 }
 
 +(BOOL)isValidCharacter:(NSString*)string filterCharSet:(NSString*)set {
@@ -125,6 +125,14 @@ MBProgressHUD *hud;
     NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
     
     return [string isEqualToString:filtered];
+}
+
++(BOOL)validateMobileNum:(NSString *)mobileNum{
+    NSString *mobileNumRegex = @"^(\\([0-9]{3})\\) [0-9]{3}-[0-9]{4}$";
+    
+    NSPredicate *regexPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", mobileNumRegex];
+    BOOL myStringMatchesRegex = [regexPredicate evaluateWithObject:mobileNum];
+    return myStringMatchesRegex;
 }
 
 -(NSString*)formatNumber:(NSString*)mobileNumber{
@@ -138,6 +146,14 @@ MBProgressHUD *hud;
         mobileNumber = [mobileNumber substringFromIndex: length-10];
     }
     return mobileNumber;
+}
+
++(BOOL)validateFullName:(NSString *)fullName{
+    NSString *fullNameRegex = @"^[\\sa-zA-Z'-]*$";
+    
+    NSPredicate *regexPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", fullNameRegex];
+    BOOL myStringMatchesRegex = [regexPredicate evaluateWithObject:fullName];
+    return myStringMatchesRegex;
 }
 
 -(int)getLength:(NSString*)mobileNumber{

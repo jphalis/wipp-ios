@@ -4,12 +4,13 @@
 //
 
 #import "AppDelegate.h"
-#import "RegisterViewController.h"
-#import "MainViewController.h"
 #import "defs.h"
 #import "ForgotViewController.h"
 #import "GlobalFunctions.h"
 #import "LoginViewController.h"
+#import "MainViewController.h"
+#import "MobileNumViewController.h"
+#import "RegisterViewController.h"
 #import "SCLAlertView.h"
 #import "StringUtil.h"
 #import "SVModalWebViewController.h"
@@ -66,13 +67,12 @@
     NSUInteger length = [textField.text length] - range.length + [string length];
    
     if(textField == txtSignupEmail){
+        txtSignupEmail.text = txtSignupEmail.text.lowercaseString;
         BOOL isValidChar = [AppDelegate isValidCharacter:string filterCharSet:EMAIL];
         return isValidChar && length <= 80;
     }
     return YES;
 }
-
-//TextField Delegate Methods
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField*)textField {
     return YES;
@@ -146,7 +146,6 @@
     [UIView commitAnimations];
 }
 
-
 - (void)nextTextField:(UIBarButtonItem *)sender {
     if(sender.tag == 1){
         [txtSignupEmail resignFirstResponder];
@@ -196,15 +195,12 @@
              NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
        
              if([JSONValue isKindOfClass:[NSDictionary class]]){
-                 
                  if([JSONValue allKeys].count == 1 && [JSONValue objectForKey:@"detail"]){
                      [self setBusy:NO];
                      return;
                  }
-                 
                  SetUserEmail([JSONValue objectForKey:@"email"]);
                  SetUserFullName([JSONValue objectForKey:@"full_name"]);
-
                  [self setBusy:NO];
              } else {
                  [self setBusy:NO];
@@ -216,8 +212,8 @@
 }
 
 -(void)pushingView:(BOOL)animation{
-    MainViewController *revealViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"RevealViewController"];
-    [self.navigationController pushViewController:revealViewController animated:animation];
+    MobileNumViewController *mobileNumViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MobileNumViewController"];
+    [self.navigationController pushViewController:mobileNumViewController animated:YES];
 }
 
 - (IBAction)existingAcct:(id)sender {
@@ -260,7 +256,7 @@
     
     SCLAlertView *alert = [[SCLAlertView alloc] init];
     
-    NSString *params = [NSString stringWithFormat:@"{\"email\":\"%@\",\"password\":\"%@\"}",[txtSignupEmail.text Trim],[txtSignupPass.text Trim]];
+    NSString *params = [NSString stringWithFormat:@"{\"email\":\"%@\",\"password\":\"%@\"}",[txtSignupEmail.text Trim], [txtSignupPass.text Trim]];
     NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[params length]];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", REGISTERURL]];
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
@@ -311,14 +307,23 @@
 }
 
 -(BOOL)validateFields{
+    NSString *code;
     SCLAlertView *alert = [[SCLAlertView alloc] init];
     
+    if([[txtSignupEmail.text Trim] length] > 3){
+        code = [[txtSignupEmail.text Trim] substringFromIndex: [[txtSignupEmail.text Trim] length] - 4];
+    }
     if ([[txtSignupEmail.text Trim] isEmpty]){
         alert.showAnimationType = SlideInFromLeft;
         alert.hideAnimationType = SlideOutToBottom;
         [alert showNotice:self title:@"Notice" subTitle:EMPTY_EMAIL closeButtonTitle:@"OK" duration:0.0f];
         return NO;
     } else if ([AppDelegate validateEmail:[txtSignupEmail.text Trim]] == NO){
+        alert.showAnimationType = SlideInFromLeft;
+        alert.hideAnimationType = SlideOutToBottom;
+        [alert showNotice:self title:@"Notice" subTitle:INVALID_EMAIL closeButtonTitle:@"OK" duration:0.0f];
+        return NO;
+    } else if (![[txtSignupEmail.text Trim] isEmpty] && ![code isEqualToString:@".edu"]){
         alert.showAnimationType = SlideInFromLeft;
         alert.hideAnimationType = SlideOutToBottom;
         [alert showNotice:self title:@"Notice" subTitle:INVALID_EMAIL closeButtonTitle:@"OK" duration:0.0f];
