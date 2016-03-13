@@ -19,7 +19,7 @@
 #define kOFFSET_FOR_KEYBOARD 0.50
 
 
-@interface RegisterViewController ()<UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
+@interface RegisterViewController ()<UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>{
     __weak IBOutlet UIView *viewSignUp;
     __weak IBOutlet UIButton *btnSignupInner;
     __weak IBOutlet NSLayoutConstraint *consSignupX;

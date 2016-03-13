@@ -19,7 +19,6 @@
     __weak IBOutlet UIButton *btnSubmit;
     __weak IBOutlet UITextField *txtFullName;
     __weak IBOutlet UITextField *txtMobileNum;
-    
 }
 - (IBAction)onBack:(id)sender;
 - (IBAction)onSubmit:(id)sender;

@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     appDelegate = [AppDelegate getDelegate];
     [super viewDidLoad];
-    menuItems = @[@"title", @"news", @"comments", @"map", @"calendar", @"wishlist", @"bookmark", @"tag", @"logout"];
+    menuItems = @[@"title", @"map", @"create", @"previous", @"account", @"logout"];
 }
 
 - (void)didReceiveMemoryWarning {

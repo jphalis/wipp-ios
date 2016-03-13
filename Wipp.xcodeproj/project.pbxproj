@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		D0065B7C1C8B4F0700400F81 /* MobileNumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0065B7B1C8B4F0700400F81 /* MobileNumViewController.m */; };
 		D0112A7B1C57EC430049E9E3 /* ProfileClass.m in Sources */ = {isa = PBXBuildFile; fileRef = D0112A7A1C57EC430049E9E3 /* ProfileClass.m */; };
+		D055BEF11C95F4B400007A4F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D055BEF01C95F4B400007A4F /* CoreLocation.framework */; };
+		D055BEF21C95FD1500007A4F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4090BCB1A10563200651F6F /* MapKit.framework */; };
+		D055BEF41C95FDF300007A4F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D055BEF31C95FDF300007A4F /* Foundation.framework */; };
+		D055BEF61C95FDFB00007A4F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D055BEF51C95FDFB00007A4F /* UIKit.framework */; };
+		D055BEF81C95FE0800007A4F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D055BEF71C95FE0800007A4F /* CoreGraphics.framework */; };
 		D0623F671C89EE05003ED935 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0623F641C89EE05003ED935 /* LoginViewController.m */; };
 		D0623F681C89EE05003ED935 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0623F661C89EE05003ED935 /* RegisterViewController.m */; };
 		D0C32D8B1C5AD30C007417AC /* NoteFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C32D8A1C5AD30B007417AC /* NoteFunctions.m */; };
@@ -93,10 +98,9 @@
 		F4090BAE1A0F67D000651F6F /* SidebarDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4090BAD1A0F67D000651F6F /* SidebarDemoTests.m */; };
 		F4090BBD1A0FD53800651F6F /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4090BBC1A0FD53800651F6F /* MapViewController.m */; };
 		F4090BC01A0FD5BC00651F6F /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4090BBF1A0FD5BC00651F6F /* PhotoViewController.m */; };
-		F4090BC31A0FD62A00651F6F /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4090BC21A0FD62A00651F6F /* MainViewController.m */; };
+		F4090BC31A0FD62A00651F6F /* CreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4090BC21A0FD62A00651F6F /* CreateViewController.m */; };
 		F4090BC61A0FD6F800651F6F /* SidebarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4090BC51A0FD6F800651F6F /* SidebarTableViewController.m */; };
 		F4090BCA1A0FD76C00651F6F /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4090BC91A0FD76C00651F6F /* SWRevealViewController.m */; };
-		F4090BCC1A10563200651F6F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4090BCB1A10563200651F6F /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +118,10 @@
 		D0065B7B1C8B4F0700400F81 /* MobileNumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileNumViewController.m; sourceTree = "<group>"; };
 		D0112A791C57EC430049E9E3 /* ProfileClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileClass.h; sourceTree = "<group>"; };
 		D0112A7A1C57EC430049E9E3 /* ProfileClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileClass.m; sourceTree = "<group>"; };
+		D055BEF01C95F4B400007A4F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		D055BEF31C95FDF300007A4F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D055BEF51C95FDFB00007A4F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		D055BEF71C95FE0800007A4F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		D0623F631C89EE05003ED935 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		D0623F641C89EE05003ED935 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		D0623F651C89EE05003ED935 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
@@ -283,8 +291,8 @@
 		F4090BBC1A0FD53800651F6F /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		F4090BBE1A0FD5BC00651F6F /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		F4090BBF1A0FD5BC00651F6F /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
-		F4090BC11A0FD62A00651F6F /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		F4090BC21A0FD62A00651F6F /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		F4090BC11A0FD62A00651F6F /* CreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateViewController.h; sourceTree = "<group>"; };
+		F4090BC21A0FD62A00651F6F /* CreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateViewController.m; sourceTree = "<group>"; };
 		F4090BC41A0FD6F800651F6F /* SidebarTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarTableViewController.h; sourceTree = "<group>"; };
 		F4090BC51A0FD6F800651F6F /* SidebarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarTableViewController.m; sourceTree = "<group>"; };
 		F4090BC81A0FD76C00651F6F /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
@@ -297,7 +305,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4090BCC1A10563200651F6F /* MapKit.framework in Frameworks */,
+				D055BEF81C95FE0800007A4F /* CoreGraphics.framework in Frameworks */,
+				D055BEF61C95FDFB00007A4F /* UIKit.framework in Frameworks */,
+				D055BEF41C95FDF300007A4F /* Foundation.framework in Frameworks */,
+				D055BEF21C95FD1500007A4F /* MapKit.framework in Frameworks */,
+				D055BEF11C95F4B400007A4F /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,12 +400,12 @@
 				D0065B7B1C8B4F0700400F81 /* MobileNumViewController.m */,
 				F4090B981A0F67D000651F6F /* ViewController.h */,
 				F4090B991A0F67D000651F6F /* ViewController.m */,
+				F4090BC11A0FD62A00651F6F /* CreateViewController.h */,
+				F4090BC21A0FD62A00651F6F /* CreateViewController.m */,
 				F4090BBB1A0FD53800651F6F /* MapViewController.h */,
 				F4090BBC1A0FD53800651F6F /* MapViewController.m */,
 				F4090BBE1A0FD5BC00651F6F /* PhotoViewController.h */,
 				F4090BBF1A0FD5BC00651F6F /* PhotoViewController.m */,
-				F4090BC11A0FD62A00651F6F /* MainViewController.h */,
-				F4090BC21A0FD62A00651F6F /* MainViewController.m */,
 				F4090BC41A0FD6F800651F6F /* SidebarTableViewController.h */,
 				F4090BC51A0FD6F800651F6F /* SidebarTableViewController.m */,
 			);
@@ -676,6 +688,10 @@
 		F4090B851A0F67D000651F6F = {
 			isa = PBXGroup;
 			children = (
+				D055BEF71C95FE0800007A4F /* CoreGraphics.framework */,
+				D055BEF51C95FDFB00007A4F /* UIKit.framework */,
+				D055BEF31C95FDF300007A4F /* Foundation.framework */,
+				D055BEF01C95F4B400007A4F /* CoreLocation.framework */,
 				F4090BCB1A10563200651F6F /* MapKit.framework */,
 				F4090B901A0F67D000651F6F /* Wipp */,
 				F4090BAA1A0F67D000651F6F /* WippTests */,
@@ -881,7 +897,7 @@
 				D0112A7B1C57EC430049E9E3 /* ProfileClass.m in Sources */,
 				D0C4808E1C55C34200144176 /* SDWebImagePrefetcher.m in Sources */,
 				D0C481241C55C82100144176 /* AsyncImageView.m in Sources */,
-				F4090BC31A0FD62A00651F6F /* MainViewController.m in Sources */,
+				F4090BC31A0FD62A00651F6F /* CreateViewController.m in Sources */,
 				D0C481191C55C7E400144176 /* DejalActivityView.m in Sources */,
 				D0C480231C55C20D00144176 /* SCLAlertViewResponder.m in Sources */,
 				F4090B971A0F67D000651F6F /* AppDelegate.m in Sources */,
