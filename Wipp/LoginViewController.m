@@ -5,7 +5,7 @@
 
 #import "AppDelegate.h"
 #import "LoginViewController.h"
-#import "MainViewController.h"
+#import "MapViewController.h"
 #import "defs.h"
 #import "ForgotViewController.h"
 #import "GlobalFunctions.h"
@@ -285,7 +285,7 @@
 }
 
 -(void)pushingView:(BOOL)animation{
-    MainViewController *revealViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"RevealViewController"];
+    MapViewController *revealViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"RevealViewController"];
     [self.navigationController pushViewController:revealViewController animated:animation];
 }
 

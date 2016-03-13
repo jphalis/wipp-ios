@@ -5,7 +5,7 @@
 #import "defs.h"
 #import "MobileNumViewController.h"
 #import "GlobalFunctions.h"
-#import "MainViewController.h"
+#import "MapViewController.h"
 #import "SCLAlertView.h"
 #import "StringUtil.h"
 #import "TWMessageBarManager.h"
@@ -159,7 +159,7 @@
 }
 
 -(void)pushingView:(BOOL)animation{
-    MainViewController *revealViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"RevealViewController"];
+    MapViewController *revealViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"RevealViewController"];
     [self.navigationController pushViewController:revealViewController animated:animation];
 }
 

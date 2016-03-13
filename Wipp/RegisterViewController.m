@@ -8,7 +8,6 @@
 #import "ForgotViewController.h"
 #import "GlobalFunctions.h"
 #import "LoginViewController.h"
-#import "MainViewController.h"
 #import "MobileNumViewController.h"
 #import "RegisterViewController.h"
 #import "SCLAlertView.h"
@@ -17,7 +16,7 @@
 #import "UIViewControllerAdditions.h"
 
 
-#define kOFFSET_FOR_KEYBOARD 0.65
+#define kOFFSET_FOR_KEYBOARD 0.50
 
 
 @interface RegisterViewController ()<UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
