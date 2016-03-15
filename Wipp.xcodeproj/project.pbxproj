@@ -16,7 +16,6 @@
 		D055BEF81C95FE0800007A4F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D055BEF71C95FE0800007A4F /* CoreGraphics.framework */; };
 		D0623F671C89EE05003ED935 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0623F641C89EE05003ED935 /* LoginViewController.m */; };
 		D0623F681C89EE05003ED935 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0623F661C89EE05003ED935 /* RegisterViewController.m */; };
-		D0C32D8B1C5AD30C007417AC /* NoteFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C32D8A1C5AD30B007417AC /* NoteFunctions.m */; };
 		D0C480001C55BD9700144176 /* GlobalFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C47FFE1C55BD9700144176 /* GlobalFunctions.m */; };
 		D0C480031C55BDDA00144176 /* UIViewControllerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C480021C55BDDA00144176 /* UIViewControllerAdditions.m */; };
 		D0C480091C55BE1800144176 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C480081C55BE1800144176 /* MBProgressHUD.m */; };
@@ -126,7 +125,6 @@
 		D0623F641C89EE05003ED935 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		D0623F651C89EE05003ED935 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
 		D0623F661C89EE05003ED935 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
-		D0C32D8A1C5AD30B007417AC /* NoteFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteFunctions.m; sourceTree = "<group>"; };
 		D0C47FFC1C55BD9700144176 /* defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defs.h; sourceTree = "<group>"; };
 		D0C47FFD1C55BD9700144176 /* GlobalFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalFunctions.h; sourceTree = "<group>"; };
 		D0C47FFE1C55BD9700144176 /* GlobalFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalFunctions.m; sourceTree = "<group>"; };
@@ -721,7 +719,6 @@
 				F4090B9B1A0F67D000651F6F /* Main.storyboard */,
 				F4090B9E1A0F67D000651F6F /* Images.xcassets */,
 				F4090BA01A0F67D000651F6F /* LaunchScreen.xib */,
-				D0C32D8A1C5AD30B007417AC /* NoteFunctions.m */,
 			);
 			path = Wipp;
 			sourceTree = "<group>";
@@ -942,7 +939,6 @@
 				D0C4806D1C55C2F000144176 /* OLGhostAlertView.m in Sources */,
 				D0C480891C55C34200144176 /* SDWebImageCompat.m in Sources */,
 				F4090BC01A0FD5BC00651F6F /* PhotoViewController.m in Sources */,
-				D0C32D8B1C5AD30C007417AC /* NoteFunctions.m in Sources */,
 				D0C481431C55C86000144176 /* Reachability.m in Sources */,
 				D0C4811D1C55C80C00144176 /* UIImageExtras.m in Sources */,
 				D0C4808A1C55C34200144176 /* SDWebImageDecoder.m in Sources */,
