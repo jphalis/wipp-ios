@@ -43,6 +43,12 @@
 #define VERIFICATION_MOBILE_SUCCESS @"Your number has been updated successfully."
 #define VERIFICATION_MOBILE_EXISTS @"This mobile number is already registered. Please try a different number."
 
+// Create Reservation
+#define EMPTY_START_LOCATION @"Please enter your starting location."
+#define EMPTY_DESTINATION @"Please enter your destination."
+#define EMPTY_PAYMENT @"Please enter the amount you are willing to pay for the trip."
+#define EMPTY_PICKUP_INTERVAL @"Please enter when you would like to be picked up."
+
 // Change Password
 #define CHANGE_PASS_SUCCESS @"Your password has been updated successfully."
 #define CHANGE_PASS_MISMATCH @"Incorrect old password."

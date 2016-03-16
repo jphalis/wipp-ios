@@ -18,20 +18,20 @@
 
 @interface CreateViewController ()<CLLocationManagerDelegate, UIActionSheetDelegate, UIPickerViewDataSource, UIPickerViewDelegate> {
     
-    __weak IBOutlet UILabel *latitudeLabel;
-    __weak IBOutlet UILabel *longitudeLabel;
-    __weak IBOutlet UILabel *addressLabel;
     __weak IBOutlet UITextField *startLocationLabel;
     __weak IBOutlet UITextField *destinationLabel;
     __weak IBOutlet UITextField *payLabel;
     __weak IBOutlet UITextField *intervalLabel;
+    __weak IBOutlet UIImageView *locationImg;
     
     NSArray *intervalData;
+    NSString *longitudeValue;
+    NSString *latitudeValue;
 }
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (strong, nonatomic) NSArray *pickerElements;
-
-- (IBAction)getCurrentLocation:(id)sender;
+- (IBAction)getLocationCurrent:(id)sender;
+- (IBAction)requestRide:(id)sender;
 @end
 
 @implementation CreateViewController {
@@ -52,31 +52,27 @@
         [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     }
     
+    // Remove label on back button
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
     barButton.title = @" ";
     self.navigationController.navigationBar.topItem.backBarButtonItem = barButton;
     
+    // Swipe right to go back to previous screen
     UISwipeGestureRecognizer *viewRight = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeRight:)];
     viewRight.direction = UISwipeGestureRecognizerDirectionRight;
     [self.view addGestureRecognizer:viewRight];
     
+    // Initialize location features
     locationManager = [[CLLocationManager alloc] init];
     geocoder = [[CLGeocoder alloc] init];
     
-//    UIPickerView *picker = [[UIPickerView alloc] init];
-//    picker.dataSource = self;
-//    picker.delegate = (id)self;
-//    intervalLabel.inputView = picker;
-//    intervalData = @[@"5 mins", @"10 mins", @"15 mins", @"20 mins"];
-    
-    
+    // Initialize pickerView for pick up time intervals
     self.pickerView = [[UIPickerView alloc] init];
     self.pickerView.delegate = self;
     self.pickerView.dataSource = self;
     self.pickerView.showsSelectionIndicator = YES;
     intervalLabel.inputView = self.pickerView;
-    
-    self.pickerElements = @[@"5 mins", @"10 mins", @"15 mins", @"20 mins"];
+    self.pickerElements = @[@"Now", @"10 mins", @"15 mins", @"20 mins"];
     [self pickerView:self.pickerView
         didSelectRow:0
          inComponent:0];
@@ -84,6 +80,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    locationImg.layer.cornerRadius = 7;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -125,7 +122,6 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     UIToolbar *keyboardToolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
-    
     keyboardToolBar.tag = textField.tag;
     keyboardToolBar.barStyle = UIBarStyleBlack;
     
@@ -266,8 +262,8 @@
     CLLocation *currentLocation = newLocation;
     
     if (currentLocation != nil) {
-        longitudeLabel.text = [NSString stringWithFormat:@"%.8f", currentLocation.coordinate.longitude];
-        latitudeLabel.text = [NSString stringWithFormat:@"%.8f", currentLocation.coordinate.latitude];
+        longitudeValue = [NSString stringWithFormat:@"%.8f", currentLocation.coordinate.longitude];
+        latitudeValue = [NSString stringWithFormat:@"%.8f", currentLocation.coordinate.latitude];
     }
     
     // Stop Location Manager
@@ -278,7 +274,7 @@
         // NSLog(@"Found placemarks: %@, error: %@", placemarks, error);
         if (error == nil && [placemarks count] > 0) {
             placemark = [placemarks lastObject];
-            addressLabel.text = [NSString stringWithFormat:@"%@ %@\n%@ %@\n%@\n%@",
+            startLocationLabel.text = [NSString stringWithFormat:@"%@ %@\n%@ %@\n%@\n%@",
                                  placemark.subThoroughfare, placemark.thoroughfare,
                                  placemark.postalCode, placemark.locality,
                                  placemark.administrativeArea,
@@ -288,16 +284,6 @@
         }
     } ];
     
-}
-
-#pragma mark - Actions
-
-- (IBAction)getCurrentLocation:(id)sender {
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    
-    [locationManager startUpdatingLocation];
-    [locationManager requestWhenInUseAuthorization];
 }
 
 #pragma mark - Picker view for time interval
@@ -318,35 +304,141 @@
     intervalLabel.text = [self.pickerElements objectAtIndex:row];
 }
 
-#pragma mark - Action sheet for time interval
+#pragma mark - Submit methods
 
-// need to create a button to go with function setTimeInterval
+- (IBAction)getLocationCurrent:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:@"Do you want to use your current location?"
+                                  delegate:self
+                                  cancelButtonTitle:nil // @"Cancel"
+                                  destructiveButtonTitle:nil
+                                  otherButtonTitles:@"Yes", @"No", nil];
+    [actionSheet showInView:self.view];
+}
 
-//- (IBAction)setTimeInterval:(id)sender {
-//    UIActionSheet *actionSheet = [[UIActionSheet alloc]
-//                                  initWithTitle:@"How long until you want to be picked up?"
-//                                       delegate:self
-//                              cancelButtonTitle:@"Cancel"
-//                         destructiveButtonTitle:nil
-//                              otherButtonTitles:@"5 mins", @"10 mins", @"15 mins", nil];
-//    [actionSheet showInView:self.view];
-//    actionSheet.tag = 10;
-//}
-//
-//-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-//    if (actionSheet.tag == 10) {
-//        NSLog(@"The Normal action sheet.");
-//    } else {
-//        NSLog(@"The Color selection action sheet.");
-//    }
-//    
-//    NSLog(@"Index = %ld - Title = %@", (long)buttonIndex, [actionSheet buttonTitleAtIndex:buttonIndex]);
-//}
-//
-//-(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
-//    if (actionSheet.tag == 10) {
-//        NSLog(@"From didDismissWithButtonIndex - Selected Color: %@", [actionSheet buttonTitleAtIndex:buttonIndex]);
-//    }
-//}
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0) {
+        locationManager.delegate = self;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        
+        [locationManager startUpdatingLocation];
+        [locationManager requestWhenInUseAuthorization];
+    } else {
+        return;
+    }
+}
+
+- (IBAction)requestRide:(id)sender {
+    if([self validateFields]){
+        [self doCreateRequest];
+    }
+}
+
+-(BOOL)validateFields{
+    SCLAlertView *alert = [[SCLAlertView alloc] init];
+    
+    if ([[startLocationLabel.text Trim] isEmpty]){
+        alert.showAnimationType = SlideInFromLeft;
+        alert.hideAnimationType = SlideOutToBottom;
+        [alert showNotice:self title:@"Notice" subTitle:EMPTY_START_LOCATION closeButtonTitle:@"OK" duration:0.0f];
+        return NO;
+    } else if ([[destinationLabel.text Trim] isEmpty]){
+        alert.showAnimationType = SlideInFromLeft;
+        alert.hideAnimationType = SlideOutToBottom;
+        [alert showNotice:self title:@"Notice" subTitle:EMPTY_DESTINATION closeButtonTitle:@"OK" duration:0.0f];
+        return NO;
+    } else if ([[payLabel.text Trim] isEmpty]){
+        alert.showAnimationType = SlideInFromLeft;
+        alert.hideAnimationType = SlideOutToBottom;
+        [alert showNotice:self title:@"Notice" subTitle:EMPTY_PAYMENT closeButtonTitle:@"OK" duration:0.0f];
+        return NO;
+    } else if ([[intervalLabel.text Trim] isEmpty]){
+        alert.showAnimationType = SlideInFromLeft;
+        alert.hideAnimationType = SlideOutToBottom;
+        [alert showNotice:self title:@"Notice" subTitle:EMPTY_PICKUP_INTERVAL closeButtonTitle:@"OK" duration:0.0f];
+        return NO;
+    }
+    return YES;
+}
+
+-(void)doCreateRequest{
+    checkNetworkReachability();
+    [self.view endEditing:YES];
+    [self setBusy:YES];
+    
+    NSMutableDictionary* _params = [[NSMutableDictionary alloc] init];
+    
+    // Change payment value to a float
+    NSString *payAmount = [payLabel.text Trim];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    payAmount = [payAmount stringByReplacingOccurrencesOfString:formatter.internationalCurrencySymbol withString:@""];
+    float fval = [formatter numberFromString:payAmount].floatValue;
+    NSString *formattedNumber = [NSString stringWithFormat:@"%.02f", fval];
+    
+    [_params setObject:latitudeValue forKey:@"start_lat"];
+    [_params setObject:longitudeValue forKey:@"start_long"];
+    [_params setObject:[destinationLabel.text Trim] forKey:@"destination_query"];
+    [_params setObject:formattedNumber forKey:@"start_amount"];
+    [_params setObject:[intervalLabel.text Trim] forKey:@"pick_up_interval"];
+    NSString *BoundaryConstant = @"----------V2ymHFg03ehbqgZCaKO6jy";
+    NSString *urlStr = [NSString stringWithFormat:@"%@", CREATEURL];
+    NSURL *requestURL = [NSURL URLWithString:urlStr];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+    [request setHTTPShouldHandleCookies:NO];
+    [request setTimeoutInterval:30];
+    [request setHTTPMethod:@"POST"];
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", BoundaryConstant];
+    [request setValue:contentType forHTTPHeaderField: @"Content-Type"];
+    NSMutableData *body = [NSMutableData data];
+    for (NSString *param in _params) {
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", BoundaryConstant] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", param] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"%@\r\n", [_params objectForKey:param]] dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    
+    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", BoundaryConstant] dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:body];
+    NSString *authStr = [NSString stringWithFormat:@"%@:%@", GetUserEmail, GetUserPassword];
+    NSData *plainData = [authStr dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *base64String = [plainData base64EncodedStringWithOptions:0];
+    NSString *authValue = [NSString stringWithFormat:@"Basic %@", base64String];
+    [request setValue:authValue forHTTPHeaderField:@"Authorization"];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[body length]];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setURL:requestURL];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
+        
+        if ([data length] > 0 && error == nil){
+            [self setBusy:NO];
+            NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+            if(JSONValue != nil){
+                if ([JSONValue objectForKey:@"error_message"]){
+                    SCLAlertView *alert = [[SCLAlertView alloc] init];
+                    alert.showAnimationType = SlideInFromLeft;
+                    alert.hideAnimationType = SlideOutToBottom;
+                    [alert showNotice:self title:@"Notice" subTitle:[JSONValue objectForKey:@"error_message"] closeButtonTitle:@"OK" duration:0.0f];
+                } else {
+                    [self pushingView:YES];
+                }
+            } else {
+                showServerError();
+            }
+        } else {
+            [self setBusy:NO];
+            showServerError();
+        }
+        [self setBusy:NO];
+    }];
+}
+
+-(void)pushingView:(BOOL)animation{
+    // Create invidivual VC for rides
+//    MobileNumViewController *mobileNumViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MobileNumViewController"];
+//    [self.navigationController pushViewController:mobileNumViewController animated:YES];
+}
 
 @end
