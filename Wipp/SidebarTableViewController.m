@@ -6,7 +6,6 @@
 #import "AppDelegate.h"
 #import "SidebarTableViewController.h"
 #import "SWRevealViewController.h"
-#import "PhotoViewController.h"
 
 
 @interface SidebarTableViewController (){
@@ -22,7 +21,7 @@
 - (void)viewDidLoad {
     appDelegate = [AppDelegate getDelegate];
     [super viewDidLoad];
-    menuItems = @[@"title", @"map", @"create", @"previous", @"account", @"logout"];
+    menuItems = @[@"title", @"home", @"account", @"logout"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,14 +73,6 @@
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     UINavigationController *destViewController = (UINavigationController*)segue.destinationViewController;
     destViewController.title = [[menuItems objectAtIndex:indexPath.row] capitalizedString];
-    
-    // Set the photo if it navigates to the PhotoView
-    if ([segue.identifier isEqualToString:@"showPhoto"]) {
-        UINavigationController *navController = segue.destinationViewController;
-        PhotoViewController *photoController = [navController childViewControllers].firstObject;
-        NSString *photoFilename = [NSString stringWithFormat:@"%@_photo", [menuItems objectAtIndex:indexPath.row]];
-        photoController.photoFilename = photoFilename;
-    }
 }
 
 @end

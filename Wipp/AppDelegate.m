@@ -170,6 +170,11 @@ MBProgressHUD *hud;
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserEmail"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserPassword"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserFullName"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"ActiveRequest"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"StartValue"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"DestinationValue"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"CostValue"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"CurrentLocation"];
     
     RegisterViewController *registerViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"RegisterViewController"];
     UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:registerViewController];

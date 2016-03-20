@@ -83,6 +83,21 @@ extern AppDelegate *appDelegate;
 #define    SetAppKill(x)         [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"AppKill"]
 #define    GetAppKill            [[NSUserDefaults standardUserDefaults] objectForKey:@"AppKill"]
 
+#define    SetActiveRequest(x)   [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"ActiveRequest"]
+#define    GetActiveRequest      [[NSUserDefaults standardUserDefaults] boolForKey:@"ActiveRequest"]
+
+#define    SetReservationId(x)   [[NSUserDefaults standardUserDefaults] setInteger:(x) forKey:@"ReservationId"]
+#define    GetReservationId      [[NSUserDefaults standardUserDefaults] integerForKey:@"ReservationId"]
+
+#define    SetStartValue(x)      [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"StartValue"]
+#define    GetStartValue         [[NSUserDefaults standardUserDefaults] objectForKey:@"StartValue"]
+
+#define    SetDestinationValue(x)[[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"DestinationValue"]
+#define    GetDestinationValue   [[NSUserDefaults standardUserDefaults] objectForKey:@"DestinationValue"]
+
+#define    SetCostValue(x)       [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"CostValue"]
+#define    GetCostValue          [[NSUserDefaults standardUserDefaults] objectForKey:@"CostValue"]
+
 #define    SetUserToken(x)       [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserToken"]
 #define    GetUserToken          [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]
 
@@ -91,6 +106,9 @@ extern AppDelegate *appDelegate;
 
 #define    SetUserActive(x)      [[NSUserDefaults standardUserDefaults] setInteger:(x) forKey:@"UserActive"]
 #define    GetUserActive         [[NSUserDefaults standardUserDefaults] integerForKey:@"UserActive"]
+
+#define    SetUserIsDriver(x)    [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"UserIsDriver"]
+#define    GetUserIsDriver       [[NSUserDefaults standardUserDefaults] boolForKey:@"UserIsDriver"]
 
 #define    SetUserEmail(x)       [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserEmail"]
 #define    GetUserEmail          [[NSUserDefaults standardUserDefaults] objectForKey:@"UserEmail"]
@@ -109,12 +127,6 @@ extern AppDelegate *appDelegate;
 
 #define    SetisFullView(x)      [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"FullView"]
 #define    GetsFullView          [[NSUserDefaults standardUserDefaults] boolForKey:@"FullView"]
-
-#define    SetLat(x)             [UserDefaults setObject:x forKey:@"C_Lat"]
-#define    GetLat()              [UserDefaults objectForKey:@"C_Lat"]
-
-#define    SetLong(x)            [UserDefaults setObject:x forKey:@"C_Long"]
-#define    GetLong()             [UserDefaults objectForKey:@"C_Long"]
 
 #define    SetCurrentLoaction(x)    [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"CurrentLocation"]
 #define    GetCurrentLoaction       [[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentLocation"]

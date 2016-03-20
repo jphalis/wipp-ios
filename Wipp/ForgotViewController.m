@@ -35,7 +35,7 @@
     txtEmail.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     
     btnSubmit.layer.borderWidth = 2;
-    btnSubmit.layer.borderColor = [[UIColor colorWithRed:255.0/255 green:131.0/255 blue:0.0/255 alpha:1.0] CGColor];
+    btnSubmit.layer.borderColor = [[UIColor colorWithRed:85.0/255 green:192.0/255 blue:248.0/255 alpha:1.0] CGColor];
     btnSubmit.layer.cornerRadius = 7;
 }
 

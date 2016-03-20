@@ -264,7 +264,6 @@
     [urlRequest setValue:@"" forHTTPHeaderField:@"Authorization"];
     [urlRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    // [urlRequest setValue:@"multipart/form-data" forHTTPHeaderField:@"enctype"];
     [urlRequest setHTTPBody:[params dataUsingEncoding:NSUTF8StringEncoding]];
     
     [NSURLConnection sendAsynchronousRequest:urlRequest queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){

@@ -1,21 +1,21 @@
 //
-//  PhotoViewController.m
+//  DriverSignupViewController.m
 //  Wipp
 //
 
-#import "PhotoViewController.h"
+#import "DriverSignupViewController.h"
 #import "SWRevealViewController.h"
 
-@interface PhotoViewController ()
+@interface DriverSignupViewController ()
 
 @end
 
-@implementation PhotoViewController
+@implementation DriverSignupViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.photoImageView.image = [UIImage imageNamed:self.photoFilename];
+    self.title = @"Driver Registration";
 
     SWRevealViewController *revealViewController = self.revealViewController;
     if (revealViewController){
@@ -23,7 +23,20 @@
         [self.sidebarButton setAction: @selector(revealToggle:)];
         [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     }
+    
+    // Swipe right to go back to previous screen
+    UISwipeGestureRecognizer *viewRight = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeRight:)];
+    viewRight.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.view addGestureRecognizer:viewRight];
+}
 
+-(void)viewWillAppear:(BOOL)animated{
+    // Remove label on back button
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
+    barButton.title = @" ";
+    self.navigationController.navigationBar.topItem.backBarButtonItem = barButton;
+    
+    [super viewWillAppear:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -40,5 +53,9 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+-(void)swipeRight:(UISwipeGestureRecognizer *)gestureRecognizer{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end

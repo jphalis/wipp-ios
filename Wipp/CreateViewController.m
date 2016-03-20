@@ -52,11 +52,6 @@
         [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     }
     
-    // Remove label on back button
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
-    barButton.title = @" ";
-    self.navigationController.navigationBar.topItem.backBarButtonItem = barButton;
-    
     // Swipe right to go back to previous screen
     UISwipeGestureRecognizer *viewRight = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeRight:)];
     viewRight.direction = UISwipeGestureRecognizerDirectionRight;
@@ -79,6 +74,11 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    // Remove label on back button
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
+    barButton.title = @" ";
+    self.navigationController.navigationBar.topItem.backBarButtonItem = barButton;
+    
     [super viewWillAppear:YES];
     locationImg.layer.cornerRadius = 7;
 }
@@ -169,7 +169,6 @@
     [UIView setAnimationBeginsFromCurrentState: YES];
     [UIView setAnimationDuration: movementDuration];
     self.view.frame = CGRectOffset(self.view.frame, 0, movement);
-    
     [UIView commitAnimations];
 }
 
@@ -307,6 +306,7 @@
 #pragma mark - Submit methods
 
 - (IBAction)getLocationCurrent:(id)sender {
+    [self resignKeyboard];
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                   initWithTitle:@"Do you want to use your current location?"
                                   delegate:self
@@ -323,8 +323,13 @@
         
         [locationManager startUpdatingLocation];
         [locationManager requestWhenInUseAuthorization];
+        startLocationLabel.enabled = NO;
+        startLocationLabel.textColor = [UIColor lightGrayColor];
     } else {
-        return;
+        startLocationLabel.enabled = YES;
+        startLocationLabel.text = @"";
+        longitudeValue = nil;
+        latitudeValue = nil;
     }
 }
 
@@ -377,8 +382,14 @@
     float fval = [formatter numberFromString:payAmount].floatValue;
     NSString *formattedNumber = [NSString stringWithFormat:@"%.02f", fval];
     
-    [_params setObject:latitudeValue forKey:@"start_lat"];
-    [_params setObject:longitudeValue forKey:@"start_long"];
+    // Check if current location or input address is being used for starting location
+    if(latitudeValue && longitudeValue){
+        [_params setObject:latitudeValue forKey:@"start_lat"];
+        [_params setObject:longitudeValue forKey:@"start_long"];
+    } else {
+        [_params setObject:[startLocationLabel.text Trim] forKey:@"start_query"];
+    }
+    
     [_params setObject:[destinationLabel.text Trim] forKey:@"destination_query"];
     [_params setObject:formattedNumber forKey:@"start_amount"];
     [_params setObject:[intervalLabel.text Trim] forKey:@"pick_up_interval"];
@@ -415,6 +426,7 @@
         if ([data length] > 0 && error == nil){
             [self setBusy:NO];
             NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+            
             if(JSONValue != nil){
                 if ([JSONValue objectForKey:@"error_message"]){
                     SCLAlertView *alert = [[SCLAlertView alloc] init];
@@ -422,6 +434,12 @@
                     alert.hideAnimationType = SlideOutToBottom;
                     [alert showNotice:self title:@"Notice" subTitle:[JSONValue objectForKey:@"error_message"] closeButtonTitle:@"OK" duration:0.0f];
                 } else {
+                    SetActiveRequest(YES);
+                    int reservationID = [[JSONValue objectForKey:@"id"]intValue];
+                    SetReservationId(reservationID);
+                    SetStartValue([startLocationLabel.text Trim]);
+                    SetDestinationValue([destinationLabel.text Trim]);
+                    SetCostValue([payLabel.text Trim]);
                     [self pushingView:YES];
                 }
             } else {
@@ -436,9 +454,7 @@
 }
 
 -(void)pushingView:(BOOL)animation{
-    // Create invidivual VC for rides
-//    MobileNumViewController *mobileNumViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MobileNumViewController"];
-//    [self.navigationController pushViewController:mobileNumViewController animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

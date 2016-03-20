@@ -51,7 +51,7 @@
     [btnUel setSelected:NO];
     
     btnSignInner.layer.borderWidth = 2;
-    btnSignInner.layer.borderColor = [[UIColor colorWithRed:255.0/255 green:131.0/255 blue:0.0/255 alpha:1.0] CGColor];
+    btnSignInner.layer.borderColor = [[UIColor colorWithRed:85.0/255 green:192.0/255 blue:248.0/255 alpha:1.0] CGColor];
     btnSignInner.layer.cornerRadius = 7;
     
     viewLogin.hidden = NO;
