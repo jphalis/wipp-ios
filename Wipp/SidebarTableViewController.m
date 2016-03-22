@@ -4,6 +4,7 @@
 //
 
 #import "AppDelegate.h"
+#import "defs.h"
 #import "SidebarTableViewController.h"
 #import "SWRevealViewController.h"
 
@@ -21,7 +22,11 @@
 - (void)viewDidLoad {
     appDelegate = [AppDelegate getDelegate];
     [super viewDidLoad];
-    menuItems = @[@"title", @"home", @"account", @"logout"];
+    if (GetUserIsDriver){
+        menuItems = @[@"title", @"home", @"rides", @"account", @"logout"];
+    } else {
+        menuItems = @[@"title", @"home", @"account", @"logout"];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

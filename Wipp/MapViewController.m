@@ -3,6 +3,9 @@
 //  Wipp
 //
 
+#import <MapKit/MapKit.h>
+#import <MapKit/MKAnnotation.h>
+
 #import "CreateViewController.h"
 #import "defs.h"
 #import "MapViewController.h"
@@ -10,7 +13,7 @@
 #import "SWRevealViewController.h"
 
 
-@interface MapViewController (){
+@interface MapViewController () <MKMapViewDelegate, CLLocationManagerDelegate> {
     __weak IBOutlet UIButton *requestBtn;
     __weak IBOutlet UIButton *statusBtn;
     
@@ -22,7 +25,12 @@
 - (IBAction)onRequest:(id)sender;
 @end
 
-@implementation MapViewController
+@implementation MapViewController {
+    CLLocationManager *locationManager;
+    CLGeocoder *geocoder;
+    CLPlacemark *placemark;
+}
+
 @synthesize mapView;
 
 - (void)viewDidLoad {
@@ -38,6 +46,17 @@
     }
     
     self.mapView.delegate = self;
+    locationManager = [[CLLocationManager alloc] init];
+    #ifdef __IPHONE_8_0
+        if(IS_OS_8_OR_LATER) {
+            [locationManager requestWhenInUseAuthorization];
+        }
+    #endif
+    [locationManager startUpdatingLocation];
+    self.mapView.showsUserLocation = YES;
+    [mapView setMapType:MKMapTypeStandard];
+    [mapView setZoomEnabled:YES];
+    [mapView setScrollEnabled:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -58,6 +77,11 @@
         statusBtn.hidden = YES;
         statusBtn.enabled = NO;
     }
+    
+    locationManager.delegate = self;
+    locationManager.distanceFilter = kCLDistanceFilterNone;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [locationManager startUpdatingLocation];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -140,9 +164,14 @@
     });
 }
 
-- (void) stopTimer {
+- (void)stopTimer {
     [timer invalidate];
     timer = nil;
+}
+
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"There was an error retrieving your location" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [errorAlert show];
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
@@ -156,6 +185,38 @@
 //    point.subtitle = @"subtitle can go here";
     
     [self.mapView addAnnotation:point];
+}
+
+- (NSString *)deviceLocation {
+    return [NSString stringWithFormat:@"latitude: %f longitude: %f", locationManager.location.coordinate.latitude, locationManager.location.coordinate.longitude];
+}
+
+- (NSString *)deviceLat {
+    return [NSString stringWithFormat:@"%f", locationManager.location.coordinate.latitude];
+}
+
+- (NSString *)deviceLon {
+    return [NSString stringWithFormat:@"%f", locationManager.location.coordinate.longitude];
+}
+
+- (NSString *)deviceAlt {
+    return [NSString stringWithFormat:@"%f", locationManager.location.altitude];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)locationStatus {
+    if (locationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        [locationManager startUpdatingLocation];
+    } else if (locationStatus == kCLAuthorizationStatusDenied) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Location services not authorized"
+                                                        message:@"This app needs you to authorize locations services to work."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    } else {
+        return;
+//        NSLog(@"Wrong location status");
+    }
 }
 
 - (IBAction)onStatusClick:(id)sender {

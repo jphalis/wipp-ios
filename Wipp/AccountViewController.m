@@ -17,6 +17,7 @@
 
     __weak IBOutlet UILabel *nameLabel;
     __weak IBOutlet SDIAsyncImageView *profileImg;
+    __weak IBOutlet UIButton *drivePromptLabel;
 
 }
 
@@ -51,6 +52,11 @@
     profileImg.layer.cornerRadius = profileImg.frame.size.width / 2;
     profileImg.layer.masksToBounds = YES;
     nameLabel.text = GetUserFullName;
+    
+    if (GetUserIsDriver){
+        drivePromptLabel.hidden = YES;
+        drivePromptLabel.enabled = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -105,6 +111,7 @@
                 } else {
                     [profileImg loadImageFromURL:[JSONValue objectForKey:@"profile_picture"] withTempImage:@"avatar"];
                 }
+                SetUserIsDriver([[JSONValue objectForKey:@"is_driver"]boolValue]);
                 [self setBusy:NO];
             } else {
                 [self setBusy:NO];

@@ -40,6 +40,10 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    UISwipeGestureRecognizer *viewRight = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeRight:)];
+    viewRight.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.view addGestureRecognizer:viewRight];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -67,6 +71,10 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)swipeRight:(UISwipeGestureRecognizer *)gestureRecognizer{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)onBack:(id)sender {

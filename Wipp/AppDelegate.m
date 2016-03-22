@@ -175,6 +175,9 @@ MBProgressHUD *hud;
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"DestinationValue"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"CostValue"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"CurrentLocation"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserIsDriver"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserID"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"ReservationId"];
     
     RegisterViewController *registerViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"RegisterViewController"];
     UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:registerViewController];

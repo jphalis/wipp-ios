@@ -12,7 +12,7 @@
 #import "UIViewControllerAdditions.h"
 
 
-#define kOFFSET_FOR_KEYBOARD 0.55
+#define kOFFSET_FOR_KEYBOARD 0.45
 
 
 @interface MobileNumViewController (){

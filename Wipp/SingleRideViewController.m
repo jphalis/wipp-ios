@@ -5,6 +5,7 @@
 
 #import "defs.h"
 #import "GlobalFunctions.h"
+#import "SCLAlertView.h"
 #import "SingleRideViewController.h"
 #import "SWRevealViewController.h"
 #import "UIViewControllerAdditions.h"
@@ -16,8 +17,10 @@
     __weak IBOutlet UILabel *costLabel;
     __weak IBOutlet UILabel *statusLabel;
     __weak IBOutlet UIButton *cancelBtn;
+    __weak IBOutlet UIButton *acceptBtn;
 }
 - (IBAction)cancelRequest:(id)sender;
+- (IBAction)acceptRequest:(id)sender;
 
 @end
 
@@ -64,13 +67,37 @@
         statusLabel.text = statusValue;
     }
     
-    if(GetActiveRequest){
+    if (GetActiveRequest && GetUserIsDriver) {
         cancelBtn.layer.borderWidth = 3;
         cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
         cancelBtn.layer.cornerRadius = 7;
-    } else {
+        
+        acceptBtn.hidden = YES;
+        acceptBtn.enabled = NO;
+    } else if (GetUserIsDriver && [statusValue  isEqual: @"Pending"]){
+        acceptBtn.layer.borderWidth = 3;
+        acceptBtn.layer.borderColor = [[UIColor greenColor] CGColor];
+        acceptBtn.layer.cornerRadius = 7;
+        
         cancelBtn.hidden = YES;
         cancelBtn.enabled = NO;
+    } else {
+        if (GetActiveRequest){
+            cancelBtn.layer.borderWidth = 3;
+            cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
+            cancelBtn.layer.cornerRadius = 7;
+            cancelBtn.hidden = NO;
+            cancelBtn.enabled = YES;
+            
+            acceptBtn.hidden = YES;
+            acceptBtn.enabled = NO;
+        } else {
+            cancelBtn.hidden = YES;
+            cancelBtn.enabled = NO;
+            
+            acceptBtn.hidden = YES;
+            acceptBtn.enabled = NO;
+        }
     }
 }
 
@@ -91,6 +118,8 @@
 
 - (IBAction)cancelRequest:(id)sender {
     checkNetworkReachability();
+    [self setBusy:YES];
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *strURL = [NSString stringWithFormat:@"%@%ld/", RESCANCELURL, (long)GetReservationId];
         NSURL *url = [NSURL URLWithString:strURL];
@@ -136,9 +165,53 @@
         cancelBtn.hidden = YES;
         cancelBtn.enabled = NO;
         SetActiveRequest(NO);
+        SCLAlertView *alert = [[SCLAlertView alloc] init];
+        alert.showAnimationType = SlideInFromLeft;
+        alert.hideAnimationType = SlideOutToBottom;
+        [alert showSuccess:self title:@"Success" subTitle:@"Your request has been canceled." closeButtonTitle:@"OK" duration:0.0f];
+        [alert alertIsDismissed:^{
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
     } else {
         return;
     }
+}
+
+- (IBAction)acceptRequest:(id)sender {
+    checkNetworkReachability();
+    [self setBusy:YES];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *strURL = [NSString stringWithFormat:@"%@%ld/", RESACCEPTURL, (long)GetReservationId];
+        NSURL *url = [NSURL URLWithString:strURL];
+        NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
+        [urlRequest setTimeoutInterval:60];
+        [urlRequest setHTTPMethod:@"POST"];
+        NSString *authStr = [NSString stringWithFormat:@"%@:%@", GetUserEmail, GetUserPassword];
+        NSData *plainData = [authStr dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *base64String = [plainData base64EncodedStringWithOptions:0];
+        NSString *authValue = [NSString stringWithFormat:@"Basic %@", base64String];
+        [urlRequest setValue:authValue forHTTPHeaderField:@"Authorization"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        
+        [NSURLConnection sendAsynchronousRequest:urlRequest queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
+            
+            if ([data length] > 0 && error == nil){
+                NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+                if(JSONValue != nil){
+                    // do something after the request has been accepted
+                    return;
+                } else {
+                    showServerError();
+                }
+                [self setBusy:NO];
+            } else {
+                [self setBusy:NO];
+                showServerError();
+            }
+            [self setBusy:NO];
+        }];
+    });
 }
 
 @end

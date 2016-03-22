@@ -17,6 +17,9 @@
 		D055BEF81C95FE0800007A4F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D055BEF71C95FE0800007A4F /* CoreGraphics.framework */; };
 		D0623F671C89EE05003ED935 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0623F641C89EE05003ED935 /* LoginViewController.m */; };
 		D0623F681C89EE05003ED935 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0623F661C89EE05003ED935 /* RegisterViewController.m */; };
+		D06651F31C9F3E5C00C6F9C4 /* AvailableRidesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D06651F21C9F3E5C00C6F9C4 /* AvailableRidesViewController.m */; };
+		D06651F71C9F44B200C6F9C4 /* TableViewCellRides.m in Sources */ = {isa = PBXBuildFile; fileRef = D06651F61C9F44B200C6F9C4 /* TableViewCellRides.m */; };
+		D06651FA1C9F491B00C6F9C4 /* RideClass.m in Sources */ = {isa = PBXBuildFile; fileRef = D06651F91C9F491B00C6F9C4 /* RideClass.m */; };
 		D068B3B91C99BEBE0069C3C8 /* SingleRideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D068B3B81C99BEBE0069C3C8 /* SingleRideViewController.m */; };
 		D0C480001C55BD9700144176 /* GlobalFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C47FFE1C55BD9700144176 /* GlobalFunctions.m */; };
 		D0C480031C55BDDA00144176 /* UIViewControllerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C480021C55BDDA00144176 /* UIViewControllerAdditions.m */; };
@@ -128,6 +131,12 @@
 		D0623F641C89EE05003ED935 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		D0623F651C89EE05003ED935 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
 		D0623F661C89EE05003ED935 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		D06651F11C9F3E5C00C6F9C4 /* AvailableRidesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvailableRidesViewController.h; sourceTree = "<group>"; };
+		D06651F21C9F3E5C00C6F9C4 /* AvailableRidesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvailableRidesViewController.m; sourceTree = "<group>"; };
+		D06651F51C9F44B200C6F9C4 /* TableViewCellRides.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellRides.h; sourceTree = "<group>"; };
+		D06651F61C9F44B200C6F9C4 /* TableViewCellRides.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCellRides.m; sourceTree = "<group>"; };
+		D06651F81C9F491B00C6F9C4 /* RideClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideClass.h; sourceTree = "<group>"; };
+		D06651F91C9F491B00C6F9C4 /* RideClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RideClass.m; sourceTree = "<group>"; };
 		D068B3B71C99BEBE0069C3C8 /* SingleRideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleRideViewController.h; sourceTree = "<group>"; };
 		D068B3B81C99BEBE0069C3C8 /* SingleRideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleRideViewController.m; sourceTree = "<group>"; };
 		D0C47FFC1C55BD9700144176 /* defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defs.h; sourceTree = "<group>"; };
@@ -329,8 +338,19 @@
 			children = (
 				D0112A791C57EC430049E9E3 /* ProfileClass.h */,
 				D0112A7A1C57EC430049E9E3 /* ProfileClass.m */,
+				D06651F81C9F491B00C6F9C4 /* RideClass.h */,
+				D06651F91C9F491B00C6F9C4 /* RideClass.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		D06651F41C9F447200C6F9C4 /* CellViews */ = {
+			isa = PBXGroup;
+			children = (
+				D06651F51C9F44B200C6F9C4 /* TableViewCellRides.h */,
+				D06651F61C9F44B200C6F9C4 /* TableViewCellRides.m */,
+			);
+			name = CellViews;
 			sourceTree = "<group>";
 		};
 		D0C47FFB1C55BD7A00144176 /* Common */ = {
@@ -393,6 +413,8 @@
 			children = (
 				F4090BBE1A0FD5BC00651F6F /* AccountViewController.h */,
 				F4090BBF1A0FD5BC00651F6F /* AccountViewController.m */,
+				D06651F11C9F3E5C00C6F9C4 /* AvailableRidesViewController.h */,
+				D06651F21C9F3E5C00C6F9C4 /* AvailableRidesViewController.m */,
 				F4090BC11A0FD62A00651F6F /* CreateViewController.h */,
 				F4090BC21A0FD62A00651F6F /* CreateViewController.m */,
 				D00F0E261C9F168200AC69CE /* DriverSignupViewController.h */,
@@ -714,8 +736,9 @@
 		F4090B901A0F67D000651F6F /* Wipp */ = {
 			isa = PBXGroup;
 			children = (
-				D0C480051C55BDF400144176 /* External */,
+				D06651F41C9F447200C6F9C4 /* CellViews */,
 				D0C47FFB1C55BD7A00144176 /* Common */,
+				D0C480051C55BDF400144176 /* External */,
 				D0112A781C57EC0B0049E9E3 /* Model */,
 				F4090B911A0F67D000651F6F /* Supporting Files */,
 				D0C4800B1C55BE9C00144176 /* View Controllers */,
@@ -931,6 +954,7 @@
 				D0C480A21C55C36900144176 /* UIImageView+WebCache.m in Sources */,
 				D0C4806A1C55C2DA00144176 /* SVWebViewControllerActivity.m in Sources */,
 				D0C481061C55C62900144176 /* AFHTTPClient.m in Sources */,
+				D06651F31C9F3E5C00C6F9C4 /* AvailableRidesViewController.m in Sources */,
 				D0C4809D1C55C36900144176 /* UIButton+WebCache.m in Sources */,
 				D0C4808B1C55C34200144176 /* SDWebImageDownloader.m in Sources */,
 				D0C481111C55C6FC00144176 /* IBActionSheet.m in Sources */,
@@ -947,6 +971,7 @@
 				D0C481431C55C86000144176 /* Reachability.m in Sources */,
 				D0C4811D1C55C80C00144176 /* UIImageExtras.m in Sources */,
 				D0C4808A1C55C34200144176 /* SDWebImageDecoder.m in Sources */,
+				D06651F71C9F44B200C6F9C4 /* TableViewCellRides.m in Sources */,
 				D0C480881C55C34200144176 /* SDImageCache.m in Sources */,
 				D0C481231C55C82100144176 /* SDIAsyncImageView.m in Sources */,
 				D068B3B91C99BEBE0069C3C8 /* SingleRideViewController.m in Sources */,
@@ -959,6 +984,7 @@
 				D0C480221C55C20D00144176 /* SCLAlertView.m in Sources */,
 				F4090BC61A0FD6F800651F6F /* SidebarTableViewController.m in Sources */,
 				D0C480781C55C32300144176 /* NSData+ImageContentType.m in Sources */,
+				D06651FA1C9F491B00C6F9C4 /* RideClass.m in Sources */,
 				D0C480A11C55C36900144176 /* UIImageView+HighlightedWebCache.m in Sources */,
 				D0C480611C55C2DA00144176 /* SVWebViewController.m in Sources */,
 				D0C480241C55C20D00144176 /* SCLAlertViewStyleKit.m in Sources */,
@@ -1101,6 +1127,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Wipp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1113,6 +1140,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Wipp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
