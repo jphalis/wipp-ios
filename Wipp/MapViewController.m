@@ -47,16 +47,7 @@
     
     self.mapView.delegate = self;
     locationManager = [[CLLocationManager alloc] init];
-    #ifdef __IPHONE_8_0
-        if(IS_OS_8_OR_LATER) {
-            [locationManager requestWhenInUseAuthorization];
-        }
-    #endif
-    [locationManager startUpdatingLocation];
-    self.mapView.showsUserLocation = YES;
-    [mapView setMapType:MKMapTypeStandard];
-    [mapView setZoomEnabled:YES];
-    [mapView setScrollEnabled:YES];
+    locationManager.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -79,10 +70,22 @@
         statusBtn.enabled = NO;
     }
     
-    locationManager.delegate = self;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0 &&
+        [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse
+        ) {
+        [locationManager requestWhenInUseAuthorization];
+    } else {
+        [locationManager startUpdatingLocation];
+    }
     locationManager.distanceFilter = kCLDistanceFilterNone;
+    // locationManager.distanceFilter = 250;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     [locationManager startUpdatingLocation];
+    
+    self.mapView.showsUserLocation = YES;
+    [mapView setMapType:MKMapTypeStandard];
+    [mapView setZoomEnabled:YES];
+    [mapView setScrollEnabled:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -172,9 +175,32 @@
     MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
     point.coordinate = userLocation.coordinate;
     point.title = @"Current Location";
-//    point.subtitle = @"subtitle can go here";
+    // point.subtitle = @"subtitle can go here";
     
     [self.mapView addAnnotation:point];
+}
+
+- (void)locationManager:(CLLocationManager*)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)locationServiceStatus {
+    
+    switch (locationServiceStatus) {
+        case kCLAuthorizationStatusNotDetermined: {
+            // NSLog(@"User still thinking..");
+        } break;
+        case kCLAuthorizationStatusDenied: {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Location services not authorized"
+                                                            message:@"This app needs you to authorize locations services to work."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        } break;
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+        case kCLAuthorizationStatusAuthorizedAlways: {
+            [locationManager startUpdatingLocation];
+        } break;
+        default:
+            break;
+    }
 }
 
 - (NSString *)deviceLocation {
@@ -191,22 +217,6 @@
 
 - (NSString *)deviceAlt {
     return [NSString stringWithFormat:@"%f", locationManager.location.altitude];
-}
-
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)locationStatus {
-    if (locationStatus == kCLAuthorizationStatusAuthorizedWhenInUse) {
-        [locationManager startUpdatingLocation];
-    } else if (locationStatus == kCLAuthorizationStatusDenied) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Location services not authorized"
-                                                        message:@"This app needs you to authorize locations services to work."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-    } else {
-        return;
-//        NSLog(@"Wrong location status");
-    }
 }
 
 - (IBAction)onStatusClick:(id)sender {
