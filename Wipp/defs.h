@@ -55,24 +55,26 @@ extern AppDelegate *appDelegate;
     #define RESURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/"
     #define CREATEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/create/"
     #define RESACCEPTURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/accept/"
+    #define RESCOMPLETEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/complete/"
     #define RESCANCELURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/cancel/"
 #else
 // PROD URLS
     // general
-    #define TERMSURL @"http://127.0.0.1:8000/terms/"
-    #define PRIVACYURL @"http://127.0.0.1:8000/privacy/"
+    #define TERMSURL @"https://secret-refuge-87026.herokuapp.com/terms/"
+    #define PRIVACYURL @"https://secret-refuge-87026.herokuapp.com/privacy/"
     // accounts
-    #define CHANGEPASSURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/password/change/"
-    #define FORGOTPASSURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/password/reset/"
-    #define LOGINURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/auth/token/"
-    #define REGISTERURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/create/"
-    #define PROFILEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/"
-    #define DRIVERURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/driver/"
+    #define CHANGEPASSURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/password/change/"
+    #define FORGOTPASSURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/password/reset/"
+    #define LOGINURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/auth/token/"
+    #define REGISTERURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/accounts/create/"
+    #define PROFILEURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/accounts/"
+    #define DRIVERURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/accounts/driver/"
     // reservations
-    #define RESURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/"
-    #define CREATEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/create/"
-    #define RESACCEPTURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/accept/"
-    #define RESCANCELURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/cancel/"
+    #define RESURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/reservations/"
+    #define CREATEURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/reservations/create/"
+    #define RESACCEPTURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/reservations/accept/"
+    #define RESCOMPLETEURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/reservations/complete/"
+    #define RESCANCELURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/reservations/cancel/"
 #endif
 
 #define    UserDefaults          [NSUserDefaults standardUserDefaults]
@@ -86,8 +88,8 @@ extern AppDelegate *appDelegate;
 #define    SetActiveRequest(x)   [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"ActiveRequest"]
 #define    GetActiveRequest      [[NSUserDefaults standardUserDefaults] boolForKey:@"ActiveRequest"]
 
-#define    SetReservationId(x)   [[NSUserDefaults standardUserDefaults] setInteger:(x) forKey:@"ReservationId"]
-#define    GetReservationId      [[NSUserDefaults standardUserDefaults] integerForKey:@"ReservationId"]
+#define    SetReservationId(x)   [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"ReservationId"]
+#define    GetReservationId      [[NSUserDefaults standardUserDefaults] objectForKey:@"ReservationId"]
 
 #define    SetStartValue(x)      [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"StartValue"]
 #define    GetStartValue         [[NSUserDefaults standardUserDefaults] objectForKey:@"StartValue"]
@@ -109,6 +111,9 @@ extern AppDelegate *appDelegate;
 
 #define    SetUserIsDriver(x)    [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"UserIsDriver"]
 #define    GetUserIsDriver       [[NSUserDefaults standardUserDefaults] boolForKey:@"UserIsDriver"]
+
+#define    SetActiveDrive(x)     [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"ActiveDrive"]
+#define    GetActiveDrive        [[NSUserDefaults standardUserDefaults] boolForKey:@"ActiveDrive"]
 
 #define    SetUserEmail(x)       [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserEmail"]
 #define    GetUserEmail          [[NSUserDefaults standardUserDefaults] objectForKey:@"UserEmail"]

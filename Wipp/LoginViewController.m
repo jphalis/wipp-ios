@@ -278,9 +278,9 @@
                      [self setBusy:NO];
                      return;
                  }
-            
                  SetUserEmail([JSONValue objectForKey:@"email"]);
                  SetUserFullName([JSONValue objectForKey:@"full_name"]);
+                 SetUserIsDriver([[JSONValue objectForKey:@"is_driver"]boolValue]);
 
                  [self setBusy:NO];
              } else {

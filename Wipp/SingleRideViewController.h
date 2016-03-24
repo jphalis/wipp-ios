@@ -13,5 +13,6 @@
 @property (strong, nonatomic) NSString *destinationValue;
 @property (strong, nonatomic) NSString *costValue;
 @property (strong, nonatomic) NSString *statusValue;
+@property (strong, nonatomic) NSString *reservationID;
 
 @end

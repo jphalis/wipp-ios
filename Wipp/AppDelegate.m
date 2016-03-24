@@ -171,6 +171,7 @@ MBProgressHUD *hud;
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserPassword"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserFullName"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"ActiveRequest"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"ActiveDrive"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"StartValue"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"DestinationValue"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"CostValue"];

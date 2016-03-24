@@ -62,13 +62,14 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     
-    if(GetActiveRequest){
+    if(GetActiveRequest || GetActiveDrive){
         requestBtn.hidden = YES;
         requestBtn.enabled = NO;
         
         statusBtn.hidden = NO;
         statusBtn.enabled = YES;
         
+        [self checkReservationStatus];
         [self initializeTimer];
     } else {
         requestBtn.hidden = NO;
@@ -108,7 +109,7 @@
 
 -(void)checkReservationStatus{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *urlString = [NSString stringWithFormat:@"%@%ld/", RESURL, (long)GetReservationId];
+        NSString *urlString = [NSString stringWithFormat:@"%@%@/", RESURL, GetReservationId];
         
         NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                                                  timeoutInterval:60];
@@ -148,14 +149,15 @@
                         // change text of cost label
                     } else if ([statusVerbose isEqual: @"Accepted"]){
                         [statusBtn setTitle:status forState:UIControlStateNormal];
-                        // bring up single ride view and show driver info
                     } else if ([statusVerbose isEqual: @"Completed"]){
                         [statusBtn setTitle:status forState:UIControlStateNormal];
                         SetActiveRequest(NO);
+                        SetActiveDrive(NO);
                         [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
                     } else if ([statusVerbose isEqual: @"Canceled"]){
                         [statusBtn setTitle:status forState:UIControlStateNormal];
                         SetActiveRequest(NO);
+                        SetActiveDrive(NO);
                         [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
                     }
                 });

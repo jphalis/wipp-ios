@@ -99,8 +99,7 @@
                             rideClass.start_amount = [dictResult objectForKey:@"start_amount"];
                             rideClass.final_amount = [dictResult objectForKey:@"start_amount"];
                             rideClass.user = [dictResult objectForKey:@"user"];
-                            int rideID = [[dictResult objectForKey:@"id"]intValue];
-                            rideClass.rideId = [NSString stringWithFormat:@"%d",rideID];
+                            rideClass.rideId = [dictResult objectForKey:@"id"];
                             rideClass.driver = @"";
                             rideClass.status_verbose = [dictResult objectForKey:@"status_verbose"];
                             rideClass.pick_up_interval = [dictResult objectForKey:@"pick_up_interval"];
@@ -183,9 +182,14 @@
     RideClass *rideClass = [arrRides objectAtIndex:indexPath.row];
     
     SingleRideViewController *singleRideViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SingleRideViewController"];
-    singleRideViewController.startValue = rideClass.start_address;;
+    singleRideViewController.startValue = rideClass.start_address;
+    SetStartValue(rideClass.start_address);
     singleRideViewController.destinationValue = rideClass.destination_address;
+    SetDestinationValue(rideClass.destination_address);
     singleRideViewController.costValue = [NSString stringWithFormat:@"$%@", rideClass.start_amount];
+    NSString *cost = [NSString stringWithFormat:@"$%@", rideClass.start_amount];
+    SetCostValue(cost);
+    singleRideViewController.reservationID = rideClass.rideId;
     [self.navigationController pushViewController:singleRideViewController animated:YES];
 }
 

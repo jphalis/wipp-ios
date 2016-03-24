@@ -435,8 +435,7 @@
                     [alert showNotice:self title:@"Notice" subTitle:[JSONValue objectForKey:@"error_message"] closeButtonTitle:@"OK" duration:0.0f];
                 } else {
                     SetActiveRequest(YES);
-                    int reservationID = [[JSONValue objectForKey:@"id"]intValue];
-                    SetReservationId(reservationID);
+                    SetReservationId([JSONValue objectForKey:@"id"]);
                     SetStartValue([startLocationLabel.text Trim]);
                     SetDestinationValue([destinationLabel.text Trim]);
                     SetCostValue([payLabel.text Trim]);
