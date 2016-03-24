@@ -125,36 +125,24 @@
             if ([data length] > 0 && error == nil){
                 NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
                 
-                NSString *statusVerbose = [JSONValue objectForKey:@"status_verbose"];
-                
-                if ([JSONValue isKindOfClass:[NSDictionary class]]){
-                    if ([statusVerbose isEqual: @"Pending"]){
-                        status = @"Ride status: Pending...";
-                    } else if ([statusVerbose isEqual: @"Negotiating"]){
-                        status = @"Ride status: Negotiating";
-                        cost = [JSONValue objectForKey:@"final_amount"];
-                    } else if ([statusVerbose isEqual: @"Accepted"]){
-                        status = @"Ride status: Accepted";
-                    } else if ([statusVerbose isEqual: @"Completed"]){
-                        status = @"Ride status: Completed";
-                    } else if ([statusVerbose isEqual: @"Canceled"]){
-                        status = @"Ride status: Canceled";
-                    }
+                status = [JSONValue objectForKey:@"status_verbose"];
+                if ([status isEqual: @"Negotiating"]){
+                    cost = [JSONValue objectForKey:@"final_amount"];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if ([statusVerbose isEqual: @"Pending"]){
+                    if ([status isEqual: @"Pending"]){
                         return;
-                    } else if ([statusVerbose isEqual: @"Negotiating"]){
+                    } else if ([status isEqual: @"Negotiating"]){
                         [statusBtn setTitle:status forState:UIControlStateNormal];
                         // change text of cost label
-                    } else if ([statusVerbose isEqual: @"Accepted"]){
+                    } else if ([status isEqual: @"Accepted"]){
                         [statusBtn setTitle:status forState:UIControlStateNormal];
-                    } else if ([statusVerbose isEqual: @"Completed"]){
+                    } else if ([status isEqual: @"Completed"]){
                         [statusBtn setTitle:status forState:UIControlStateNormal];
                         SetActiveRequest(NO);
                         SetActiveDrive(NO);
                         [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
-                    } else if ([statusVerbose isEqual: @"Canceled"]){
+                    } else if ([status isEqual: @"Canceled"]){
                         [statusBtn setTitle:status forState:UIControlStateNormal];
                         SetActiveRequest(NO);
                         SetActiveDrive(NO);
