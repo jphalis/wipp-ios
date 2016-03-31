@@ -1135,9 +1135,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				New_Setting = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.domain.Wipp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wipp;
 				PRODUCT_NAME = Wipp;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "2a336b94-c26d-4f47-9112-4abb968edc5b";
 			};
 			name = Debug;
 		};
@@ -1152,9 +1152,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				New_Setting = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.domain.Wipp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wipp;
 				PRODUCT_NAME = Wipp;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "2a336b94-c26d-4f47-9112-4abb968edc5b";
 			};
 			name = Release;
 		};

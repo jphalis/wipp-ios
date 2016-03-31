@@ -140,6 +140,7 @@
                         // change text of cost label
                     } else if ([status isEqual: @"Accepted"]){
                         [statusBtn setTitle:status forState:UIControlStateNormal];
+                        [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
                     } else if ([status isEqual: @"Completed"]){
                         [statusBtn setTitle:status forState:UIControlStateNormal];
                         SetActiveRequest(NO);
@@ -160,6 +161,7 @@
 - (void)stopTimer {
     [timer invalidate];
     timer = nil;
+    [locationManager stopUpdatingLocation];
 }
 
 -(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
