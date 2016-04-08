@@ -6,6 +6,7 @@
 #import "AvailableRidesViewController.h"
 #import "defs.h"
 #import "GlobalFunctions.h"
+#import "MapViewController.h"
 #import "SCLAlertView.h"
 #import "SingleRideViewController.h"
 #import "SWRevealViewController.h"
@@ -20,12 +21,16 @@
     __weak IBOutlet UIButton *cancelBtn;
     __weak IBOutlet UIButton *acceptBtn;
     __weak IBOutlet UIButton *completeBtn;
-    __weak IBOutlet UILabel *requesterLabel;
-    __weak IBOutlet UILabel *userLabel;
-    __weak IBOutlet UILabel *driverTitleLabel;
-    __weak IBOutlet UILabel *driverLabel;
+    __weak IBOutlet UILabel *userRoleLabel;
+    __weak IBOutlet UILabel *userFullNameLabel;
+    __weak IBOutlet UILabel *phoneNumberLabel;
+    __weak IBOutlet UILabel *mutualFriendsLabel;
+    __weak IBOutlet UILabel *pickUpTimeLabel;
     
-    NSString *resIDForUse;
+    NSString *requester;
+    NSString *requester_phone_number;
+    NSString *driver;
+    NSString *driver_phone_number;
 }
 - (IBAction)cancelRequest:(id)sender;
 - (IBAction)acceptRequest:(id)sender;
@@ -34,27 +39,16 @@
 @end
 
 @implementation SingleRideViewController
-@synthesize sidebarButton, startValue, destinationValue, costValue, statusValue, reservationID;
+@synthesize sidebarButton, startValue, destinationValue, costValue, statusValue, reservationID, pickUpTime;
 
 - (void)viewDidLoad {
-    if (startValue){
-        startLocLabel.text = startValue;
-    } else {
-        startLocLabel.text = GetStartValue;
-    }
-    if (destinationValue){
-        destinationLabel.text = destinationValue;
-    } else {
-        destinationLabel.text = GetDestinationValue;
-    }
-    if (costValue){
-        costLabel.text = costValue;
-    } else {
-        costLabel.text = GetCostValue;
-    }
-    if (statusValue){
-        statusLabel.text = statusValue;
-    }
+    [self getReservationDetails];
+    
+    startLocLabel.text = startValue;
+    destinationLabel.text = destinationValue;
+    costLabel.text = costValue;
+    pickUpTimeLabel.text = pickUpTime;
+    statusLabel.text = statusValue;
     
     [super viewDidLoad];
     
@@ -69,8 +63,6 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    [self getReservationDetails];
-    
     // Remove label on back button
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
     barButton.title = @" ";
@@ -78,7 +70,8 @@
     
     [super viewWillAppear:YES];
     
-    
+    MapViewController *mapViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
+    mapViewController.reservationID = reservationID;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -110,18 +103,21 @@
     if (buttonIndex == 0) {
         [self doCancelRequest];
         [self setBusy:NO];
-        costLabel.text = @"$0.00";
         statusLabel.text = @"Canceled";
         cancelBtn.hidden = YES;
-        cancelBtn.enabled = NO;
         SetActiveRequest(NO);
         SetActiveDrive(NO);
+        
+        MapViewController *mapViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
+        mapViewController.reservationID = reservationID;
+        
         SCLAlertView *alert = [[SCLAlertView alloc] init];
         alert.showAnimationType = SlideInFromLeft;
         alert.hideAnimationType = SlideOutToBottom;
         [alert showSuccess:self title:@"Success" subTitle:@"Your request has been canceled." closeButtonTitle:@"OK" duration:0.0f];
         [alert alertIsDismissed:^{
-            [self.navigationController popViewControllerAnimated:YES];
+            // [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController pushViewController:mapViewController animated:YES];
         }];
     } else {
         return;
@@ -133,7 +129,7 @@
     [self setBusy:YES];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *strURL = [NSString stringWithFormat:@"%@%@/", RESCANCELURL, resIDForUse];
+        NSString *strURL = [NSString stringWithFormat:@"%@%@/", RESCANCELURL, reservationID];
         NSURL *url = [NSURL URLWithString:strURL];
         NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
         [urlRequest setTimeoutInterval:60];
@@ -168,7 +164,7 @@
     [self setBusy:YES];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *strURL = [NSString stringWithFormat:@"%@%@/", RESACCEPTURL, resIDForUse];
+        NSString *strURL = [NSString stringWithFormat:@"%@%@/", RESACCEPTURL, reservationID];
         NSURL *url = [NSURL URLWithString:strURL];
         NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
         [urlRequest setTimeoutInterval:60];
@@ -187,14 +183,18 @@
                 if(JSONValue != nil){
                     [self setBusy:NO];
                     SetActiveDrive(YES);
-                    SetReservationId(resIDForUse);
+                    
+                    MapViewController *mapViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
+                    mapViewController.reservationID = reservationID;
+                    
                     [[UIPasteboard generalPasteboard] setString:startLocLabel.text];
                     SCLAlertView *alert = [[SCLAlertView alloc] init];
                     alert.showAnimationType = SlideInFromLeft;
                     alert.hideAnimationType = SlideOutToBottom;
                     [alert showSuccess:self title:@"Accepted" subTitle:@"You have accepted the ride request. The pick up location has been copied to your clipboard." closeButtonTitle:@"OK" duration:0.0f];
                     [alert alertIsDismissed:^{
-                        [self.navigationController popViewControllerAnimated:YES];
+                        // self.navigationController popViewControllerAnimated:YES];
+                        [self.navigationController pushViewController:mapViewController animated:YES];
                     }];
                     return;
                 } else {
@@ -215,7 +215,7 @@
     [self setBusy:YES];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *strURL = [NSString stringWithFormat:@"%@%@/", RESCOMPLETEURL, resIDForUse];
+        NSString *strURL = [NSString stringWithFormat:@"%@%@/", RESCOMPLETEURL, reservationID];
         NSURL *url = [NSURL URLWithString:strURL];
         NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
         [urlRequest setTimeoutInterval:60];
@@ -233,8 +233,11 @@
                 NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
                 if(JSONValue != nil){
                     SetActiveDrive(NO);
+                    MapViewController *mapViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
+                    mapViewController.reservationID = reservationID;
                     [self setBusy:NO];
-                    [self.navigationController popViewControllerAnimated:YES];
+                    // [self.navigationController popViewControllerAnimated:YES];
+                    [self.navigationController pushViewController:mapViewController animated:YES];
                 } else {
                     [self setBusy:NO];
                 }
@@ -249,13 +252,8 @@
 
 -(void)getReservationDetails {
     [self setBusy:YES];
-    
-    if (reservationID){
-        resIDForUse = reservationID;
-    } else {
-        resIDForUse = GetReservationId;
-    }
-    NSString *urlString = [NSString stringWithFormat:@"%@%@/", RESURL, resIDForUse];
+
+    NSString *urlString = [NSString stringWithFormat:@"%@%@/", RESURL, reservationID];
     NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                                              timeoutInterval:60];
     NSString *authStr = [NSString stringWithFormat:@"%@:%@", GetUserEmail, GetUserPassword];
@@ -266,145 +264,162 @@
     [_request setHTTPMethod:@"GET"];
     
     [NSURLConnection sendAsynchronousRequest:_request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
-        if(error != nil){
+        if (error != nil){
             [self setBusy:NO];
         }
         if ([data length] > 0 && error == nil){
             NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
             
-            if([JSONValue isKindOfClass:[NSDictionary class]] && [JSONValue count] > 0){
+            if ([JSONValue isKindOfClass:[NSDictionary class]] && [JSONValue count] > 0){
                     
-                if([JSONValue objectForKey:@"start_address"] == [NSNull null]){
+                if ([JSONValue objectForKey:@"start_query"] == [NSNull null]){
                     startLocLabel.text = @"";
                 } else {
-                    startLocLabel.text = [JSONValue objectForKey:@"start_address"];
+                    startLocLabel.text = [JSONValue objectForKey:@"start_query"];
                 }
                 
-                if([JSONValue objectForKey:@"destination_address"] == [NSNull null]){
+                if ([JSONValue objectForKey:@"destination_query"] == [NSNull null]){
                     destinationLabel.text = @"";
                 } else {
-                    destinationLabel.text = [JSONValue objectForKey:@"destination_address"];
+                    destinationLabel.text = [JSONValue objectForKey:@"destination_query"];
                 }
             
-                if([JSONValue objectForKey:@"final_amount"] == [NSNull null]){
+                if ([JSONValue objectForKey:@"final_amount"] == [NSNull null]){
                     costLabel.text = @"";
                 } else {
                     costLabel.text = [NSString stringWithFormat:@"$%@", [JSONValue objectForKey:@"start_amount"]];
                 }
                         
-                if([JSONValue objectForKey:@"user"] == [NSNull null]){
-                    userLabel.text = @"";
+                if ([JSONValue objectForKey:@"user"] == [NSNull null]){
+                    requester = @"";
                 } else {
-                    userLabel.text = [JSONValue objectForKey:@"user"];
+                    requester = [JSONValue objectForKey:@"user"];
+                }
+                
+                if ([JSONValue objectForKey:@"user_phone_number"] == [NSNull null]){
+                    requester_phone_number = @"";
+                } else {
+                    requester_phone_number = [JSONValue objectForKey:@"user_phone_number"];
                 }
                     
-                if([JSONValue objectForKey:@"driver"] == [NSNull null]){
-                    driverLabel.text = @"";
+                if ([JSONValue objectForKey:@"driver"] == [NSNull null]){
+                    driver = @"";
                 } else {
-                    driverLabel.text = [JSONValue objectForKey:@"driver"];
+                    driver = [JSONValue objectForKey:@"driver"];
+                }
+                
+                if ([JSONValue objectForKey:@"driver_phone_number"] == [NSNull null]){
+                    driver_phone_number = @"";
+                } else {
+                    driver_phone_number = [JSONValue objectForKey:@"driver_phone_number"];
                 }
                         
-                if([JSONValue objectForKey:@"status_verbose"] == [NSNull null]){
+                if ([JSONValue objectForKey:@"status_verbose"] == [NSNull null]){
                     statusLabel.text = @"";
                 } else {
                     statusLabel.text = [JSONValue objectForKey:@"status_verbose"];
                 }
                 
-                if (GetActiveRequest){
-                    cancelBtn.hidden = NO;
-                    cancelBtn.enabled = YES;
-                    cancelBtn.layer.borderWidth = 3;
-                    cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
-                    cancelBtn.layer.cornerRadius = 7;
-                    
-                    acceptBtn.hidden = YES;
-                    acceptBtn.enabled = NO;
-                    
-                    completeBtn.hidden = YES;
-                    completeBtn.enabled = NO;
-                    
-                    requesterLabel.hidden = YES;
-                    userLabel.hidden = YES;
-                    driverTitleLabel.hidden = YES;
-                    driverLabel.hidden = YES;
-                } else if (GetUserIsDriver && [statusLabel.text isEqual: @"Pending..."] && (GetUserFullName != userLabel.text)){
-                    acceptBtn.hidden = NO;
-                    acceptBtn.enabled = YES;
-                    acceptBtn.layer.borderWidth = 3;
-                    acceptBtn.layer.borderColor = [[UIColor greenColor] CGColor];
-                    acceptBtn.layer.cornerRadius = 7;
-                    
-                    cancelBtn.hidden = YES;
-                    cancelBtn.enabled = NO;
-                    
-                    completeBtn.hidden = YES;
-                    completeBtn.enabled = NO;
-                    
-                    requesterLabel.hidden = YES;
-                    userLabel.hidden = YES;
-                    driverTitleLabel.hidden = YES;
-                    driverLabel.hidden = YES;
-                } else if ([statusLabel.text isEqual: @"Accepted"] && !GetActiveDrive){
-                    cancelBtn.hidden = NO;
-                    cancelBtn.enabled = YES;
-                    
-                    acceptBtn.hidden = YES;
-                    acceptBtn.enabled = NO;
-                    
-                    completeBtn.hidden = YES;
-                    completeBtn.enabled = NO;
-                    
-                    requesterLabel.hidden = NO;
-                    userLabel.hidden = NO;
-                    driverTitleLabel.hidden = NO;
-                    driverLabel.hidden = NO;
-                } else if ([statusLabel.text isEqual: @"Accepted"] && GetActiveDrive){
-                    completeBtn.hidden = NO;
-                    completeBtn.enabled = YES;
-                    completeBtn.layer.borderWidth = 3;
-                    completeBtn.layer.borderColor = [[UIColor greenColor] CGColor];
-                    completeBtn.layer.cornerRadius = 7;
-                    
-                    cancelBtn.hidden = YES;
-                    cancelBtn.enabled = NO;
-                    
-                    acceptBtn.hidden = YES;
-                    acceptBtn.enabled = NO;
-                    
-                    requesterLabel.hidden = NO;
-                    userLabel.hidden = NO;
-                    driverTitleLabel.hidden = NO;
-                    driverLabel.hidden = NO;
-                } else if ([statusLabel.text isEqual: @"Completed"] || [statusLabel.text isEqual: @"Canceled"]){
-                    cancelBtn.hidden = YES;
-                    cancelBtn.enabled = NO;
-                    
-                    acceptBtn.hidden = YES;
-                    acceptBtn.enabled = NO;
-                    
-                    completeBtn.hidden = YES;
-                    completeBtn.enabled = NO;
-                    
-                    requesterLabel.hidden = NO;
-                    userLabel.hidden = NO;
-                    driverTitleLabel.hidden = NO;
-                    driverLabel.hidden = NO;
+                if ([JSONValue objectForKey:@"pick_up_interval"] == [NSNull null]){
+                    pickUpTimeLabel.text = @"";
                 } else {
-                    cancelBtn.hidden = YES;
-                    cancelBtn.enabled = NO;
-                    
-                    acceptBtn.hidden = YES;
-                    acceptBtn.enabled = NO;
-                    
-                    completeBtn.hidden = YES;
-                    completeBtn.enabled = NO;
-                    
-                    requesterLabel.hidden = YES;
-                    userLabel.hidden = YES;
-                    driverTitleLabel.hidden = YES;
-                    driverLabel.hidden = YES;
+                    pickUpTimeLabel.text = [JSONValue objectForKey:@"pick_up_interval"];
                 }
                 
+                
+                if ([statusLabel.text isEqual: @"Pending..."]){
+                    if (GetUserFullName == requester){
+                        // User looking at their own pending request
+                        cancelBtn.hidden = NO;
+                        cancelBtn.layer.borderWidth = 3;
+                        cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
+                        cancelBtn.layer.cornerRadius = 7;
+                    } else {
+                        // Driver looking at pending request
+                        acceptBtn.hidden = NO;
+                        acceptBtn.layer.borderWidth = 3;
+                        acceptBtn.layer.borderColor = [[UIColor greenColor] CGColor];
+                        acceptBtn.layer.cornerRadius = 7;
+                    }
+                } else if ([statusLabel.text isEqual: @"Accepted"]){
+                    if (GetUserFullName == requester){
+                        // User looking at their own accepted request
+                        userRoleLabel.hidden = NO;
+                        userFullNameLabel.hidden = NO;
+                        phoneNumberLabel.hidden = NO;
+//                        mutualFriendsLabel.hidden = NO;
+                        
+                        userRoleLabel.text = @"Driver:";
+                        userFullNameLabel.text = driver;
+                        phoneNumberLabel.text = driver_phone_number;
+//                        mutualFriendsLabel.text = @"";
+                        
+                        cancelBtn.hidden = NO;
+                        cancelBtn.layer.borderWidth = 3;
+                        cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
+                        cancelBtn.layer.cornerRadius = 7;
+                    } else {
+                        // Driver looking at accepted request
+                        userRoleLabel.hidden = NO;
+                        userFullNameLabel.hidden = NO;
+                        phoneNumberLabel.hidden = NO;
+//                        mutualFriendsLabel.hidden = NO;
+                        
+                        userRoleLabel.text = @"Requester:";
+                        userFullNameLabel.text = requester;
+                        phoneNumberLabel.text = requester_phone_number;
+//                        mutualFriendsLabel.text = @"";
+                        
+                        completeBtn.hidden = NO;
+                        completeBtn.layer.borderWidth = 3;
+                        completeBtn.layer.borderColor = [[UIColor greenColor] CGColor];
+                        completeBtn.layer.cornerRadius = 7;
+                    }
+                } else if ([statusLabel.text isEqual: @"Completed"]){
+                    if (GetUserFullName == requester){
+                        userRoleLabel.hidden = NO;
+                        userFullNameLabel.hidden = NO;
+                        phoneNumberLabel.hidden = NO;
+//                        mutualFriendsLabel.hidden = NO;
+                        
+                        // User looking at completed request
+                        userRoleLabel.text = @"Driver:";
+                        userFullNameLabel.text = driver;
+                        phoneNumberLabel.text = driver_phone_number;
+//                        mutualFriendsLabel.text = @"";
+                    } else {
+                        // Driver looking at completed request
+                        userRoleLabel.hidden = NO;
+                        userFullNameLabel.hidden = NO;
+                        phoneNumberLabel.hidden = NO;
+//                        mutualFriendsLabel.hidden = NO;
+                        
+                        userRoleLabel.text = @"Requester:";
+                        userFullNameLabel.text = requester;
+                        phoneNumberLabel.text = requester_phone_number;
+//                        mutualFriendsLabel.text = @"";
+                    }
+                } else if ([statusLabel.text isEqual: @"Canceled"]){
+                    if (GetUserFullName == requester){
+                        // User looking at canceled request
+                        if (driver){
+                            userRoleLabel.hidden = NO;
+                            userFullNameLabel.hidden = NO;
+                            
+                            userRoleLabel.text = @"Driver:";
+                            userFullNameLabel.text = driver;
+                        }
+                    } else {
+                        // Driver looking at canceled request
+                        userRoleLabel.hidden = NO;
+                        userFullNameLabel.hidden = NO;
+                        
+                        userRoleLabel.text = @"Requester:";
+                        userFullNameLabel.text = requester;
+                    }
+                } else {
+                    // Someone is seeing things that shouldn't be
+                }
                 [self setBusy:NO];
             } else {
                 [self setBusy:NO];

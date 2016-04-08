@@ -13,7 +13,6 @@
 
 
 @interface AvailableRidesViewController (){
-    
     UIRefreshControl *refreshControl;
     NSMutableArray *arrRides;
 }
@@ -30,7 +29,7 @@
              forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:refreshControl];
     
-    self.title = @"Available Rides";
+    self.title = @"Rides Needed";
     
     SWRevealViewController *revealViewController = self.revealViewController;
     if (revealViewController){
@@ -94,17 +93,33 @@
                             dictResult = [[NSMutableDictionary alloc]init];
                             dictResult = [arrRideResult objectAtIndex:i];
                             RideClass *rideClass = [[RideClass alloc]init];
-                            rideClass.start_address = [dictResult objectForKey:@"start_address"];
-                            rideClass.destination_address = [dictResult objectForKey:@"destination_address"];
-                            rideClass.start_amount = [dictResult objectForKey:@"start_amount"];
-                            rideClass.final_amount = [dictResult objectForKey:@"start_amount"];
-                            rideClass.user = [dictResult objectForKey:@"user"];
                             rideClass.rideId = [dictResult objectForKey:@"id"];
-                            rideClass.driver = @"";
+                            rideClass.reservation_url = [dictResult objectForKey:@"reservation_url"];
+                            rideClass.user = [dictResult objectForKey:@"user"];
+                            rideClass.user_phone_number = [dictResult objectForKey:@"user_phone_number"];
+                            if ([dictResult objectForKey:@"driver"] == [NSNull null]){
+                                rideClass.driver = @"";
+                            } else {
+                                rideClass.driver = [dictResult objectForKey:@"driver"];
+                            }
+                            if ([dictResult objectForKey:@"driver_phone_number"] == [NSNull null]){
+                                rideClass.driver_phone_number = @"";
+                            } else {
+                                rideClass.driver_phone_number = [dictResult objectForKey:@"driver_phone_number"];
+                            }
                             rideClass.status_verbose = [dictResult objectForKey:@"status_verbose"];
                             rideClass.pick_up_interval = [dictResult objectForKey:@"pick_up_interval"];
+                            rideClass.start_amount = [dictResult objectForKey:@"start_amount"];
+                            rideClass.final_amount = [dictResult objectForKey:@"final_amount"];
+                            rideClass.start_query = [dictResult objectForKey:@"start_query"];
+                            rideClass.destination_query = [dictResult objectForKey:@"destination_query"];
                             rideClass.start_long = [dictResult objectForKey:@"start_long"];
                             rideClass.start_lat = [dictResult objectForKey:@"start_lat"];
+                            rideClass.end_long = [dictResult objectForKey:@"end_long"];
+                            rideClass.end_lat = [dictResult objectForKey:@"end_lat"];
+                            rideClass.start_address = [dictResult objectForKey:@"start_address"];
+                            rideClass.destination_address = [dictResult objectForKey:@"destination_address"];
+                            rideClass.travel_distance = [dictResult objectForKey:@"travel_distance"];
                         
                             [arrRides addObject:rideClass];
                         }
@@ -167,9 +182,8 @@
     }
     
     RideClass *rideClass = [arrRides objectAtIndex:indexPath.row];
-    cell.startAddress.text = rideClass.start_address;
-    cell.endAddress.text = rideClass.destination_address;
-    cell.costValue.text = [NSString stringWithFormat:@"$%@", rideClass.start_amount];
+    cell.pickupTimeLabel.text = rideClass.pick_up_interval;
+    cell.distanceLabel.text = rideClass.travel_distance;
     
     UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height - 1, cell.frame.size.width, 1)];
     bottomBorder.backgroundColor = [UIColor colorWithRed:(234/255.0) green:(234/255.0) blue:(234/255.0) alpha:1.0];
@@ -182,13 +196,9 @@
     RideClass *rideClass = [arrRides objectAtIndex:indexPath.row];
     
     SingleRideViewController *singleRideViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SingleRideViewController"];
-    singleRideViewController.startValue = rideClass.start_address;
-    SetStartValue(rideClass.start_address);
-    singleRideViewController.destinationValue = rideClass.destination_address;
-    SetDestinationValue(rideClass.destination_address);
+    singleRideViewController.startValue = rideClass.start_query;
+    singleRideViewController.destinationValue = rideClass.destination_query;
     singleRideViewController.costValue = [NSString stringWithFormat:@"$%@", rideClass.start_amount];
-    NSString *cost = [NSString stringWithFormat:@"$%@", rideClass.start_amount];
-    SetCostValue(cost);
     singleRideViewController.reservationID = rideClass.rideId;
     [self.navigationController pushViewController:singleRideViewController animated:YES];
 }

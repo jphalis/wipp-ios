@@ -88,17 +88,8 @@ extern AppDelegate *appDelegate;
 #define    SetActiveRequest(x)   [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"ActiveRequest"]
 #define    GetActiveRequest      [[NSUserDefaults standardUserDefaults] boolForKey:@"ActiveRequest"]
 
-#define    SetReservationId(x)   [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"ReservationId"]
-#define    GetReservationId      [[NSUserDefaults standardUserDefaults] objectForKey:@"ReservationId"]
-
-#define    SetStartValue(x)      [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"StartValue"]
-#define    GetStartValue         [[NSUserDefaults standardUserDefaults] objectForKey:@"StartValue"]
-
-#define    SetDestinationValue(x)[[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"DestinationValue"]
-#define    GetDestinationValue   [[NSUserDefaults standardUserDefaults] objectForKey:@"DestinationValue"]
-
-#define    SetCostValue(x)       [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"CostValue"]
-#define    GetCostValue          [[NSUserDefaults standardUserDefaults] objectForKey:@"CostValue"]
+#define    SetFacebookToken(x)   [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"FacebookToken"]
+#define    GetFacebookToken      [[NSUserDefaults standardUserDefaults] objectForKey:@"FacebookToken"]
 
 #define    SetUserToken(x)       [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserToken"]
 #define    GetUserToken          [[NSUserDefaults standardUserDefaults] objectForKey:@"UserToken"]
@@ -126,6 +117,9 @@ extern AppDelegate *appDelegate;
 
 #define    SetUserFullName(x)           [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserFullName"]
 #define    GetUserFullName              [[NSUserDefaults standardUserDefaults] objectForKey:@"UserFullName"]
+
+#define    SetProfilePic(x)      [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"ProfilePic"]
+#define    GetProfilePic         [[NSUserDefaults standardUserDefaults] objectForKey:@"ProfilePic"]
 
 #define    SetMobileNum(x)       [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"MobileNum"]
 #define    GetMobileNum          [[NSUserDefaults standardUserDefaults] objectForKey:@"MobileNum"]

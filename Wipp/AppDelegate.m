@@ -3,6 +3,10 @@
 //  Wipp
 //
 
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <FBSDKShareKit/FBSDKShareKit.h>
+
 #import "AppDelegate.h"
 #import "RegisterViewController.h"
 #import "defs.h"
@@ -24,7 +28,7 @@ MBProgressHUD *hud;
     // Hide status bar on splash page
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:NO];
     
-    // Display white status bar
+    // White status bar
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     // Dark keyboard
@@ -40,8 +44,127 @@ MBProgressHUD *hud;
         self.window.rootViewController = navController;
     }
     
+    // Facebook
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(fbAccessTokenDidChange:)
+//                                                 name:FBSDKAccessTokenDidChangeNotification
+//                                               object:nil];
+    
+    [[FBSDKApplicationDelegate sharedInstance] application:application
+                             didFinishLaunchingWithOptions:launchOptions];
+    [FBSDKLoginButton class];
+    [FBSDKProfile enableUpdatesOnAccessTokenChange:YES];
+    
     return YES;
 }
+
+#pragma mark - Facebook methods
+
+//- (void)fbAccessTokenDidChange:(NSNotification*)notification{
+//    if ([notification.name isEqualToString:FBSDKAccessTokenDidChangeNotification]) {
+//        
+//        FBSDKAccessToken* oldToken = [notification.userInfo valueForKey: FBSDKAccessTokenChangeOldKey];
+//        FBSDKAccessToken* newToken = [notification.userInfo valueForKey: FBSDKAccessTokenChangeNewKey];
+//        
+////        NSLog(@"FB access token did change notification\nOLD token:\t%@\nNEW token:\t%@", oldToken.tokenString, newToken.tokenString);
+//        
+//        // initial token setup when user is logged in
+//        if (newToken != nil && oldToken == nil) {
+//            
+//            // check the expiration data
+//            
+//            // IF token is not expired
+//            // THEN log user out
+//            // ELSE sync token with the server
+//            
+//            NSDate *nowDate = [NSDate date];
+//            NSDate *fbExpirationDate = [FBSDKAccessToken currentAccessToken].expirationDate;
+//            if ([fbExpirationDate compare:nowDate] != NSOrderedDescending) {
+////                NSLog(@"FB token: expired");
+//                
+//                // this means user launched the app after 60+ days of inactivity,
+//                // in this case FB SDK cannot refresh token automatically, so
+//                // you have to walk user thought the initial log in with FB flow
+//                
+//                // for the sake of simplicity, just logging user out from Facebook here
+//                [self logoutFacebook];
+//            }
+//            else {
+//                [self syncFacebookAccessTokenWithServer];
+//            }
+//        }
+//        
+//        // change in token string
+//        else if (newToken != nil && oldToken != nil
+//                 && ![oldToken.tokenString isEqualToString:newToken.tokenString]) {
+////            NSLog(@"FB access token string did change");
+//            
+//            [self syncFacebookAccessTokenWithServer];
+//        }
+//        
+//        // moving from "logged in" state to "logged out" state
+//        // e.g. user canceled FB re-login flow
+//        else if (newToken == nil && oldToken != nil) {
+////            NSLog(@"FB access token string did become nil");
+//        }
+//        
+//        // upon token did change event we attempting to get FB profile info via current token (if exists)
+//        // this gives us an ability to check via OG API that the current token is valid
+//        [self requestFacebookUserInfo];
+//    }
+//}
+//
+//- (void)logoutFacebook {
+//    if ([FBSDKAccessToken currentAccessToken]) {
+//        [[FBSDKLoginManager new] logOut];
+//    }
+//}
+//
+//- (void)syncFacebookAccessTokenWithServer {
+//    if (![FBSDKAccessToken currentAccessToken]) {
+//        // returns if empty token
+//        return;
+//    }
+//}
+//
+//- (void)requestFacebookUserInfo {
+//    if (![FBSDKAccessToken currentAccessToken]) {
+//        // returns if empty token
+//        return;
+//    }
+//    
+//    NSDictionary* parameters = @{@"fields": @"id, name, first_name, last_name, picture.width(100).height(100)"};
+//    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me"
+//                                                                   parameters:parameters];
+//    
+//    [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+//        if (!error) {
+//            if ([result objectForKey:@"name"]) {
+//                NSString *fullName = [result objectForKey:@"name"];
+//                SetUserFullName(fullName);
+////                nameLabel.text = fullName;
+//            }
+//            
+//            // Profile Picture
+//            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?width=200&height=200", [result objectForKey:@"id"]]];
+//            NSString *url_string = [NSString stringWithFormat:@"%@", url];
+////            [profileImg loadImageFromURL:url_string withTempImage:@"avatar"];
+//            SetProfilePic(url_string);
+//        }
+//        else {
+//            // First time an error occurs, FB SDK will attemt to recover from it automatically
+//            // via FBSDKGraphErrorRecoveryProcessor (see documentation)
+//            
+//            // you can process an error manually, if you wish, by setting
+//            // -setGraphErrorRecoveryDisabled to YES
+//            
+//            NSInteger statusCode = [(NSString *)error.userInfo[FBSDKGraphRequestErrorHTTPStatusCodeKey] integerValue];
+//            if (statusCode == 400) {
+//                // access denied
+//            }
+//        }
+//    }];
+//}
 
 #pragma mark - Static Methods
 
@@ -100,6 +223,18 @@ MBProgressHUD *hud;
 -(void)UpdateMessage:(NSString *)message {
     if(hud != nil && hud.labelText != nil)
         hud.labelText = message;
+}
+
+#pragma mark - Facebook Actions
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                          openURL:url
+                                                sourceApplication:sourceApplication
+                                                       annotation:annotation];
 }
 
 #pragma mark - Validation Methods
@@ -179,6 +314,7 @@ MBProgressHUD *hud;
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserIsDriver"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserID"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"ReservationId"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"ProfilePic"];
     
     RegisterViewController *registerViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"RegisterViewController"];
     UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:registerViewController];
@@ -200,7 +336,7 @@ MBProgressHUD *hud;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [FBSDKAppEvents activateApp];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }

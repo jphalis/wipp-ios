@@ -233,7 +233,7 @@
                  if ([data length] > 0 && error == nil){
                      NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
                      
-                     if([[JSONValue objectForKey:@"userid"]integerValue]>0){
+                     if([[JSONValue objectForKey:@"userid"]integerValue] > 0){
                          SetUserID([[JSONValue objectForKey:@"userid"]integerValue]);
                          SetUserToken([JSONValue objectForKey:@"token"]);
                          SetUserEmail([txtLoginEmail.text Trim]);
@@ -246,6 +246,7 @@
                          [alert showNotice:self title:@"Notice" subTitle:JSONValue[@"non_field_errors"][0] closeButtonTitle:@"OK" duration:0.0f];
                      }
                  } else {
+                     // NSLog(@"error: %@", error);
                      showServerError();
                      [self setBusy:NO];
                  }

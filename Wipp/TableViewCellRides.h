@@ -7,9 +7,8 @@
 
 @interface TableViewCellRides : UITableViewCell
 
-//@property (weak, nonatomic) IBOutlet UITextView *txtNotification;
-@property (weak, nonatomic) IBOutlet UILabel *startAddress;
-@property (weak, nonatomic) IBOutlet UILabel *endAddress;
-@property (weak, nonatomic) IBOutlet UILabel *costValue;
+@property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *pickupTimeLabel;
+
 
 @end

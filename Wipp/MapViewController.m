@@ -31,7 +31,7 @@
     CLPlacemark *placemark;
 }
 
-@synthesize mapView;
+@synthesize mapView, reservationID;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -53,23 +53,9 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     
-    if(GetActiveRequest || GetActiveDrive){
-        requestBtn.hidden = YES;
-        requestBtn.enabled = NO;
-        
-        statusBtn.hidden = NO;
-        statusBtn.enabled = YES;
-        
-        [self checkReservationStatus];
-        [self initializeTimer];
-    } else {
-        requestBtn.hidden = NO;
-        requestBtn.enabled = YES;
-        
-        statusBtn.hidden = YES;
-        statusBtn.enabled = NO;
-    }
+    SetActiveRequest(NO);
     
+    // Initialize map
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0 &&
         [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse
         ) {
@@ -86,6 +72,39 @@
     [mapView setMapType:MKMapTypeStandard];
     [mapView setZoomEnabled:YES];
     [mapView setScrollEnabled:YES];
+    
+    // Display of buttons
+    if(GetActiveRequest || GetActiveDrive){
+        requestBtn.hidden = YES;
+        
+        [self checkReservationStatus];
+        [self initializeTimer];
+    } else {
+        statusBtn.hidden = YES;
+        
+        [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
+    }
+    
+//    // Pins for annotations
+//    // Start coordinates
+//    CLLocationCoordinate2D startCoord;
+//    startCoord.latitude = 47.640071;
+//    startCoord.longitude = -122.129598;
+//    
+//    MKPointAnnotation *startPoint = [[MKPointAnnotation alloc] init];
+//    startPoint.coordinate = startCoord;
+//    startPoint.title = @"Start";
+//    [self.mapView addAnnotation:startPoint];
+//    
+//    // End coordinates
+//    CLLocationCoordinate2D endCoord;
+//    endCoord.latitude = 47.640071;
+//    endCoord.longitude = -122.129598;
+//    
+//    MKPointAnnotation *endPoint = [[MKPointAnnotation alloc] init];
+//    endPoint.coordinate = endCoord;
+//    endPoint.title = @"Start";
+//    [self.mapView addAnnotation:endPoint];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,7 +131,7 @@
 
 -(void)checkReservationStatus{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *urlString = [NSString stringWithFormat:@"%@%@/", RESURL, GetReservationId];
+        NSString *urlString = [NSString stringWithFormat:@"%@%@/", RESURL, reservationID];
         
         NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                                                  timeoutInterval:60];
@@ -133,7 +152,7 @@
                     cost = [JSONValue objectForKey:@"final_amount"];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if ([status isEqual: @"Pending"]){
+                    if ([status isEqual: @"Pending..."]){
                         return;
                     } else if ([status isEqual: @"Negotiating"]){
                         [statusBtn setTitle:status forState:UIControlStateNormal];
@@ -146,11 +165,15 @@
                         SetActiveRequest(NO);
                         SetActiveDrive(NO);
                         [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
+                        statusBtn.hidden = YES;
+                        requestBtn.hidden = NO;
                     } else if ([status isEqual: @"Canceled"]){
                         [statusBtn setTitle:status forState:UIControlStateNormal];
                         SetActiveRequest(NO);
                         SetActiveDrive(NO);
                         [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
+                        statusBtn.hidden = YES;
+                        requestBtn.hidden = NO;
                     }
                 });
             }
@@ -172,14 +195,6 @@
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 900, 900);
     [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
-    
-    // Add an annotation
-    MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
-    point.coordinate = userLocation.coordinate;
-    point.title = @"Current Location";
-    // point.subtitle = @"subtitle can go here";
-    
-    [self.mapView addAnnotation:point];
 }
 
 - (void)locationManager:(CLLocationManager*)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)locationServiceStatus {

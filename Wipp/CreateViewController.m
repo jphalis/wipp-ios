@@ -6,6 +6,7 @@
 #import "CreateViewController.h"
 #import "defs.h"
 #import "GlobalFunctions.h"
+#import "MapViewController.h"
 #import "SCLAlertView.h"
 #import "StringUtil.h"
 #import "SWRevealViewController.h"
@@ -16,7 +17,7 @@
 #define kOFFSET_FOR_KEYBOARD 0.25
 
 
-@interface CreateViewController ()<CLLocationManagerDelegate, UIActionSheetDelegate, UIPickerViewDataSource, UIPickerViewDelegate> {
+@interface CreateViewController ()<CLLocationManagerDelegate, UIActionSheetDelegate> {
     
     __weak IBOutlet UITextField *startLocationLabel;
     __weak IBOutlet UITextField *destinationLabel;
@@ -28,8 +29,7 @@
     NSString *longitudeValue;
     NSString *latitudeValue;
 }
-@property (strong, nonatomic) UIPickerView *pickerView;
-@property (strong, nonatomic) NSArray *pickerElements;
+@property (strong, nonatomic) UIDatePicker *pickerView;
 - (IBAction)getLocationCurrent:(id)sender;
 - (IBAction)requestRide:(id)sender;
 @end
@@ -61,16 +61,16 @@
     locationManager = [[CLLocationManager alloc] init];
     geocoder = [[CLGeocoder alloc] init];
     
-    // Initialize pickerView for pick up time intervals
-    self.pickerView = [[UIPickerView alloc] init];
-    self.pickerView.delegate = self;
-    self.pickerView.dataSource = self;
-    self.pickerView.showsSelectionIndicator = YES;
-    intervalLabel.inputView = self.pickerView;
-    self.pickerElements = @[@"Now", @"10 mins", @"15 mins", @"20 mins"];
-    [self pickerView:self.pickerView
-        didSelectRow:0
-         inComponent:0];
+    // Time picker
+    self.pickerView = [[UIDatePicker alloc] init];
+    self.pickerView.datePickerMode = UIDatePickerModeTime; // UIDatePickerModeDateAndTime
+    
+    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    [timeFormatter setDateFormat:@"h:mm a"];
+    intervalLabel.text = [timeFormatter stringFromDate:self.pickerView.date];
+    [self.pickerView addTarget:self action:@selector(updateTimeLabel:)
+         forControlEvents:UIControlEventValueChanged];
+    [intervalLabel setInputView:self.pickerView];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -285,22 +285,12 @@
     
 }
 
-#pragma mark - Picker view for time interval
+#pragma mark - Picker view for time
 
--(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return [self.pickerElements count];
-}
-
--(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 1;
-}
-
--(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return [self.pickerElements objectAtIndex:row];
-}
-
--(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    intervalLabel.text = [self.pickerElements objectAtIndex:row];
+-(void)updateTimeLabel:(UIDatePicker *)sender {
+    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    [timeFormatter setDateFormat:@"h:mm a"];
+    intervalLabel.text = [timeFormatter stringFromDate:self.pickerView.date];
 }
 
 #pragma mark - Submit methods
@@ -373,7 +363,7 @@
     
     NSMutableDictionary* _params = [[NSMutableDictionary alloc] init];
     
-    // Change payment value to a float
+    // Convert payment value to a float
     NSString *payAmount = [payLabel.text Trim];
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     formatter.numberStyle = NSNumberFormatterCurrencyStyle;
@@ -435,11 +425,9 @@
                     [alert showNotice:self title:@"Notice" subTitle:[JSONValue objectForKey:@"error_message"] closeButtonTitle:@"OK" duration:0.0f];
                 } else {
                     SetActiveRequest(YES);
-                    SetReservationId([JSONValue objectForKey:@"id"]);
-                    SetStartValue([startLocationLabel.text Trim]);
-                    SetDestinationValue([destinationLabel.text Trim]);
-                    SetCostValue([payLabel.text Trim]);
-                    [self pushingView:YES];
+                    MapViewController *mapViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
+                    mapViewController.reservationID = [JSONValue objectForKey:@"id"];
+                    [self.navigationController pushViewController:mapViewController animated:YES];
                 }
             } else {
                 showServerError();
@@ -450,10 +438,6 @@
         }
         [self setBusy:NO];
     }];
-}
-
--(void)pushingView:(BOOL)animation{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

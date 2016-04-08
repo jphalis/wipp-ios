@@ -22,11 +22,7 @@
 - (void)viewDidLoad {
     appDelegate = [AppDelegate getDelegate];
     [super viewDidLoad];
-    if (GetUserIsDriver){
-        menuItems = @[@"title", @"home", @"rides", @"account", @"logout"];
-    } else {
-        menuItems = @[@"title", @"home", @"account", @"logout"];
-    }
+    menuItems = @[@"title", @"home", @"rides", @"account", @"logout"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,15 +52,6 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([[menuItems objectAtIndex:indexPath.row] isEqualToString:@"logout"]){
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Alert" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
-        alert.delegate = self;
-        alert.tag = 100;
-        [alert show];
-    }
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (alertView.tag == 100 && buttonIndex == 1 ) {
         [appDelegate userLogout];
     }
 }

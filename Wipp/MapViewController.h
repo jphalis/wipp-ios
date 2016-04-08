@@ -14,6 +14,6 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
-
+@property (strong, nonatomic) NSString *reservationID;
 
 @end

@@ -14,5 +14,6 @@
 @property (strong, nonatomic) NSString *costValue;
 @property (strong, nonatomic) NSString *statusValue;
 @property (strong, nonatomic) NSString *reservationID;
+@property (strong, nonatomic) NSString *pickUpTime;
 
 @end
