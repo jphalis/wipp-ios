@@ -60,21 +60,21 @@ extern AppDelegate *appDelegate;
 #else
 // PROD URLS
     // general
-    #define TERMSURL @"https://secret-refuge-87026.herokuapp.com/terms/"
-    #define PRIVACYURL @"https://secret-refuge-87026.herokuapp.com/privacy/"
+    #define TERMSURL @"https://pure-shelf-18585.herokuapp.com/terms/"
+    #define PRIVACYURL @"https://pure-shelf-18585.herokuapp.com/privacy/"
     // accounts
-    #define CHANGEPASSURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/password/change/"
-    #define FORGOTPASSURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/password/reset/"
-    #define LOGINURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/auth/token/"
-    #define REGISTERURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/accounts/create/"
-    #define PROFILEURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/accounts/"
-    #define DRIVERURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/accounts/driver/"
+    #define CHANGEPASSURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/password/change/"
+    #define FORGOTPASSURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/password/reset/"
+    #define LOGINURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/auth/token/"
+    #define REGISTERURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/accounts/create/"
+    #define PROFILEURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/accounts/"
+    #define DRIVERURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/accounts/driver/"
     // reservations
-    #define RESURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/reservations/"
-    #define CREATEURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/reservations/create/"
-    #define RESACCEPTURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/reservations/accept/"
-    #define RESCOMPLETEURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/reservations/complete/"
-    #define RESCANCELURL @"https://secret-refuge-87026.herokuapp.com/hidden/secure/wipp/api/reservations/cancel/"
+    #define RESURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/"
+    #define CREATEURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/create/"
+    #define RESACCEPTURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/accept/"
+    #define RESCOMPLETEURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/complete/"
+    #define RESCANCELURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/cancel/"
 #endif
 
 #define    UserDefaults          [NSUserDefaults standardUserDefaults]
