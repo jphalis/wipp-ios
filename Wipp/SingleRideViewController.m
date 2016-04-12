@@ -3,17 +3,22 @@
 //  Wipp
 //
 
+
+#import <MessageUI/MessageUI.h>
+
 #import "AvailableRidesViewController.h"
 #import "defs.h"
 #import "GlobalFunctions.h"
 #import "MapViewController.h"
 #import "SCLAlertView.h"
+#import "SDIAsyncImageView.h"
 #import "SingleRideViewController.h"
 #import "SWRevealViewController.h"
+#import "UIImageView+WebCache.h"
 #import "UIViewControllerAdditions.h"
 
 
-@interface SingleRideViewController () <UIActionSheetDelegate> {
+@interface SingleRideViewController () <UIActionSheetDelegate, MFMessageComposeViewControllerDelegate> {
     __weak IBOutlet UILabel *startLocLabel;
     __weak IBOutlet UILabel *destinationLabel;
     __weak IBOutlet UILabel *costLabel;
@@ -24,8 +29,9 @@
     __weak IBOutlet UILabel *userRoleLabel;
     __weak IBOutlet UILabel *userFullNameLabel;
     __weak IBOutlet UILabel *phoneNumberLabel;
-    __weak IBOutlet UILabel *mutualFriendsLabel;
+    __weak IBOutlet UIButton *phoneNumberBtn;
     __weak IBOutlet UILabel *pickUpTimeLabel;
+    __weak IBOutlet SDIAsyncImageView *profilePicture;
     
     NSString *requester;
     NSString *requester_phone_number;
@@ -35,11 +41,12 @@
 - (IBAction)cancelRequest:(id)sender;
 - (IBAction)acceptRequest:(id)sender;
 - (IBAction)completeTrip:(id)sender;
+- (IBAction)createTextMessage:(id)sender;
 
 @end
 
 @implementation SingleRideViewController
-@synthesize sidebarButton, startValue, destinationValue, costValue, statusValue, reservationID, pickUpTime;
+@synthesize sidebarButton, startValue, destinationValue, costValue, statusValue, reservationID, pickUpTime, userProfilePic, driverProfilePic;
 
 - (void)viewDidLoad {
     [self getReservationDetails];
@@ -72,6 +79,9 @@
     
     MapViewController *mapViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
     mapViewController.reservationID = reservationID;
+    
+    profilePicture.layer.cornerRadius = profilePicture.frame.size.width / 2;
+    profilePicture.layer.masksToBounds = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -116,7 +126,6 @@
         alert.hideAnimationType = SlideOutToBottom;
         [alert showSuccess:self title:@"Success" subTitle:@"Your request has been canceled." closeButtonTitle:@"OK" duration:0.0f];
         [alert alertIsDismissed:^{
-            // [self.navigationController popViewControllerAnimated:YES];
             [self.navigationController pushViewController:mapViewController animated:YES];
         }];
     } else {
@@ -152,9 +161,9 @@
                 }
             } else {
                 [self setBusy:NO];
+                showServerError();
             }
             [self setBusy:NO];
-            showServerError();
         }];
     });
 }
@@ -183,6 +192,7 @@
                 if(JSONValue != nil){
                     [self setBusy:NO];
                     SetActiveDrive(YES);
+                    SetReservationId(reservationID);
                     
                     MapViewController *mapViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
                     mapViewController.reservationID = reservationID;
@@ -193,7 +203,6 @@
                     alert.hideAnimationType = SlideOutToBottom;
                     [alert showSuccess:self title:@"Accepted" subTitle:@"You have accepted the ride request. The pick up location has been copied to your clipboard." closeButtonTitle:@"OK" duration:0.0f];
                     [alert alertIsDismissed:^{
-                        // self.navigationController popViewControllerAnimated:YES];
                         [self.navigationController pushViewController:mapViewController animated:YES];
                     }];
                     return;
@@ -236,7 +245,6 @@
                     MapViewController *mapViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
                     mapViewController.reservationID = reservationID;
                     [self setBusy:NO];
-                    // [self.navigationController popViewControllerAnimated:YES];
                     [self.navigationController pushViewController:mapViewController animated:YES];
                 } else {
                     [self setBusy:NO];
@@ -301,6 +309,12 @@
                 } else {
                     requester_phone_number = [JSONValue objectForKey:@"user_phone_number"];
                 }
+                
+                if ([JSONValue objectForKey:@"user_profile_pic"] == [NSNull null]){
+                    profilePicture.image = [UIImage imageNamed:@"avatar"];
+                } else {
+                    userProfilePic = [JSONValue objectForKey:@"user_profile_pic"];
+                }
                     
                 if ([JSONValue objectForKey:@"driver"] == [NSNull null]){
                     driver = @"";
@@ -313,7 +327,13 @@
                 } else {
                     driver_phone_number = [JSONValue objectForKey:@"driver_phone_number"];
                 }
-                        
+                
+                if ([JSONValue objectForKey:@"driver_profile_pic"] == [NSNull null]){
+                    profilePicture.image = [UIImage imageNamed:@"avatar"];
+                } else {
+                    driverProfilePic = [JSONValue objectForKey:@"driver_profile_pic"];
+                }
+                
                 if ([JSONValue objectForKey:@"status_verbose"] == [NSNull null]){
                     statusLabel.text = @"";
                 } else {
@@ -347,13 +367,16 @@
                         userRoleLabel.hidden = NO;
                         userFullNameLabel.hidden = NO;
                         phoneNumberLabel.hidden = NO;
-//                        mutualFriendsLabel.hidden = NO;
+                        phoneNumberBtn.hidden = NO;
+                        profilePicture.hidden = NO;
                         
                         userRoleLabel.text = @"Driver:";
                         userFullNameLabel.text = driver;
                         phoneNumberLabel.text = driver_phone_number;
-//                        mutualFriendsLabel.text = @"";
-                        
+                        if (driverProfilePic){
+                            [profilePicture loadImageFromURL:driverProfilePic withTempImage:@"avatar"];
+                        }
+                    
                         cancelBtn.hidden = NO;
                         cancelBtn.layer.borderWidth = 3;
                         cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
@@ -363,12 +386,15 @@
                         userRoleLabel.hidden = NO;
                         userFullNameLabel.hidden = NO;
                         phoneNumberLabel.hidden = NO;
-//                        mutualFriendsLabel.hidden = NO;
+                        phoneNumberBtn.hidden = NO;
+                        profilePicture.hidden = NO;
                         
                         userRoleLabel.text = @"Requester:";
                         userFullNameLabel.text = requester;
                         phoneNumberLabel.text = requester_phone_number;
-//                        mutualFriendsLabel.text = @"";
+                        if (userProfilePic){
+                            [profilePicture loadImageFromURL:userProfilePic withTempImage:@"avatar"];
+                        }
                         
                         completeBtn.hidden = NO;
                         completeBtn.layer.borderWidth = 3;
@@ -377,45 +403,60 @@
                     }
                 } else if ([statusLabel.text isEqual: @"Completed"]){
                     if (GetUserFullName == requester){
+                        // User looking at completed request
                         userRoleLabel.hidden = NO;
                         userFullNameLabel.hidden = NO;
                         phoneNumberLabel.hidden = NO;
-//                        mutualFriendsLabel.hidden = NO;
+                        phoneNumberBtn.hidden = NO;
+                        profilePicture.hidden = NO;
                         
-                        // User looking at completed request
                         userRoleLabel.text = @"Driver:";
                         userFullNameLabel.text = driver;
                         phoneNumberLabel.text = driver_phone_number;
-//                        mutualFriendsLabel.text = @"";
+                        if (driverProfilePic){
+                            [profilePicture loadImageFromURL:driverProfilePic withTempImage:@"avatar"];
+                        }
                     } else {
                         // Driver looking at completed request
                         userRoleLabel.hidden = NO;
                         userFullNameLabel.hidden = NO;
                         phoneNumberLabel.hidden = NO;
-//                        mutualFriendsLabel.hidden = NO;
+                        phoneNumberBtn.hidden = NO;
+                        profilePicture.hidden = NO;
                         
                         userRoleLabel.text = @"Requester:";
                         userFullNameLabel.text = requester;
                         phoneNumberLabel.text = requester_phone_number;
-//                        mutualFriendsLabel.text = @"";
+                        if (userProfilePic){
+                            [profilePicture loadImageFromURL:userProfilePic withTempImage:@"avatar"];
+                        }
                     }
                 } else if ([statusLabel.text isEqual: @"Canceled"]){
                     if (GetUserFullName == requester){
                         // User looking at canceled request
                         if (driver){
+                            // There was a driver before cancelation
                             userRoleLabel.hidden = NO;
                             userFullNameLabel.hidden = NO;
+                            profilePicture.hidden = NO;
                             
                             userRoleLabel.text = @"Driver:";
                             userFullNameLabel.text = driver;
+                            if (driverProfilePic){
+                                [profilePicture loadImageFromURL:driverProfilePic withTempImage:@"avatar"];
+                            }
                         }
                     } else {
                         // Driver looking at canceled request
                         userRoleLabel.hidden = NO;
                         userFullNameLabel.hidden = NO;
+                        profilePicture.hidden = NO;
                         
                         userRoleLabel.text = @"Requester:";
                         userFullNameLabel.text = requester;
+                        if (userProfilePic){
+                            [profilePicture loadImageFromURL:userProfilePic withTempImage:@"avatar"];
+                        }
                     }
                 } else {
                     // Someone is seeing things that shouldn't be
@@ -429,6 +470,53 @@
             showServerError();
         }
     }];
+}
+
+# pragma mark - SMS actions
+
+- (IBAction)createTextMessage:(id)sender {
+    [self showSMS];
+}
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult) result
+{
+    switch (result) {
+        case MessageComposeResultCancelled:
+            break;
+            
+        case MessageComposeResultFailed:
+        {
+            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to send SMS." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [warningAlert show];
+            break;
+        }
+            
+        case MessageComposeResultSent:
+            break;
+            
+        default:
+            break;
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)showSMS {
+    if(![MFMessageComposeViewController canSendText]) {
+        UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your device doesn't support SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [warningAlert show];
+        return;
+    }
+    
+    NSArray *recipents = @[phoneNumberLabel.text];
+    NSString *message = [NSString stringWithFormat:@""];
+    
+    MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
+    messageController.messageComposeDelegate = self;
+    [messageController setRecipients:recipents];
+    [messageController setBody:message];
+    
+    // Present message view controller on screen
+    [self presentViewController:messageController animated:YES completion:nil];
 }
 
 @end

@@ -106,6 +106,9 @@ extern AppDelegate *appDelegate;
 #define    SetActiveDrive(x)     [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"ActiveDrive"]
 #define    GetActiveDrive        [[NSUserDefaults standardUserDefaults] boolForKey:@"ActiveDrive"]
 
+#define    SetReservationId(x)   [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"ReservationId"]
+#define    GetReservationId      [[NSUserDefaults standardUserDefaults] objectForKey:@"ReservationId"]
+
 #define    SetUserEmail(x)       [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"UserEmail"]
 #define    GetUserEmail          [[NSUserDefaults standardUserDefaults] objectForKey:@"UserEmail"]
 

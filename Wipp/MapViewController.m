@@ -48,12 +48,16 @@
     self.mapView.delegate = self;
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
+    
+    if (GetReservationId){
+        reservationID = GetReservationId;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     
-    SetActiveRequest(NO);
+    SetActiveRequest(YES);
     
     // Initialize map
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0 &&
@@ -76,35 +80,12 @@
     // Display of buttons
     if(GetActiveRequest || GetActiveDrive){
         requestBtn.hidden = YES;
-        
         [self checkReservationStatus];
         [self initializeTimer];
     } else {
         statusBtn.hidden = YES;
-        
         [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
     }
-    
-//    // Pins for annotations
-//    // Start coordinates
-//    CLLocationCoordinate2D startCoord;
-//    startCoord.latitude = 47.640071;
-//    startCoord.longitude = -122.129598;
-//    
-//    MKPointAnnotation *startPoint = [[MKPointAnnotation alloc] init];
-//    startPoint.coordinate = startCoord;
-//    startPoint.title = @"Start";
-//    [self.mapView addAnnotation:startPoint];
-//    
-//    // End coordinates
-//    CLLocationCoordinate2D endCoord;
-//    endCoord.latitude = 47.640071;
-//    endCoord.longitude = -122.129598;
-//    
-//    MKPointAnnotation *endPoint = [[MKPointAnnotation alloc] init];
-//    endPoint.coordinate = endCoord;
-//    endPoint.title = @"Start";
-//    [self.mapView addAnnotation:endPoint];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -148,29 +129,86 @@
                 NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
                 
                 status = [JSONValue objectForKey:@"status_verbose"];
+                NSString *label_status = [NSString stringWithFormat:@"Ride Status: %@", status];
+                
                 if ([status isEqual: @"Negotiating"]){
                     cost = [JSONValue objectForKey:@"final_amount"];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if ([status isEqual: @"Pending..."]){
+                        double start_lat_value = [[JSONValue objectForKey:@"start_lat"] doubleValue];
+                        double start_long_value = [[JSONValue objectForKey:@"start_long"] doubleValue];
+                        double end_lat_value = [[JSONValue objectForKey:@"end_lat"] doubleValue];
+                        double end_long_value = [[JSONValue objectForKey:@"end_long"] doubleValue];
+                        
+                        // Pins for annotations
+                        // Start coordinates
+                        CLLocationCoordinate2D startCoord;
+                        startCoord.latitude = start_lat_value;
+                        startCoord.longitude = start_long_value;
+                        
+                        MKPointAnnotation *startPoint = [[MKPointAnnotation alloc] init];
+                        startPoint.coordinate = startCoord;
+                        startPoint.title = @"Start";
+                        [self.mapView addAnnotation:startPoint];
+                        
+                        // End coordinates
+                        CLLocationCoordinate2D endCoord;
+                        endCoord.latitude = end_lat_value;
+                        endCoord.longitude = end_long_value;
+                        
+                        MKPointAnnotation *endPoint = [[MKPointAnnotation alloc] init];
+                        endPoint.coordinate = endCoord;
+                        endPoint.title = @"Destination";
+                        [self.mapView addAnnotation:endPoint];
+                        
                         return;
                     } else if ([status isEqual: @"Negotiating"]){
-                        [statusBtn setTitle:status forState:UIControlStateNormal];
+                        [statusBtn setTitle:label_status forState:UIControlStateNormal];
                         // change text of cost label
                     } else if ([status isEqual: @"Accepted"]){
-                        [statusBtn setTitle:status forState:UIControlStateNormal];
+                        [statusBtn setTitle:label_status forState:UIControlStateNormal];
+                        
+                        double start_lat_value = [[JSONValue objectForKey:@"start_lat"] doubleValue];
+                        double start_long_value = [[JSONValue objectForKey:@"start_long"] doubleValue];
+                        double end_lat_value = [[JSONValue objectForKey:@"end_lat"] doubleValue];
+                        double end_long_value = [[JSONValue objectForKey:@"end_long"] doubleValue];
+                        
+                        // Pins for annotations
+                        // Start coordinates
+                        CLLocationCoordinate2D startCoord;
+                        startCoord.latitude = start_lat_value;
+                        startCoord.longitude = start_long_value;
+                        
+                        MKPointAnnotation *startPoint = [[MKPointAnnotation alloc] init];
+                        startPoint.coordinate = startCoord;
+                        startPoint.title = @"Start";
+                        [self.mapView addAnnotation:startPoint];
+                        
+                        // End coordinates
+                        CLLocationCoordinate2D endCoord;
+                        endCoord.latitude = end_lat_value;
+                        endCoord.longitude = end_long_value;
+                        
+                        MKPointAnnotation *endPoint = [[MKPointAnnotation alloc] init];
+                        endPoint.coordinate = endCoord;
+                        endPoint.title = @"Destination";
+                        [self.mapView addAnnotation:endPoint];
+                        
                         [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
                     } else if ([status isEqual: @"Completed"]){
-                        [statusBtn setTitle:status forState:UIControlStateNormal];
+                        [statusBtn setTitle:label_status forState:UIControlStateNormal];
                         SetActiveRequest(NO);
                         SetActiveDrive(NO);
+                        [mapView removeAnnotations:mapView.annotations];
                         [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
                         statusBtn.hidden = YES;
                         requestBtn.hidden = NO;
                     } else if ([status isEqual: @"Canceled"]){
-                        [statusBtn setTitle:status forState:UIControlStateNormal];
+                        [statusBtn setTitle:label_status forState:UIControlStateNormal];
                         SetActiveRequest(NO);
                         SetActiveDrive(NO);
+                        [mapView removeAnnotations:mapView.annotations];
                         [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
                         statusBtn.hidden = YES;
                         requestBtn.hidden = NO;
@@ -193,7 +231,7 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 900, 900);
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 5000, 5000);
     [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
 }
 
@@ -238,6 +276,7 @@
 
 - (IBAction)onStatusClick:(id)sender {
     SingleRideViewController *singleRideViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SingleRideViewController"];
+    singleRideViewController.reservationID = reservationID;
     [self.navigationController pushViewController:singleRideViewController animated:YES];
 }
 

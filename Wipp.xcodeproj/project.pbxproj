@@ -13,6 +13,7 @@
 		D04F998A1CB56B3F00DE8985 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04F99871CB56B3F00DE8985 /* FBSDKCoreKit.framework */; };
 		D04F998B1CB56B3F00DE8985 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04F99881CB56B3F00DE8985 /* FBSDKLoginKit.framework */; };
 		D04F998C1CB56B3F00DE8985 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D04F99891CB56B3F00DE8985 /* FBSDKShareKit.framework */; };
+		D05388531CBD6816003CCFF9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05388521CBD6816003CCFF9 /* MessageUI.framework */; };
 		D055BEF11C95F4B400007A4F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D055BEF01C95F4B400007A4F /* CoreLocation.framework */; };
 		D055BEF21C95FD1500007A4F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4090BCB1A10563200651F6F /* MapKit.framework */; };
 		D055BEF41C95FDF300007A4F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D055BEF31C95FDF300007A4F /* Foundation.framework */; };
@@ -129,6 +130,7 @@
 		D04F99871CB56B3F00DE8985 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Wipp/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		D04F99881CB56B3F00DE8985 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Wipp/FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		D04F99891CB56B3F00DE8985 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Wipp/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		D05388521CBD6816003CCFF9 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		D055BEF01C95F4B400007A4F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D055BEF31C95FDF300007A4F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D055BEF51C95FDFB00007A4F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -321,6 +323,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D05388531CBD6816003CCFF9 /* MessageUI.framework in Frameworks */,
 				D055BEF81C95FE0800007A4F /* CoreGraphics.framework in Frameworks */,
 				D055BEF61C95FDFB00007A4F /* UIKit.framework in Frameworks */,
 				D04F998B1CB56B3F00DE8985 /* FBSDKLoginKit.framework in Frameworks */,
@@ -722,6 +725,7 @@
 		F4090B851A0F67D000651F6F = {
 			isa = PBXGroup;
 			children = (
+				D05388521CBD6816003CCFF9 /* MessageUI.framework */,
 				D04F99871CB56B3F00DE8985 /* FBSDKCoreKit.framework */,
 				D04F99881CB56B3F00DE8985 /* FBSDKLoginKit.framework */,
 				D04F99891CB56B3F00DE8985 /* FBSDKShareKit.framework */,
@@ -1153,7 +1157,7 @@
 				New_Setting = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wipp;
 				PRODUCT_NAME = Wipp;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "2a336b94-c26d-4f47-9112-4abb968edc5b";
 			};
 			name = Debug;
 		};
@@ -1174,7 +1178,7 @@
 				New_Setting = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wipp;
 				PRODUCT_NAME = Wipp;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "2a336b94-c26d-4f47-9112-4abb968edc5b";
 			};
 			name = Release;
 		};

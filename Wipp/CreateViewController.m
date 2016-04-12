@@ -427,6 +427,7 @@
                     SetActiveRequest(YES);
                     MapViewController *mapViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
                     mapViewController.reservationID = [JSONValue objectForKey:@"id"];
+                    SetReservationId([JSONValue objectForKey:@"id"]);
                     [self.navigationController pushViewController:mapViewController animated:YES];
                 }
             } else {

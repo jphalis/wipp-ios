@@ -117,8 +117,8 @@
                             rideClass.start_lat = [dictResult objectForKey:@"start_lat"];
                             rideClass.end_long = [dictResult objectForKey:@"end_long"];
                             rideClass.end_lat = [dictResult objectForKey:@"end_lat"];
-                            rideClass.start_address = [dictResult objectForKey:@"start_address"];
-                            rideClass.destination_address = [dictResult objectForKey:@"destination_address"];
+                            // rideClass.start_address = [dictResult objectForKey:@"start_address"];
+                            // rideClass.destination_address = [dictResult objectForKey:@"destination_address"];
                             rideClass.travel_distance = [dictResult objectForKey:@"travel_distance"];
                         
                             [arrRides addObject:rideClass];

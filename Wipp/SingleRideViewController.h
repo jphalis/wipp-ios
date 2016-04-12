@@ -15,5 +15,7 @@
 @property (strong, nonatomic) NSString *statusValue;
 @property (strong, nonatomic) NSString *reservationID;
 @property (strong, nonatomic) NSString *pickUpTime;
+@property (strong, nonatomic) NSString *driverProfilePic;
+@property (strong, nonatomic) NSString *userProfilePic;
 
 @end
