@@ -376,6 +376,7 @@
     if(latitudeValue && longitudeValue){
         [_params setObject:latitudeValue forKey:@"start_lat"];
         [_params setObject:longitudeValue forKey:@"start_long"];
+        [_params setObject:[startLocationLabel.text Trim] forKey:@"start_query"];
     } else {
         [_params setObject:[startLocationLabel.text Trim] forKey:@"start_query"];
     }

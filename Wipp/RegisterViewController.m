@@ -271,20 +271,16 @@
          if ([data length] > 0 && error == nil){
              NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
              if(JSONValue != nil){
-                 
-                 if([[JSONValue allKeys]count] > 1){
-                     
-                     if([[JSONValue objectForKey:@"email"] isKindOfClass:[NSString class]]){
-                         SetUserEmail([JSONValue objectForKey:@"email"]);
-                         SetUserID([[JSONValue objectForKey:@"id"]integerValue]);
-                         SetUserPassword([txtSignupPass.text Trim]);
-                         [self performSelectorInBackground:@selector(getProfileDetails) withObject:nil];
-                         [self pushingView:YES];
-                     } else {
-                         alert.showAnimationType = SlideInFromLeft;
-                         alert.hideAnimationType = SlideOutToBottom;
-                         [alert showNotice:self title:@"Notice" subTitle:EMAIL_EXISTS_ANOTHER_USER closeButtonTitle:@"OK" duration:0.0f];
-                     }
+                 if([[JSONValue objectForKey:@"email"] isKindOfClass:[NSString class]]){
+                     SetUserEmail([JSONValue objectForKey:@"email"]);
+                     SetUserID([[JSONValue objectForKey:@"id"]integerValue]);
+                     SetUserPassword([txtSignupPass.text Trim]);
+                     [self performSelectorInBackground:@selector(getProfileDetails) withObject:nil];
+                     [self pushingView:YES];
+                 } else {
+                     alert.showAnimationType = SlideInFromLeft;
+                     alert.hideAnimationType = SlideOutToBottom;
+                     [alert showNotice:self title:@"Notice" subTitle:EMAIL_EXISTS_ANOTHER_USER closeButtonTitle:@"OK" duration:0.0f];
                  }
              } else {
                  showServerError();
