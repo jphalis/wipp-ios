@@ -130,7 +130,9 @@
                     profileImg.image = [UIImage imageNamed:@"avatar"];
                 } else {
                     [profileImg loadImageFromURL:[JSONValue objectForKey:@"profile_picture"] withTempImage:@"avatar"];
-                    SetProfilePic([JSONValue objectForKey:@"profile_picture"]);
+                    if (GetProfilePic == nil) {
+                        SetProfilePic([JSONValue objectForKey:@"profile_picture"]);
+                    }
                 }
                 SetUserIsDriver([[JSONValue objectForKey:@"is_driver"]boolValue]);
                 [self setBusy:NO];

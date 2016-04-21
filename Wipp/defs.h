@@ -39,25 +39,25 @@ extern AppDelegate *appDelegate;
 #define ShowNetworkActivityIndicator()      [UIApplication sharedApplication].networkActivityIndicatorVisible = YES
 #define HideNetworkActivityIndicator()      [UIApplication sharedApplication].networkActivityIndicatorVisible = NO
 
-#ifdef DEBUG
-// DEV URLS
-    // general
-    #define TERMSURL @"http://127.0.0.1:8000/terms/"
-    #define PRIVACYURL @"http://127.0.0.1:8000/privacy/"
-    // accounts
-    #define CHANGEPASSURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/password/change/"
-    #define FORGOTPASSURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/password/reset/"
-    #define LOGINURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/auth/token/"
-    #define REGISTERURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/create/"
-    #define PROFILEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/"
-    #define DRIVERURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/driver/"
-    // reservations
-    #define RESURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/"
-    #define CREATEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/create/"
-    #define RESACCEPTURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/accept/"
-    #define RESCOMPLETEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/complete/"
-    #define RESCANCELURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/cancel/"
-#else
+//#ifdef DEBUG
+//// DEV URLS
+//    // general
+//    #define TERMSURL @"http://127.0.0.1:8000/terms/"
+//    #define PRIVACYURL @"http://127.0.0.1:8000/privacy/"
+//    // accounts
+//    #define CHANGEPASSURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/password/change/"
+//    #define FORGOTPASSURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/password/reset/"
+//    #define LOGINURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/auth/token/"
+//    #define REGISTERURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/create/"
+//    #define PROFILEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/"
+//    #define DRIVERURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/accounts/driver/"
+//    // reservations
+//    #define RESURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/"
+//    #define CREATEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/create/"
+//    #define RESACCEPTURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/accept/"
+//    #define RESCOMPLETEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/complete/"
+//    #define RESCANCELURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/cancel/"
+//#else
 // PROD URLS
     // general
     #define TERMSURL @"https://pure-shelf-18585.herokuapp.com/terms/"
@@ -75,7 +75,7 @@ extern AppDelegate *appDelegate;
     #define RESACCEPTURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/accept/"
     #define RESCOMPLETEURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/complete/"
     #define RESCANCELURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/cancel/"
-#endif
+//#endif
 
 #define    UserDefaults          [NSUserDefaults standardUserDefaults]
 
