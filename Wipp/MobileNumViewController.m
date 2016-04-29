@@ -19,6 +19,7 @@
     __weak IBOutlet UIButton *btnSubmit;
     __weak IBOutlet UITextField *txtFullName;
     __weak IBOutlet UITextField *txtMobileNum;
+    __weak IBOutlet UITextField *txtUniversity;
 }
 - (IBAction)onBack:(id)sender;
 - (IBAction)onSubmit:(id)sender;
@@ -39,6 +40,7 @@
     
     txtFullName.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Full Name" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     txtMobileNum.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"(XXX) XXX-XXXX" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    txtUniversity.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"University" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
 }
 
 -(void)swipeRight:(UISwipeGestureRecognizer *)gestureRecognizer{
@@ -121,6 +123,9 @@
     if(sender.tag == 1){
         [txtFullName resignFirstResponder];
         [txtMobileNum becomeFirstResponder];
+    } else if (sender.tag == 2) {
+        [txtMobileNum resignFirstResponder];
+        [txtUniversity becomeFirstResponder];
     }
 }
 
@@ -128,12 +133,16 @@
     if(sender.tag == 2){
         [txtMobileNum resignFirstResponder];
         [txtFullName becomeFirstResponder];
+    } else if(sender.tag == 3){
+        [txtUniversity resignFirstResponder];
+        [txtMobileNum becomeFirstResponder];
     }
 }
 
 -(void)resignKeyboard {
     [txtFullName resignFirstResponder];
     [txtMobileNum resignFirstResponder];
+    [txtUniversity resignFirstResponder];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -143,8 +152,10 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField.tag == 1){
         [txtMobileNum becomeFirstResponder];
+    } else if(textField.tag == 2){
+        [txtUniversity becomeFirstResponder];
     } else {
-        [txtMobileNum resignFirstResponder];
+        [txtUniversity resignFirstResponder];
     }
     return YES;
 }
@@ -180,6 +191,7 @@
     [_params setObject:GetUserEmail forKey:@"email"];
     [_params setObject:[txtFullName.text Trim] forKey:@"full_name"];
     [_params setObject:[txtMobileNum.text Trim] forKey:@"phone_number"];
+    [_params setObject:[txtUniversity.text Trim] forKey:@"university"];
     
     // the boundary string : a random string, that will not repeat in post data, to separate post data fields.
     NSString *BoundaryConstant = @"----------V2ymHFg03ehbqgZCaKO6jy";
@@ -240,6 +252,7 @@
                     SetisUpdate(YES);
                     SetUserFullName([txtFullName.text Trim]);
                     SetMobileNum([txtMobileNum.text Trim]);
+                    SetUniversity([txtUniversity.text Trim]);
                     [self pushingView:YES];
                 } else if ([JSONValue objectForKey:@"phone_number"]){
                     alert.showAnimationType = SlideInFromLeft;

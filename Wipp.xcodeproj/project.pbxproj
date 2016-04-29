@@ -25,6 +25,8 @@
 		D06651F71C9F44B200C6F9C4 /* TableViewCellRides.m in Sources */ = {isa = PBXBuildFile; fileRef = D06651F61C9F44B200C6F9C4 /* TableViewCellRides.m */; };
 		D06651FA1C9F491B00C6F9C4 /* RideClass.m in Sources */ = {isa = PBXBuildFile; fileRef = D06651F91C9F491B00C6F9C4 /* RideClass.m */; };
 		D068B3B91C99BEBE0069C3C8 /* SingleRideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D068B3B81C99BEBE0069C3C8 /* SingleRideViewController.m */; };
+		D075F2801CD27ED200A0A997 /* DriverSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D075F27F1CD27ED200A0A997 /* DriverSelectionViewController.m */; };
+		D075F2831CD27F3B00A0A997 /* TableViewCellDrivers.m in Sources */ = {isa = PBXBuildFile; fileRef = D075F2821CD27F3B00A0A997 /* TableViewCellDrivers.m */; };
 		D0C480001C55BD9700144176 /* GlobalFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C47FFE1C55BD9700144176 /* GlobalFunctions.m */; };
 		D0C480031C55BDDA00144176 /* UIViewControllerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C480021C55BDDA00144176 /* UIViewControllerAdditions.m */; };
 		D0C480091C55BE1800144176 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D0C480081C55BE1800144176 /* MBProgressHUD.m */; };
@@ -147,6 +149,10 @@
 		D06651F91C9F491B00C6F9C4 /* RideClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RideClass.m; sourceTree = "<group>"; };
 		D068B3B71C99BEBE0069C3C8 /* SingleRideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleRideViewController.h; sourceTree = "<group>"; };
 		D068B3B81C99BEBE0069C3C8 /* SingleRideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleRideViewController.m; sourceTree = "<group>"; };
+		D075F27E1CD27ED200A0A997 /* DriverSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DriverSelectionViewController.h; sourceTree = "<group>"; };
+		D075F27F1CD27ED200A0A997 /* DriverSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DriverSelectionViewController.m; sourceTree = "<group>"; };
+		D075F2811CD27F3B00A0A997 /* TableViewCellDrivers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellDrivers.h; sourceTree = "<group>"; };
+		D075F2821CD27F3B00A0A997 /* TableViewCellDrivers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCellDrivers.m; sourceTree = "<group>"; };
 		D0C47FFC1C55BD9700144176 /* defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defs.h; sourceTree = "<group>"; };
 		D0C47FFD1C55BD9700144176 /* GlobalFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalFunctions.h; sourceTree = "<group>"; };
 		D0C47FFE1C55BD9700144176 /* GlobalFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalFunctions.m; sourceTree = "<group>"; };
@@ -359,6 +365,8 @@
 		D06651F41C9F447200C6F9C4 /* CellViews */ = {
 			isa = PBXGroup;
 			children = (
+				D075F2811CD27F3B00A0A997 /* TableViewCellDrivers.h */,
+				D075F2821CD27F3B00A0A997 /* TableViewCellDrivers.m */,
 				D06651F51C9F44B200C6F9C4 /* TableViewCellRides.h */,
 				D06651F61C9F44B200C6F9C4 /* TableViewCellRides.m */,
 			);
@@ -429,6 +437,8 @@
 				D06651F21C9F3E5C00C6F9C4 /* AvailableRidesViewController.m */,
 				F4090BC11A0FD62A00651F6F /* CreateViewController.h */,
 				F4090BC21A0FD62A00651F6F /* CreateViewController.m */,
+				D075F27E1CD27ED200A0A997 /* DriverSelectionViewController.h */,
+				D075F27F1CD27ED200A0A997 /* DriverSelectionViewController.m */,
 				D00F0E261C9F168200AC69CE /* DriverSignupViewController.h */,
 				D00F0E271C9F168200AC69CE /* DriverSignupViewController.m */,
 				D0C4800F1C55C1FB00144176 /* ForgotViewController.h */,
@@ -939,6 +949,7 @@
 				D0C4808E1C55C34200144176 /* SDWebImagePrefetcher.m in Sources */,
 				D0C481241C55C82100144176 /* AsyncImageView.m in Sources */,
 				F4090BC31A0FD62A00651F6F /* CreateViewController.m in Sources */,
+				D075F2801CD27ED200A0A997 /* DriverSelectionViewController.m in Sources */,
 				D0C481191C55C7E400144176 /* DejalActivityView.m in Sources */,
 				D0C480231C55C20D00144176 /* SCLAlertViewResponder.m in Sources */,
 				F4090B971A0F67D000651F6F /* AppDelegate.m in Sources */,
@@ -967,6 +978,7 @@
 				D0C480001C55BD9700144176 /* GlobalFunctions.m in Sources */,
 				D0C4810A1C55C62900144176 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				D0C4803C1C55C23F00144176 /* StringUtil.m in Sources */,
+				D075F2831CD27F3B00A0A997 /* TableViewCellDrivers.m in Sources */,
 				D0C481081C55C62900144176 /* AFImageRequestOperation.m in Sources */,
 				D0C480A21C55C36900144176 /* UIImageView+WebCache.m in Sources */,
 				D0C4806A1C55C2DA00144176 /* SVWebViewControllerActivity.m in Sources */,
@@ -1157,7 +1169,7 @@
 				New_Setting = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wipp;
 				PRODUCT_NAME = Wipp;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "2a336b94-c26d-4f47-9112-4abb968edc5b";
 			};
 			name = Debug;
 		};
@@ -1178,7 +1190,7 @@
 				New_Setting = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wipp;
 				PRODUCT_NAME = Wipp;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "2a336b94-c26d-4f47-9112-4abb968edc5b";
 			};
 			name = Release;
 		};

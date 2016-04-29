@@ -199,6 +199,8 @@ MBProgressHUD *hud;
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"UserID"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"ReservationId"];
     [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"ProfilePic"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"University"];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"MobileNum"];
     
     RegisterViewController *registerViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"RegisterViewController"];
     UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:registerViewController];

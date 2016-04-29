@@ -12,5 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 @property (nonatomic, strong) AppDelegate *appDelegate;
+@property (strong, nonatomic) NSString *accountID;
+
 
 @end

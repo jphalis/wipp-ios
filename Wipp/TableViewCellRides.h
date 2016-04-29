@@ -9,6 +9,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *pickupTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *amountLabel;
 
 
 @end

@@ -8,6 +8,7 @@
 
 #import "AvailableRidesViewController.h"
 #import "defs.h"
+#import "DriverSelectionViewController.h"
 #import "GlobalFunctions.h"
 #import "MapViewController.h"
 #import "SCLAlertView.h"
@@ -23,6 +24,7 @@
     __weak IBOutlet UILabel *destinationLabel;
     __weak IBOutlet UILabel *costLabel;
     __weak IBOutlet UILabel *statusLabel;
+    __weak IBOutlet UIButton *selectBtn;
     __weak IBOutlet UIButton *cancelBtn;
     __weak IBOutlet UIButton *acceptBtn;
     __weak IBOutlet UIButton *completeBtn;
@@ -37,11 +39,14 @@
     NSString *requester_phone_number;
     NSString *driver;
     NSString *driver_phone_number;
+    NSMutableArray *pending_drivers;
 }
+
 - (IBAction)cancelRequest:(id)sender;
 - (IBAction)acceptRequest:(id)sender;
 - (IBAction)completeTrip:(id)sender;
 - (IBAction)createTextMessage:(id)sender;
+- (IBAction)selectDriver:(id)sender;
 
 @end
 
@@ -49,6 +54,7 @@
 @synthesize sidebarButton, startValue, destinationValue, costValue, statusValue, reservationID, pickUpTime, userProfilePic, driverProfilePic;
 
 - (void)viewDidLoad {
+    pending_drivers = [[NSMutableArray alloc] init];
     [self getReservationDetails];
     
     startLocLabel.text = startValue;
@@ -58,8 +64,6 @@
     statusLabel.text = statusValue;
     
     [super viewDidLoad];
-    
-    self.title = @"Requested Ride";
 
     SWRevealViewController *revealViewController = self.revealViewController;
     if (revealViewController){
@@ -75,7 +79,11 @@
     barButton.title = @" ";
     self.navigationController.navigationBar.topItem.backBarButtonItem = barButton;
     
+    self.title = @"Requested Ride";
+    
     [super viewWillAppear:YES];
+    
+    [self updateReservationDetails];
     
     MapViewController *mapViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
     mapViewController.reservationID = reservationID;
@@ -251,11 +259,18 @@
                 }
             } else {
                 [self setBusy:NO];
+                showServerError();
             }
             [self setBusy:NO];
-            showServerError();
         }];
     });
+}
+
+- (IBAction)selectDriver:(id)sender {
+    DriverSelectionViewController *driverSelectionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DriverSelectionViewController"];
+    driverSelectionViewController.reservationID = reservationID;
+    driverSelectionViewController.arrDrivers = pending_drivers.copy;
+    [self.navigationController pushViewController:driverSelectionViewController animated:YES];
 }
 
 -(void)getReservationDetails {
@@ -346,6 +361,41 @@
                     pickUpTimeLabel.text = [JSONValue objectForKey:@"pick_up_interval"];
                 }
                 
+                NSArray *arrDriver = [JSONValue objectForKey:@"get_pending_drivers_info"];
+                
+                for(int j = 0; j < arrDriver.count; j++){
+                    NSMutableDictionary *dictDriverInfo = [[NSMutableDictionary alloc]init];
+                    NSDictionary *dictDriverDetail = [arrDriver objectAtIndex:j];
+                    
+                    if([dictDriverDetail objectForKey:@"profile_picture"] == [NSNull null]){
+                        [dictDriverInfo setObject:@"" forKey:@"driver__profile_picture"];
+                    } else {
+                        // NSString *proflURL = [NSString stringWithFormat:@"%@%@",@"https://oby.s3.amazonaws.com/media/",[dictUserDetail objectForKey:@"profile_picture"]];
+                        [dictDriverInfo setValue:[dictDriverDetail objectForKey:@"profile_picture"] forKey:@"driver__profile_picture"];
+                    }
+                    if([dictDriverDetail objectForKey:@"full_name"] == [NSNull null]){
+                        [dictDriverInfo setObject:@"" forKey:@"driver__full_name"];
+                    } else {
+                        [dictDriverInfo setObject:[dictDriverDetail objectForKey:@"full_name"] forKey:@"driver__full_name"];
+                    }
+                    if([dictDriverDetail objectForKey:@"id"] == [NSNull null]){
+                        [dictDriverInfo setObject:@"" forKey:@"driver__id"];
+                    } else {
+                        [dictDriverInfo setObject:[dictDriverDetail objectForKey:@"id"] forKey:@"driver__id"];
+                    }
+                    if([dictDriverDetail objectForKey:@"phone_number"] == [NSNull null]){
+                        [dictDriverInfo setObject:@"" forKey:@"driver__phone_number"];
+                    } else {
+                        [dictDriverInfo setObject:[dictDriverDetail objectForKey:@"phone_number"] forKey:@"driver__phone_number"];
+                    }
+                    if([dictDriverDetail objectForKey:@"email"] == [NSNull null]){
+                        [dictDriverInfo setObject:@"" forKey:@"driver__email"];
+                    } else {
+                        [dictDriverInfo setObject:[dictDriverDetail objectForKey:@"email"] forKey:@"driver__email"];
+                    }
+                    
+                    [pending_drivers addObject:dictDriverInfo];
+                }
                 
                 if ([statusLabel.text isEqual: @"Pending..."]){
                     if (GetUserFullName == requester){
@@ -369,6 +419,8 @@
                         phoneNumberLabel.hidden = NO;
                         phoneNumberBtn.hidden = NO;
                         profilePicture.hidden = NO;
+                        
+                        selectBtn.hidden = YES;
                         
                         userRoleLabel.text = @"Driver:";
                         userFullNameLabel.text = driver;
@@ -458,6 +510,25 @@
                             [profilePicture loadImageFromURL:userProfilePic withTempImage:@"avatar"];
                         }
                     }
+                } else if ([statusLabel.text isEqual: @"Select Driver"]){
+                    if (GetUserFullName == requester){
+                        // User needs to select a driver
+                        cancelBtn.hidden = NO;
+                        cancelBtn.layer.borderWidth = 3;
+                        cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
+                        cancelBtn.layer.cornerRadius = 7;
+                        
+                        selectBtn.hidden = NO;
+                        selectBtn.layer.borderWidth = 3;
+                        selectBtn.layer.borderColor = [[UIColor greenColor] CGColor];
+                        selectBtn.layer.cornerRadius = 7;
+                    } else {
+                        // Driver looking at pending request
+                        acceptBtn.hidden = NO;
+                        acceptBtn.layer.borderWidth = 3;
+                        acceptBtn.layer.borderColor = [[UIColor greenColor] CGColor];
+                        acceptBtn.layer.cornerRadius = 7;
+                    }
                 } else {
                     // Someone is seeing things that shouldn't be
                 }
@@ -469,6 +540,242 @@
             [self setBusy:NO];
             showServerError();
         }
+        [self setBusy:NO];
+    }];
+}
+
+-(void)updateReservationDetails {
+    [self setBusy:YES];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@%@/", RESURL, reservationID];
+    NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
+                                                             timeoutInterval:60];
+    NSString *authStr = [NSString stringWithFormat:@"%@:%@", GetUserEmail, GetUserPassword];
+    NSData *plainData = [authStr dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *base64String = [plainData base64EncodedStringWithOptions:0];
+    NSString *authValue = [NSString stringWithFormat:@"Basic %@", base64String];
+    [_request setValue:authValue forHTTPHeaderField:@"Authorization"];
+    [_request setHTTPMethod:@"GET"];
+    
+    [NSURLConnection sendAsynchronousRequest:_request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
+        if (error != nil){
+            [self setBusy:NO];
+        }
+        if ([data length] > 0 && error == nil){
+            NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+            
+            if ([JSONValue isKindOfClass:[NSDictionary class]] && [JSONValue count] > 0){
+                
+                if ([JSONValue objectForKey:@"start_query"] == [NSNull null]){
+                    startLocLabel.text = @"";
+                } else {
+                    startLocLabel.text = [JSONValue objectForKey:@"start_query"];
+                }
+                
+                if ([JSONValue objectForKey:@"destination_query"] == [NSNull null]){
+                    destinationLabel.text = @"";
+                } else {
+                    destinationLabel.text = [JSONValue objectForKey:@"destination_query"];
+                }
+                
+                if ([JSONValue objectForKey:@"final_amount"] == [NSNull null]){
+                    costLabel.text = @"";
+                } else {
+                    costLabel.text = [NSString stringWithFormat:@"$%@", [JSONValue objectForKey:@"start_amount"]];
+                }
+                
+                if ([JSONValue objectForKey:@"user"] == [NSNull null]){
+                    requester = @"";
+                } else {
+                    requester = [JSONValue objectForKey:@"user"];
+                }
+                
+                if ([JSONValue objectForKey:@"user_phone_number"] == [NSNull null]){
+                    requester_phone_number = @"";
+                } else {
+                    requester_phone_number = [JSONValue objectForKey:@"user_phone_number"];
+                }
+                
+                if ([JSONValue objectForKey:@"user_profile_pic"] == [NSNull null]){
+                    profilePicture.image = [UIImage imageNamed:@"avatar"];
+                } else {
+                    userProfilePic = [JSONValue objectForKey:@"user_profile_pic"];
+                }
+                
+                if ([JSONValue objectForKey:@"driver"] == [NSNull null]){
+                    driver = @"";
+                } else {
+                    driver = [JSONValue objectForKey:@"driver"];
+                }
+                
+                if ([JSONValue objectForKey:@"driver_phone_number"] == [NSNull null]){
+                    driver_phone_number = @"";
+                } else {
+                    driver_phone_number = [JSONValue objectForKey:@"driver_phone_number"];
+                }
+                
+                if ([JSONValue objectForKey:@"driver_profile_pic"] == [NSNull null]){
+                    profilePicture.image = [UIImage imageNamed:@"avatar"];
+                } else {
+                    driverProfilePic = [JSONValue objectForKey:@"driver_profile_pic"];
+                }
+                
+                if ([JSONValue objectForKey:@"status_verbose"] == [NSNull null]){
+                    statusLabel.text = @"";
+                } else {
+                    statusLabel.text = [JSONValue objectForKey:@"status_verbose"];
+                }
+                
+                if ([JSONValue objectForKey:@"pick_up_interval"] == [NSNull null]){
+                    pickUpTimeLabel.text = @"";
+                } else {
+                    pickUpTimeLabel.text = [JSONValue objectForKey:@"pick_up_interval"];
+                }
+                
+                if ([statusLabel.text isEqual: @"Pending..."]){
+                    if (GetUserFullName == requester){
+                        // User looking at their own pending request
+                        cancelBtn.hidden = NO;
+                        cancelBtn.layer.borderWidth = 3;
+                        cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
+                        cancelBtn.layer.cornerRadius = 7;
+                    } else {
+                        // Driver looking at pending request
+                        acceptBtn.hidden = NO;
+                        acceptBtn.layer.borderWidth = 3;
+                        acceptBtn.layer.borderColor = [[UIColor greenColor] CGColor];
+                        acceptBtn.layer.cornerRadius = 7;
+                    }
+                } else if ([statusLabel.text isEqual: @"Accepted"]){
+                    if (GetUserFullName == requester){
+                        // User looking at their own accepted request
+                        userRoleLabel.hidden = NO;
+                        userFullNameLabel.hidden = NO;
+                        phoneNumberLabel.hidden = NO;
+                        phoneNumberBtn.hidden = NO;
+                        profilePicture.hidden = NO;
+                        
+                        selectBtn.hidden = YES;
+                        
+                        userRoleLabel.text = @"Driver:";
+                        userFullNameLabel.text = driver;
+                        phoneNumberLabel.text = driver_phone_number;
+                        if (driverProfilePic){
+                            [profilePicture loadImageFromURL:driverProfilePic withTempImage:@"avatar"];
+                        }
+                        
+                        cancelBtn.hidden = NO;
+                        cancelBtn.layer.borderWidth = 3;
+                        cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
+                        cancelBtn.layer.cornerRadius = 7;
+                    } else {
+                        // Driver looking at accepted request
+                        userRoleLabel.hidden = NO;
+                        userFullNameLabel.hidden = NO;
+                        phoneNumberLabel.hidden = NO;
+                        phoneNumberBtn.hidden = NO;
+                        profilePicture.hidden = NO;
+                        
+                        userRoleLabel.text = @"Requester:";
+                        userFullNameLabel.text = requester;
+                        phoneNumberLabel.text = requester_phone_number;
+                        if (userProfilePic){
+                            [profilePicture loadImageFromURL:userProfilePic withTempImage:@"avatar"];
+                        }
+                        
+                        completeBtn.hidden = NO;
+                        completeBtn.layer.borderWidth = 3;
+                        completeBtn.layer.borderColor = [[UIColor greenColor] CGColor];
+                        completeBtn.layer.cornerRadius = 7;
+                    }
+                } else if ([statusLabel.text isEqual: @"Completed"]){
+                    if (GetUserFullName == requester){
+                        // User looking at completed request
+                        userRoleLabel.hidden = NO;
+                        userFullNameLabel.hidden = NO;
+                        phoneNumberLabel.hidden = NO;
+                        phoneNumberBtn.hidden = NO;
+                        profilePicture.hidden = NO;
+                        
+                        userRoleLabel.text = @"Driver:";
+                        userFullNameLabel.text = driver;
+                        phoneNumberLabel.text = driver_phone_number;
+                        if (driverProfilePic){
+                            [profilePicture loadImageFromURL:driverProfilePic withTempImage:@"avatar"];
+                        }
+                    } else {
+                        // Driver looking at completed request
+                        userRoleLabel.hidden = NO;
+                        userFullNameLabel.hidden = NO;
+                        phoneNumberLabel.hidden = NO;
+                        phoneNumberBtn.hidden = NO;
+                        profilePicture.hidden = NO;
+                        
+                        userRoleLabel.text = @"Requester:";
+                        userFullNameLabel.text = requester;
+                        phoneNumberLabel.text = requester_phone_number;
+                        if (userProfilePic){
+                            [profilePicture loadImageFromURL:userProfilePic withTempImage:@"avatar"];
+                        }
+                    }
+                } else if ([statusLabel.text isEqual: @"Canceled"]){
+                    if (GetUserFullName == requester){
+                        // User looking at canceled request
+                        if (driver){
+                            // There was a driver before cancelation
+                            userRoleLabel.hidden = NO;
+                            userFullNameLabel.hidden = NO;
+                            profilePicture.hidden = NO;
+                            
+                            userRoleLabel.text = @"Driver:";
+                            userFullNameLabel.text = driver;
+                            if (driverProfilePic){
+                                [profilePicture loadImageFromURL:driverProfilePic withTempImage:@"avatar"];
+                            }
+                        }
+                    } else {
+                        // Driver looking at canceled request
+                        userRoleLabel.hidden = NO;
+                        userFullNameLabel.hidden = NO;
+                        profilePicture.hidden = NO;
+                        
+                        userRoleLabel.text = @"Requester:";
+                        userFullNameLabel.text = requester;
+                        if (userProfilePic){
+                            [profilePicture loadImageFromURL:userProfilePic withTempImage:@"avatar"];
+                        }
+                    }
+                } else if ([statusLabel.text isEqual: @"Select Driver"]){
+                    if (GetUserFullName == requester){
+                        // User needs to select a driver
+                        cancelBtn.hidden = NO;
+                        cancelBtn.layer.borderWidth = 3;
+                        cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
+                        cancelBtn.layer.cornerRadius = 7;
+                        
+                        selectBtn.hidden = NO;
+                        selectBtn.layer.borderWidth = 3;
+                        selectBtn.layer.borderColor = [[UIColor greenColor] CGColor];
+                        selectBtn.layer.cornerRadius = 7;
+                    } else {
+                        // Driver looking at pending request
+                        acceptBtn.hidden = NO;
+                        acceptBtn.layer.borderWidth = 3;
+                        acceptBtn.layer.borderColor = [[UIColor greenColor] CGColor];
+                        acceptBtn.layer.cornerRadius = 7;
+                    }
+                } else {
+                    // Someone is seeing things that shouldn't be
+                }
+                [self setBusy:NO];
+            } else {
+                [self setBusy:NO];
+            }
+        } else {
+            [self setBusy:NO];
+            showServerError();
+        }
+        [self setBusy:NO];
     }];
 }
 

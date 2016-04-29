@@ -13,6 +13,7 @@
 @property (nonatomic, retain) NSString *email;
 @property (nonatomic, retain) NSString *first_name;
 @property (nonatomic, retain) NSString *last_name;
+@property (nonatomic, retain) NSString *full_name;
 @property (nonatomic, retain) NSString *profile_picture;
 @property (nonatomic, assign) BOOL is_driver;
 

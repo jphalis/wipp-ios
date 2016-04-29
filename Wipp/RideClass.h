@@ -11,6 +11,7 @@
 @property (nonatomic, retain) NSString *reservation_url;
 @property (nonatomic, retain) NSString *user;
 @property (nonatomic, retain) NSString *user_phone_number;
+@property (nonatomic, retain) NSMutableArray *pending_drivers;
 @property (nonatomic, retain) NSString *driver;
 @property (nonatomic, retain) NSString *driver_phone_number;
 @property (nonatomic, retain) NSString *status_verbose;

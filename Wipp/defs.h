@@ -55,6 +55,7 @@ extern AppDelegate *appDelegate;
     #define RESURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/"
     #define CREATEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/create/"
     #define RESACCEPTURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/accept/"
+    #define DRIVERFOUNDURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/driver/found/"
     #define RESCOMPLETEURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/complete/"
     #define RESCANCELURL @"http://127.0.0.1:8000/hidden/secure/wipp/api/reservations/cancel/"
 #else
@@ -73,6 +74,7 @@ extern AppDelegate *appDelegate;
     #define RESURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/"
     #define CREATEURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/create/"
     #define RESACCEPTURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/accept/"
+    #define DRIVERFOUNDURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/driver/found/"
     #define RESCOMPLETEURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/complete/"
     #define RESCANCELURL @"https://pure-shelf-18585.herokuapp.com/hidden/secure/wipp/api/reservations/cancel/"
 #endif
@@ -126,6 +128,9 @@ extern AppDelegate *appDelegate;
 
 #define    SetMobileNum(x)       [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"MobileNum"]
 #define    GetMobileNum          [[NSUserDefaults standardUserDefaults] objectForKey:@"MobileNum"]
+
+#define    SetUniversity(x)      [[NSUserDefaults standardUserDefaults] setObject:(x) forKey:@"University"]
+#define    GetUniversity         [[NSUserDefaults standardUserDefaults] objectForKey:@"University"]
 
 #define    SetisFullView(x)      [[NSUserDefaults standardUserDefaults] setBool:(x) forKey:@"FullView"]
 #define    GetsFullView          [[NSUserDefaults standardUserDefaults] boolForKey:@"FullView"]

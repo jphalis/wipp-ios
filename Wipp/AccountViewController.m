@@ -21,6 +21,7 @@
 @interface AccountViewController (){
 
     __weak IBOutlet UILabel *nameLabel;
+    __weak IBOutlet UILabel *universityLabel;
     __weak IBOutlet SDIAsyncImageView *profileImg;
     __weak IBOutlet UIButton *drivePromptLabel;
     __weak IBOutlet UIButton *fbSyncBtn;
@@ -32,6 +33,8 @@
 @end
 
 @implementation AccountViewController
+
+@synthesize accountID;
 
 - (void)viewDidLoad {
     self.appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -72,6 +75,7 @@
     profileImg.layer.cornerRadius = profileImg.frame.size.width / 2;
     profileImg.layer.masksToBounds = YES;
     nameLabel.text = GetUserFullName;
+    universityLabel.text = GetUniversity;
     
     fbSyncBtn.layer.cornerRadius = 7;
 }
@@ -107,7 +111,17 @@
     checkNetworkReachability();
     [self setBusy:YES];
     
-    NSString *urlString = [NSString stringWithFormat:@"%@%ld/", PROFILEURL, (long)GetUserID];
+    NSString *accountId;
+    
+    if ([NSString stringWithFormat:@"%ld", (long)GetUserID] == accountID){
+        accountId = [NSString stringWithFormat:@"%ld", (long)GetUserID];
+    } else if (accountID == nil){
+        accountId = [NSString stringWithFormat:@"%ld", (long)GetUserID];
+    } else {
+        accountId = accountID;
+    }
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@%@/", PROFILEURL, accountId];
     NSMutableURLRequest *_request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                                              timeoutInterval:60];
     NSString *authStr = [NSString stringWithFormat:@"%@:%@", GetUserEmail, GetUserPassword];
@@ -126,6 +140,8 @@
             NSDictionary *JSONValue = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
             
             if(JSONValue != nil){
+                universityLabel.text = [JSONValue objectForKey:@"university"];
+                
                 if ([JSONValue objectForKey:@"profile_picture"] == [NSNull null]){
                     profileImg.image = [UIImage imageNamed:@"avatar"];
                 } else {

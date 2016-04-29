@@ -5,7 +5,6 @@
 
 #import <MapKit/MapKit.h>
 #import <MapKit/MKAnnotation.h>
-
 #import "CreateViewController.h"
 #import "defs.h"
 #import "MapViewController.h"
@@ -34,6 +33,20 @@
 @synthesize mapView, reservationID;
 
 - (void)viewDidLoad {
+    
+    
+    
+    
+    
+    
+    SetActiveRequest(YES);
+    SetReservationId(@"22");
+    
+    
+    
+    
+    
+    
     [super viewDidLoad];
     
     self.title = @"Wipp";
@@ -56,7 +69,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    
+
     // Initialize map
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0 &&
         [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse
@@ -210,6 +223,34 @@
                         [self performSelectorOnMainThread:@selector(stopTimer) withObject:nil waitUntilDone:YES];
                         statusBtn.hidden = YES;
                         requestBtn.hidden = NO;
+                    } else if ([status isEqual: @"Select Driver"]){
+                        [statusBtn setTitle:label_status forState:UIControlStateNormal];
+                        
+                        double start_lat_value = [[JSONValue objectForKey:@"start_lat"] doubleValue];
+                        double start_long_value = [[JSONValue objectForKey:@"start_long"] doubleValue];
+                        double end_lat_value = [[JSONValue objectForKey:@"end_lat"] doubleValue];
+                        double end_long_value = [[JSONValue objectForKey:@"end_long"] doubleValue];
+                        
+                        // Pins for annotations
+                        // Start coordinates
+                        CLLocationCoordinate2D startCoord;
+                        startCoord.latitude = start_lat_value;
+                        startCoord.longitude = start_long_value;
+                        
+                        MKPointAnnotation *startPoint = [[MKPointAnnotation alloc] init];
+                        startPoint.coordinate = startCoord;
+                        startPoint.title = @"Start";
+                        [self.mapView addAnnotation:startPoint];
+                        
+                        // End coordinates
+                        CLLocationCoordinate2D endCoord;
+                        endCoord.latitude = end_lat_value;
+                        endCoord.longitude = end_long_value;
+                        
+                        MKPointAnnotation *endPoint = [[MKPointAnnotation alloc] init];
+                        endPoint.coordinate = endCoord;
+                        endPoint.title = @"Destination";
+                        [self.mapView addAnnotation:endPoint];
                     }
                 });
             }

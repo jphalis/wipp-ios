@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     appDelegate = [AppDelegate getDelegate];
     [super viewDidLoad];
-    menuItems = @[@"title", @"home", @"rides", @"account", @"logout"];
+    menuItems = @[@"title", @"home", @"rides", @"profile", @"logout"];
 }
 
 - (void)didReceiveMemoryWarning {

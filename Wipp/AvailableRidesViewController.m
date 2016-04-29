@@ -184,6 +184,7 @@
     RideClass *rideClass = [arrRides objectAtIndex:indexPath.row];
     cell.pickupTimeLabel.text = rideClass.pick_up_interval;
     cell.distanceLabel.text = rideClass.travel_distance;
+    cell.amountLabel.text = [NSString stringWithFormat:@"$%@", rideClass.start_amount];
     
     UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.size.height - 1, cell.frame.size.width, 1)];
     bottomBorder.backgroundColor = [UIColor colorWithRed:(234/255.0) green:(234/255.0) blue:(234/255.0) alpha:1.0];
