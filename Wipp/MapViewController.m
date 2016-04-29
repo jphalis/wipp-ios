@@ -35,16 +35,8 @@
 - (void)viewDidLoad {
     
     
-    
-    
-    
-    
-    SetActiveRequest(YES);
-    SetReservationId(@"22");
-    
-    
-    
-    
+//    SetActiveRequest(YES);
+//    SetReservationId(@"22");
     
     
     [super viewDidLoad];
