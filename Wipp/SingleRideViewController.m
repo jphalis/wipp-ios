@@ -57,11 +57,11 @@
     pending_drivers = [[NSMutableArray alloc] init];
     [self getReservationDetails];
     
-    startLocLabel.text = startValue;
-    destinationLabel.text = destinationValue;
-    costLabel.text = costValue;
-    pickUpTimeLabel.text = pickUpTime;
-    statusLabel.text = statusValue;
+//    startLocLabel.text = startValue;
+//    destinationLabel.text = destinationValue;
+//    costLabel.text = costValue;
+//    pickUpTimeLabel.text = pickUpTime;
+//    statusLabel.text = statusValue;
     
     [super viewDidLoad];
 
@@ -524,10 +524,10 @@
                         selectBtn.layer.cornerRadius = 7;
                     } else {
                         // Driver looking at pending request
-                        acceptBtn.hidden = NO;
-                        acceptBtn.layer.borderWidth = 3;
-                        acceptBtn.layer.borderColor = [[UIColor greenColor] CGColor];
-                        acceptBtn.layer.cornerRadius = 7;
+                        cancelBtn.hidden = NO;
+                        cancelBtn.layer.borderWidth = 3;
+                        cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
+                        cancelBtn.layer.cornerRadius = 7;
                     }
                 } else {
                     // Someone is seeing things that shouldn't be
@@ -759,10 +759,10 @@
                         selectBtn.layer.cornerRadius = 7;
                     } else {
                         // Driver looking at pending request
-                        acceptBtn.hidden = NO;
-                        acceptBtn.layer.borderWidth = 3;
-                        acceptBtn.layer.borderColor = [[UIColor greenColor] CGColor];
-                        acceptBtn.layer.cornerRadius = 7;
+                        cancelBtn.hidden = NO;
+                        cancelBtn.layer.borderWidth = 3;
+                        cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
+                        cancelBtn.layer.cornerRadius = 7;
                     }
                 } else {
                     // Someone is seeing things that shouldn't be

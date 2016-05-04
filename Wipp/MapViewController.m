@@ -216,7 +216,11 @@
                         statusBtn.hidden = YES;
                         requestBtn.hidden = NO;
                     } else if ([status isEqual: @"Select Driver"]){
-                        [statusBtn setTitle:label_status forState:UIControlStateNormal];
+                        if ([JSONValue objectForKey:@"user"] == GetUserFullName) {
+                            [statusBtn setTitle:label_status forState:UIControlStateNormal];
+                        } else {
+                            [statusBtn setTitle:@"Ride Status: Awaiting Confirmation" forState:UIControlStateNormal];
+                        }
                         
                         double start_lat_value = [[JSONValue objectForKey:@"start_lat"] doubleValue];
                         double start_long_value = [[JSONValue objectForKey:@"start_long"] doubleValue];
