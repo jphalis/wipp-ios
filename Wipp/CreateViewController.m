@@ -383,7 +383,15 @@
     
     [_params setObject:[destinationLabel.text Trim] forKey:@"destination_query"];
     [_params setObject:formattedNumber forKey:@"start_amount"];
-    [_params setObject:[intervalLabel.text Trim] forKey:@"pick_up_interval"];
+    
+    // Convert 12 hour input to 24 hour string
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"hh:mm a";
+    NSDate *date = [dateFormatter dateFromString:[intervalLabel.text Trim]];
+    dateFormatter.dateFormat = @"HH:mm";
+    NSString *time24 = [dateFormatter stringFromDate:date];
+    [_params setObject:time24 forKey:@"pick_up_interval"];
+    
     NSString *BoundaryConstant = @"----------V2ymHFg03ehbqgZCaKO6jy";
     NSString *urlStr = [NSString stringWithFormat:@"%@", CREATEURL];
     NSURL *requestURL = [NSURL URLWithString:urlStr];

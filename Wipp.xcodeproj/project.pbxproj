@@ -1169,7 +1169,7 @@
 				New_Setting = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wipp;
 				PRODUCT_NAME = Wipp;
-				PROVISIONING_PROFILE = "2a336b94-c26d-4f47-9112-4abb968edc5b";
+				PROVISIONING_PROFILE = "a0b690b5-1427-4aea-beb6-967680fc7019";
 			};
 			name = Debug;
 		};
@@ -1190,7 +1190,7 @@
 				New_Setting = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wipp;
 				PRODUCT_NAME = Wipp;
-				PROVISIONING_PROFILE = "2a336b94-c26d-4f47-9112-4abb968edc5b";
+				PROVISIONING_PROFILE = "a0b690b5-1427-4aea-beb6-967680fc7019";
 			};
 			name = Release;
 		};
