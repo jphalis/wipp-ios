@@ -10,6 +10,7 @@
 #import "MapViewController.h"
 #import "SingleRideViewController.h"
 #import "SWRevealViewController.h"
+#import "TWMessageBarManager.h"
 
 
 @interface MapViewController () <MKMapViewDelegate, CLLocationManagerDelegate> {
@@ -19,6 +20,7 @@
     NSTimer *timer;
     NSString *status;
     NSString *cost;
+    NSInteger startCount;
 }
 - (IBAction)onStatusClick:(id)sender;
 - (IBAction)onRequest:(id)sender;
@@ -36,7 +38,7 @@
     
     
 //    SetActiveRequest(YES);
-//    SetReservationId(@"22");
+//    SetReservationId(@"25");
     
     
     [super viewDidLoad];
@@ -57,6 +59,8 @@
     if (GetReservationId){
         reservationID = GetReservationId;
     }
+    
+    startCount = 0;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -218,6 +222,27 @@
                     } else if ([status isEqual: @"Select Driver"]){
                         if ([JSONValue objectForKey:@"user"] == GetUserFullName) {
                             [statusBtn setTitle:label_status forState:UIControlStateNormal];
+                            
+                            NSMutableArray *arrDrivers = [JSONValue objectForKey:@"get_pending_drivers_info"];
+                            NSInteger driverCount = arrDrivers.count;
+                            
+                            if (driverCount > startCount){
+                                startCount = driverCount;
+                            
+                                for(int j = 0; j < arrDrivers.count; j++){
+                                    NSDictionary *dictUserDetail = [arrDrivers objectAtIndex:j];
+                                    
+                                    if([dictUserDetail objectForKey:@"full_name"] == [NSNull null]){
+                                        return;
+                                    } else {
+                                        NSString *driverName = [dictUserDetail objectForKey:@"full_name"];
+                                        [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Potential Driver"
+                                                    description:[NSString stringWithFormat: @"%@ is interested in your ride!", driverName]
+                                                            type:TWMessageBarMessageTypeSuccess
+                                                        duration:4.0];
+                                    }
+                                }
+                            }
                         } else {
                             [statusBtn setTitle:@"Ride Status: Awaiting Confirmation" forState:UIControlStateNormal];
                         }
