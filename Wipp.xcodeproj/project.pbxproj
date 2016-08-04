@@ -104,7 +104,7 @@
 		F4090B9D1A0F67D000651F6F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4090B9B1A0F67D000651F6F /* Main.storyboard */; };
 		F4090B9F1A0F67D000651F6F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4090B9E1A0F67D000651F6F /* Images.xcassets */; };
 		F4090BA21A0F67D000651F6F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4090BA01A0F67D000651F6F /* LaunchScreen.xib */; };
-		F4090BAE1A0F67D000651F6F /* SidebarDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4090BAD1A0F67D000651F6F /* SidebarDemoTests.m */; };
+		F4090BAE1A0F67D000651F6F /* WippTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4090BAD1A0F67D000651F6F /* WippTests.m */; };
 		F4090BBD1A0FD53800651F6F /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4090BBC1A0FD53800651F6F /* MapViewController.m */; };
 		F4090BC01A0FD5BC00651F6F /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4090BBF1A0FD5BC00651F6F /* AccountViewController.m */; };
 		F4090BC31A0FD62A00651F6F /* CreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4090BC21A0FD62A00651F6F /* CreateViewController.m */; };
@@ -310,7 +310,7 @@
 		F4090BA11A0F67D000651F6F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		F4090BA71A0F67D000651F6F /* Wipp.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Wipp.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4090BAC1A0F67D000651F6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F4090BAD1A0F67D000651F6F /* SidebarDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SidebarDemoTests.m; sourceTree = "<group>"; };
+		F4090BAD1A0F67D000651F6F /* WippTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WippTests.m; sourceTree = "<group>"; };
 		F4090BBB1A0FD53800651F6F /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		F4090BBC1A0FD53800651F6F /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		F4090BBE1A0FD5BC00651F6F /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountViewController.h; sourceTree = "<group>"; };
@@ -789,7 +789,7 @@
 		F4090BAA1A0F67D000651F6F /* WippTests */ = {
 			isa = PBXGroup;
 			children = (
-				F4090BAD1A0F67D000651F6F /* SidebarDemoTests.m */,
+				F4090BAD1A0F67D000651F6F /* WippTests.m */,
 				F4090BAB1A0F67D000651F6F /* Supporting Files */,
 			);
 			path = WippTests;
@@ -1024,7 +1024,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4090BAE1A0F67D000651F6F /* SidebarDemoTests.m in Sources */,
+				F4090BAE1A0F67D000651F6F /* WippTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

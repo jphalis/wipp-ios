@@ -758,11 +758,25 @@
                         selectBtn.layer.borderColor = [[UIColor greenColor] CGColor];
                         selectBtn.layer.cornerRadius = 7;
                     } else {
-                        // Driver looking at pending request
-                        cancelBtn.hidden = NO;
-                        cancelBtn.layer.borderWidth = 3;
-                        cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
-                        cancelBtn.layer.cornerRadius = 7;
+                        NSMutableArray *arrDrivers = [JSONValue objectForKey:@"get_pending_drivers_info"];
+                            
+                        for(int j = 0; j < arrDrivers.count; j++){
+                            NSDictionary *dictUserDetail = [arrDrivers objectAtIndex:j];
+                            
+                            if([dictUserDetail objectForKey:@"full_name"] == GetUserFullName){
+                                // Driver looking at pending request
+                                cancelBtn.hidden = NO;
+                                cancelBtn.layer.borderWidth = 3;
+                                cancelBtn.layer.borderColor = [[UIColor redColor] CGColor];
+                                cancelBtn.layer.cornerRadius = 7;
+                            } else {
+                                // Driver looking at pending request
+                                acceptBtn.hidden = NO;
+                                acceptBtn.layer.borderWidth = 3;
+                                acceptBtn.layer.borderColor = [[UIColor greenColor] CGColor];
+                                acceptBtn.layer.cornerRadius = 7;
+                            }
+                        }
                     }
                 } else {
                     // Someone is seeing things that shouldn't be
